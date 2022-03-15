@@ -1,4 +1,4 @@
-*** Version 1.14 ***
+***Version 1.14 ***
 
 + Added new Pride Lands biomes - Wooded Savannah, Grassland Savannah, Desert and Banana Forest
 + Added a large acacia tree type (can be grown with four saplings in a square)
@@ -6,13 +6,13 @@
 * Fixed a crash bug with Outlandish Darts on multiplayer
 * Removed some outdated ModLoader dependencies which were causing problems with newer Minecraft Forge versions
 
-*** Version 1.13 (24 September 2013, MC 1.6.4) ***
+***Version 1.13 (24 September 2013, MC 1.6.4) ***
 
 + Updated for Minecraft 1.6.4
 
 * Fixed a server crash bug when the Termite Queen appears
 
-*** Version 1.12.1 (7 August 2013, MC 1.6.2) ***
+***Version 1.12.1 (7 August 2013, MC 1.6.2) ***
 
 * Simba's inventory space has been increased to 9 slots
 * Fixed Simba failing to recognise his owner on singleplayer
@@ -24,7 +24,7 @@
 * Fixed the Lion King custom achievement screen not appearing
 * Fixed Pumbaa Flatulence, Rafiki and Zira Coins, Exploding Termites and Zazu Eggs being invisible when thrown
 
-*** Version 1.12 (16 July 2013, MC 1.6.2) ***
+***Version 1.12 (16 July 2013, MC 1.6.2) ***
 
 + Updated for Minecraft 1.6.2
 
@@ -33,7 +33,7 @@
 * Fixed Lion King enchantments sometimes being applied to items they shouldn't be applied to
 * Made the 'booth limit' setting work properly by saving and checking a list of all generated ticket booths instead of just checking the last generated booth 
 
-*** Version 1.11.2 (4 May 2013, MC 1.5.2) ***
+***Version 1.11.2 (4 May 2013, MC 1.5.2) ***
 
 + Updated for Minecraft 1.5.2
 
@@ -43,13 +43,13 @@
 * Fixed some saving bugs
 * Fixed a bug with the boss health bar not always rendering the name
 
-*** Version 1.11.1 (24 March 2013, MC 1.5.1) ***
+***Version 1.11.1 (24 March 2013, MC 1.5.1) ***
 
 + Updated for Minecraft 1.5.1
 
 * Fixed missing and incorrect textures on various blocks
 
-*** Version 1.11 (18 March 2013, MC 1.5) ***
+***Version 1.11 (18 March 2013, MC 1.5) ***
 
 + Updated for Minecraft 1.5
 
@@ -65,20 +65,20 @@
 * Fixed a bug where Scar would spawn next to Rafiki on worlds with a superflat overworld
 * Improved the placing of the Scar and Zira rugs
 
-*** Version 1.10.4 (5 February 2013, MC 1.4.7) ***
+***Version 1.10.4 (5 February 2013, MC 1.4.7) ***
 
 * Actually fixed the Optifine quest saving bug
 
-*** Version 1.10.3 (30 January 2013, MC 1.4.7) ***
+***Version 1.10.3 (30 January 2013, MC 1.4.7) ***
 
 * Fixed the mod's world ticks lagging the game a lot (thanks to a new Forge update)
 * Fixed the quest saving bug
 
-*** Version 1.10.2 (27 January 2013, MC 1.4.7) ***
+***Version 1.10.2 (27 January 2013, MC 1.4.7) ***
 
 * Attempted another fix for the quest saving bug
 
-*** Version 1.10.1 (23 January 2013, MC 1.4.7) ***
+***Version 1.10.1 (23 January 2013, MC 1.4.7) ***
 
 + Added new creative tabs for Lion King items
 
@@ -87,19 +87,19 @@
 * Fixed a glitch when picking the spawn egg from creatures
 * Fixed the portal overlay obscuring the screen under certain circumstances
 
-*** Version 1.10 (16 January 2013, MC 1.4.7) ***
+***Version 1.10 (16 January 2013, MC 1.4.7) ***
 
 + Added full multiplayer support, including quest support
 
-*** Version 1.9.2 (22 December 2012, MC 1.4.6) ***
+***Version 1.9.2 (22 December 2012, MC 1.4.6) ***
 
 * Fixed a crash bug with Lion King stairs
 
-*** Version 1.9.1 (22 December 2012, MC 1.4.6) ***
+***Version 1.9.1 (22 December 2012, MC 1.4.6) ***
 
 * Fixed the bug that caused Rafiki to spam the chat after killing Scar
 
-*** Version 1.9 (20 December 2012, MC 1.4.6) ***
+***Version 1.9 (20 December 2012, MC 1.4.6) ***
 
 + Updated for Minecraft 1.4.6
 + Now installed in the mods folder
@@ -128,13 +128,13 @@
 * Fixed sometimes taking fall damage when using Peacock Wings
 * Fixed Kiwano Seeds being unplantable
 
-*** Version 1.8.1 (22 November 2012, MC 1.4.5) ***
+***Version 1.8.1 (22 November 2012, MC 1.4.5) ***
 
 * Fixed a bug that caused furnaces to crash the game
 * Fixed a bug with the Grinding Bowl achievement
 * Fixed trading with Timon
 
-*** Version 1.8 (14 November 2012, MC 1.4.4/1.4.5) ***
+***Version 1.8 (14 November 2012, MC 1.4.4/1.4.5) ***
 
 + Updated for Minecraft 1.4.4
 
@@ -156,7 +156,7 @@
 * Fixed some Simba bugs
 * Fixed visual errors with certain blocks when using HD texture packs
 
-*** Version 1.7 (25 October 2012, MC 1.4.2) ***
+***Version 1.7 (25 October 2012, MC 1.4.2) ***
 
 + Updated for Minecraft 1.4.2
 
@@ -185,7 +185,7 @@
 * Fixed various problems with the config file
 * Fixed a bug where the Pride Lands would only generate water after a certain distance
 
-*** Version 1.6 (6 October 2012, MC 1.3.2) ***
+***Version 1.6 (6 October 2012, MC 1.3.2) ***
 
 + Updated to Minecraft 1.3.2
 
@@ -220,12 +220,12 @@
 - Removed the Upendi dimension
 - Removed Lion King paintings due to client-server communication problems
 
-*** Version 1.5.1 (11 July 2012, MC 1.2.5) ***
+***Version 1.5.1 (11 July 2012, MC 1.2.5) ***
 
 * Fixed problems with getting the wrong rug dyes from the Grinding Bowl
 * Fixed some rendering glitches with the Bug Trap
 
-*** Version 1.5 (9 July 2012, MC 1.2.5) ***
+***Version 1.5 (9 July 2012, MC 1.2.5) ***
 
 + The Lion King Mod now uses Forge Mod Loader, meaning that ModLoader and AudioMod are no longer required
 
@@ -282,7 +282,7 @@
 - Removed the Scar Claw item from the quest (Scar's defeat is now acknowledged automatically)
 - Removed the two useless 'portal activator' blocks
 
-*** Version 1.4.2 (8 April 2012, MC 1.2.5) ***
+***Version 1.4.2 (8 April 2012, MC 1.2.5) ***
 
 + Updated for Minecraft 1.2.5
 
@@ -299,11 +299,11 @@
 * Fixed the Outlands achievement displaying the wrong icon
 * Fixed a crash with ground rhino horn
 
-*** Version 1.4.1 (27 March 2012, MC 1.2.4) ***
+***Version 1.4.1 (27 March 2012, MC 1.2.4) ***
 
 * Fixed the Rafiki Stick not growing purple flowers
 
-*** Version 1.4 (27 March 2012, MC 1.2.4) ***
+***Version 1.4 (27 March 2012, MC 1.2.4) ***
 
 + Updated for Minecraft 1.2.4
 
@@ -330,7 +330,7 @@
 * Fixed Pride Lands leaves decaying even though they had been placed by the player
 * Fixed some issues with Lion King items when using TooManyItems
 
-*** Version 1.3 (11 March 2012, MC 1.2.3) ***
+***Version 1.3 (11 March 2012, MC 1.2.3) ***
 
 + Updated for Minecraft 1.2.3
 
@@ -362,7 +362,7 @@
 * Zazus drop rare feathers more often and in addition to, not instead of, blue ones
 * Various bug fixes
 
-*** Version 1.2.1 (4 February 2012, MC 1.1) ***
+***Version 1.2.1 (4 February 2012, MC 1.1) ***
 
 + The Lion King Mod is now fully compatible with Single Player Commands
 
@@ -372,7 +372,7 @@
 * Reduced the generation rate of Ticket Booths in deserts
 * Zazus only give a Morning Report in the morning
 
-*** Version 1.2 (2 February 2012, MC 1.1) ***
+***Version 1.2 (2 February 2012, MC 1.1) ***
 
 + The Lion King Mod now requires Minecraft Forge
 
@@ -397,7 +397,7 @@
 * Fixed a bug where leaves would not decay
 * Some items now only stack to 16 instead of 64
 
-*** Version 1.1 (20 January 2012, MC 1.1) ***
+***Version 1.1 (20 January 2012, MC 1.1) ***
 
 + Dead trees now generate in the Outlands
 + Adult lions and lionesses now fight back
