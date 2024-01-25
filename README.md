@@ -26,22 +26,41 @@
 <!----------------------------------------------------------------------------->
 
 [code_smells_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=code_smells
+
 [code_smells_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [maintainability_rating_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=sqale_rating
+
 [maintainability_rating_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [security_rating_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=security_rating
+
 [security_rating_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [bugs_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=bugs
+
 [bugs_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [vulnerabilities_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=vulnerabilities
+
 [vulnerabilities_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [duplicated_lines_density_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=duplicated_lines_density
+
 [duplicated_lines_density_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [reliability_rating_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=reliability_rating
+
 [reliability_rating_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [quality_gate_status_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=alert_status
+
 [quality_gate_status_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [technical_debt_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=sqale_index
+
 [technical_debt_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
+
 [lines_of_code_badge]: https://sonarcloud.io/api/project_badges/measure?project=Hummel009_Lion-King&metric=ncloc
+
 [lines_of_code_link]: https://sonarcloud.io/summary/overall?id=Hummel009_Lion-King
