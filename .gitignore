@@ -1,36 +1,43 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Folder config file
-Desktop.ini
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-# =========================
-# Operating System Files
-# =========================
+### VS Code ###
+.vscode/
 
-# OSX
-# =========================
-
+### Mac OS ###
 .DS_Store
-.AppleDouble
-.LSOverride
 
-# Icon must ends with two \r.
-Icon
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+### Minecraft ###
+forge*changelog.txt
+run

@@ -1,0 +1,21 @@
+[
+{
+  "modid" : "lionking",
+  "name" : "The Lion King Mod",
+  "version" : "v1.13",
+  "url" : "http://bit.ly/lionkingmod",
+  "credits" : "Inspired by and based on the Walt Disney movie. Music by MinecraftUniverse",
+  "authors": [
+    "Mevans"
+  ],
+  "description": "The Lion King Mod adds another realm to explore: the Pride Lands, complete with new blocks and items, animals, ores, biomes and much more, based around the Lion King.\n\nMeet characters, trade for unique rewards, undertake quests and defeat enemies in an adventure like no other!",
+  "logoFile" : "/assets/lionking/logo.png",
+  "updateUrl" : "",
+  "parent" : "",
+  "dependencies": [
+     "mod_MinecraftForge"
+  ],
+  "screenshots": [
+  ]
+}
+]

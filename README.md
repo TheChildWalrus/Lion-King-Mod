@@ -1,5 +1,13 @@
-# Lion-King-Mod
-For Minecraft, version 1.6.4. 
-Made by Mevans originally then updated past 1.6.4 by RedRosewarrior aka DevMaster1015.
-license is ARR 
-You may not redistribute this mod.
+> [!CAUTION]
+> Работа над проектом заморожена. Его исходники устарели и содержат плохие практики кода. Инструментарий разработки
+> будет поддерживаться в актуальном и рабочем состоянии, но исходный код проекта исправляться не будет.
+
+Оригинальный код мода "Lion King" для Minecraft 1.6.4. Перенесён с Forge на
+Voldeloom и пригоден к разработке на момент 2023 года.
+
+## Особенности
+
+* Закомментирован фрагмент кода в LKTickHandlerClient, который перестал работать из-за инкапсуляции полей.
+* Закомментирован фрагмент кода в LKItemGroundRhinoHorn, который перестал работать из-за инкапсуляции полей.
+* Исправлена ошибка с файлом LKRenderBug (файл был перемещён из common в client).
+* Исправлена ошибка с файлом LKRenderSkeletalHyenaHead (файл был перемещён из common в client).
