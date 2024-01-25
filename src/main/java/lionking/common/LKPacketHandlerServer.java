@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -32,52 +33,38 @@ import net.minecraft.world.storage.*;
 
 import cpw.mods.fml.common.network.*;
 import net.minecraftforge.common.DimensionManager;
+
 import java.nio.ByteBuffer;
 
 
-public class LKPacketHandlerServer implements IPacketHandler
-{
-	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
-	{
-		if (packet.channel.equals("lk.simbaSit"))
-		{
+public class LKPacketHandlerServer implements IPacketHandler {
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
+		if (packet.channel.equals("lk.simbaSit")) {
 			Entity entity = mod_LionKing.proxy.getEntityFromID(ByteBuffer.wrap(packet.data).getInt(0), DimensionManager.getWorld(packet.data[4]));
-			if (entity != null && entity instanceof LKEntitySimba)
-			{
-				LKEntitySimba simba = (LKEntitySimba)entity;
+			if (entity != null && entity instanceof LKEntitySimba) {
+				LKEntitySimba simba = (LKEntitySimba) entity;
 				simba.setSitting(!simba.isSitting());
 			}
-		}
-		
-		else if (packet.channel.equals("lk.damageItem"))
-		{
+		} else if (packet.channel.equals("lk.damageItem")) {
 			Entity entity = mod_LionKing.proxy.getEntityFromID(ByteBuffer.wrap(packet.data).getInt(0), DimensionManager.getWorld(packet.data[4]));
-			if (entity != null && entity instanceof EntityPlayer)
-			{
-				EntityPlayer entityplayer = (EntityPlayer)entity;
+			if (entity != null && entity instanceof EntityPlayer) {
+				EntityPlayer entityplayer = (EntityPlayer) entity;
 				int type = packet.data[5];
-				if (type == (byte)0)
-				{
+				if (type == (byte) 0) {
 					ItemStack boots = entityplayer.inventory.armorItemInSlot(0);
-					if (boots != null && boots.getItem() == mod_LionKing.zebraBoots)
-					{
+					if (boots != null && boots.getItem() == mod_LionKing.zebraBoots) {
 						boots.damageItem(1, entityplayer);
-						if (boots.getItemDamage() == boots.getMaxDamage())
-						{
+						if (boots.getItemDamage() == boots.getMaxDamage()) {
 							LKIngame.sendBreakItemPacket(entityplayer, 0);
 							entityplayer.inventory.setInventorySlotContents(36, null);
 							entityplayer.addStat(StatList.objectBreakStats[mod_LionKing.zebraBoots.itemID], 1);
 						}
 					}
-				}
-				else if (type == (byte)1)
-				{
+				} else if (type == (byte) 1) {
 					ItemStack body = entityplayer.inventory.armorItemInSlot(2);
-					if (body != null && body.getItem() == mod_LionKing.wings)
-					{
+					if (body != null && body.getItem() == mod_LionKing.wings) {
 						body.damageItem(1, entityplayer);
-						if (body.getItemDamage() == body.getMaxDamage())
-						{
+						if (body.getItemDamage() == body.getMaxDamage()) {
 							LKIngame.sendBreakItemPacket(entityplayer, 1);
 							entityplayer.inventory.setInventorySlotContents(38, null);
 							entityplayer.addStat(StatList.objectBreakStats[mod_LionKing.wings.itemID], 1);
@@ -85,10 +72,7 @@ public class LKPacketHandlerServer implements IPacketHandler
 					}
 				}
 			}
-		}
-		
-		else if (packet.channel.equals("lk.sendQCheck"))
-		{
+		} else if (packet.channel.equals("lk.sendQCheck")) {
 			LKQuestBase quest = LKQuestBase.allQuests[packet.data[0]];
 			quest.setChecked(true);
 		}

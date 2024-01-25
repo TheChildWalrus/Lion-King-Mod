@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,136 +32,105 @@ import net.minecraft.world.storage.*;
 
 import java.util.Iterator;
 
-public class LKContainerGrindingBowl extends Container
-{
-    public LKTileEntityGrindingBowl grindingBowl;
-    private int grindTime;
+public class LKContainerGrindingBowl extends Container {
+	public LKTileEntityGrindingBowl grindingBowl;
+	private int grindTime;
 
-    public LKContainerGrindingBowl(EntityPlayer entityplayer, LKTileEntityGrindingBowl bowl)
-    {
-        grindTime = 0;
-        grindingBowl = bowl;
-		
-        addSlotToContainer(new Slot(bowl, 0, 40, 35));
-        addSlotToContainer(new LKSlotGrindingBowl(bowl, 1, 116, 35));
-		
-        for (int i = 0; i < 3; i++)
-        {
-            for (int k = 0; k < 9; k++)
-            {
-                addSlotToContainer(new Slot(entityplayer.inventory, k + i * 9 + 9, 8 + k * 18, 84 + i * 18));
-            }
+	public LKContainerGrindingBowl(EntityPlayer entityplayer, LKTileEntityGrindingBowl bowl) {
+		grindTime = 0;
+		grindingBowl = bowl;
 
-        }
-        for (int j = 0; j < 9; j++)
-        {
-            addSlotToContainer(new Slot(entityplayer.inventory, j, 8 + j * 18, 142));
-        }
-    }
-	
-	@Override
-    public void addCraftingToCrafters(ICrafting crafting)
-    {
-        super.addCraftingToCrafters(crafting);
-        crafting.sendProgressBarUpdate(this, 0, grindingBowl.grindTime);
-    }
+		addSlotToContainer(new Slot(bowl, 0, 40, 35));
+		addSlotToContainer(new LKSlotGrindingBowl(bowl, 1, 116, 35));
+
+		for (int i = 0; i < 3; i++) {
+			for (int k = 0; k < 9; k++) {
+				addSlotToContainer(new Slot(entityplayer.inventory, k + i * 9 + 9, 8 + k * 18, 84 + i * 18));
+			}
+
+		}
+		for (int j = 0; j < 9; j++) {
+			addSlotToContainer(new Slot(entityplayer.inventory, j, 8 + j * 18, 142));
+		}
+	}
 
 	@Override
-    public void detectAndSendChanges()
-    {
-        super.detectAndSendChanges();
-		
-        Iterator iterator = crafters.iterator();
-        while (iterator.hasNext())
-        {
-            ICrafting slot = (ICrafting)iterator.next();
-            if (grindTime != grindingBowl.grindTime)
-            {
-                slot.sendProgressBarUpdate(this, 0, grindingBowl.grindTime);
-            }
-        }
-		
-        grindTime = grindingBowl.grindTime;
-    }
+	public void addCraftingToCrafters(ICrafting crafting) {
+		super.addCraftingToCrafters(crafting);
+		crafting.sendProgressBarUpdate(this, 0, grindingBowl.grindTime);
+	}
 
 	@Override
-    public void updateProgressBar(int i, int j)
-    {
-        if (i == 0)
-        {
-            grindingBowl.grindTime = j;
-        }
-    }
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+
+		Iterator iterator = crafters.iterator();
+		while (iterator.hasNext()) {
+			ICrafting slot = (ICrafting) iterator.next();
+			if (grindTime != grindingBowl.grindTime) {
+				slot.sendProgressBarUpdate(this, 0, grindingBowl.grindTime);
+			}
+		}
+
+		grindTime = grindingBowl.grindTime;
+	}
 
 	@Override
-    public boolean canInteractWith(EntityPlayer entityplayer)
-    {
-        return grindingBowl.isUseableByPlayer(entityplayer);
-    }
-	
+	public void updateProgressBar(int i, int j) {
+		if (i == 0) {
+			grindingBowl.grindTime = j;
+		}
+	}
+
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer entityplayer, int i)
-    {
-        ItemStack itemstack = null;
-        Slot slot = (Slot)inventorySlots.get(i);
+	public boolean canInteractWith(EntityPlayer entityplayer) {
+		return grindingBowl.isUseableByPlayer(entityplayer);
+	}
 
-        if (slot != null && slot.getHasStack())
-        {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer entityplayer, int i) {
+		ItemStack itemstack = null;
+		Slot slot = (Slot) inventorySlots.get(i);
 
-            if (i == 1)
-            {
-                if (!mergeItemStack(itemstack1, 2, 38, true))
-                {
-                    return null;
-                }
+		if (slot != null && slot.getHasStack()) {
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
 
-                slot.onSlotChange(itemstack1, itemstack);
-            }
-            else if (i != 0)
-            {
-				if (LKGrindingRecipes.grinding().getGrindingResult(itemstack1) != null)
-				{
-                    if (!mergeItemStack(itemstack1, 0, 1, false))
-                    {
-                        return null;
-                    }
+			if (i == 1) {
+				if (!mergeItemStack(itemstack1, 2, 38, true)) {
+					return null;
 				}
-                else if (i >= 2 && i < 29)
-                {
-                    if (!mergeItemStack(itemstack1, 29, 38, false))
-                    {
-                        return null;
-                    }
-                }
-                else if (i >= 29 && i < 38 && !mergeItemStack(itemstack1, 2, 29, false))
-                {
-                    return null;
-                }
-            }
-            else if (!mergeItemStack(itemstack1, 2, 38, false))
-            {
-                return null;
-            }
 
-            if (itemstack1.stackSize == 0)
-            {
-                slot.putStack((ItemStack)null);
-            }
-            else
-            {
-                slot.onSlotChanged();
-            }
+				slot.onSlotChange(itemstack1, itemstack);
+			} else if (i != 0) {
+				if (LKGrindingRecipes.grinding().getGrindingResult(itemstack1) != null) {
+					if (!mergeItemStack(itemstack1, 0, 1, false)) {
+						return null;
+					}
+				} else if (i >= 2 && i < 29) {
+					if (!mergeItemStack(itemstack1, 29, 38, false)) {
+						return null;
+					}
+				} else if (i >= 29 && i < 38 && !mergeItemStack(itemstack1, 2, 29, false)) {
+					return null;
+				}
+			} else if (!mergeItemStack(itemstack1, 2, 38, false)) {
+				return null;
+			}
 
-            if (itemstack1.stackSize == itemstack.stackSize)
-            {
-                return null;
-            }
+			if (itemstack1.stackSize == 0) {
+				slot.putStack((ItemStack) null);
+			} else {
+				slot.onSlotChanged();
+			}
 
-            slot.onPickupFromSlot(entityplayer, itemstack1);
-        }
+			if (itemstack1.stackSize == itemstack.stackSize) {
+				return null;
+			}
 
-        return itemstack;
-    }
+			slot.onPickupFromSlot(entityplayer, itemstack1);
+		}
+
+		return itemstack;
+	}
 }

@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,16 +30,13 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKSlotGrindingBowl extends Slot
-{
-    public LKSlotGrindingBowl(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
+public class LKSlotGrindingBowl extends Slot {
+	public LKSlotGrindingBowl(IInventory iinventory, int i, int j, int k) {
+		super(iinventory, i, j, k);
+	}
 
 	@Override
-    public boolean isItemValid(ItemStack itemstack)
-    {
+	public boolean isItemValid(ItemStack itemstack) {
 		return false;
-    }
+	}
 }

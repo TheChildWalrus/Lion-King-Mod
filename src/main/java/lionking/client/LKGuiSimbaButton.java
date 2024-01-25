@@ -6,20 +6,17 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class LKGuiSimbaButton extends GuiButton
-{
-	private LKEntitySimba theSimba;
+public class LKGuiSimbaButton extends GuiButton {
 	private static final ResourceLocation texture = new ResourceLocation("lionking:gui/simba.png");
-	
-	public LKGuiSimbaButton(int i, int j, int k, LKEntitySimba simba)
-	{
+	private LKEntitySimba theSimba;
+
+	public LKGuiSimbaButton(int i, int j, int k, LKEntitySimba simba) {
 		super(i, j, k, 22, 22, "Simba");
 		theSimba = simba;
 	}
-	
+
 	@Override
-    public void drawButton(Minecraft mc, int i, int j)
-    {
+	public void drawButton(Minecraft mc, int i, int j) {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		mc.getTextureManager().bindTexture(texture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

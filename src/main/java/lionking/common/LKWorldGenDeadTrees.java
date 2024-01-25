@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,21 +32,16 @@ import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-public class LKWorldGenDeadTrees extends WorldGenerator
-{
+public class LKWorldGenDeadTrees extends WorldGenerator {
 	@Override
-    public boolean generate(World world, Random random, int i, int j, int k)
-	{
+	public boolean generate(World world, Random random, int i, int j, int k) {
 		int l = random.nextInt(3) + 6;
-		if (j + l >= 256)
-		{
+		if (j + l >= 256) {
 			return false;
 		}
-		
-		if (world.getBlockId(i, j - 1, k) == Block.sand.blockID && world.isAirBlock(i, j, k))
-		{
-			for (int j1 = j; j1 < j + l + 1; j1++)
-			{
+
+		if (world.getBlockId(i, j - 1, k) == Block.sand.blockID && world.isAirBlock(i, j, k)) {
+			for (int j1 = j; j1 < j + l + 1; j1++) {
 				world.setBlock(i, j1, k, mod_LionKing.prideWood2.blockID, 1, 2);
 			}
 			int l1 = l - 1 - random.nextInt(2);
@@ -59,5 +55,5 @@ public class LKWorldGenDeadTrees extends WorldGenerator
 			return true;
 		}
 		return false;
-    }
+	}
 }

@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,11 +30,9 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKBlockFlower extends BlockFlower
-{
-    public LKBlockFlower(int i)
-    {
-        super(i);
+public class LKBlockFlower extends BlockFlower {
+	public LKBlockFlower(int i) {
+		super(i);
 		setCreativeTab(LKCreativeTabs.tabDeco);
-    }
+	}
 }

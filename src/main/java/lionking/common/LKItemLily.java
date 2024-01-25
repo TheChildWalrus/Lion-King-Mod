@@ -7,52 +7,41 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class LKItemLily extends LKItemMetadata
-{
-    public LKItemLily(int i)
-    {
-        super(i);
-    }
+public class LKItemLily extends LKItemMetadata {
+	public LKItemLily(int i) {
+		super(i);
+	}
 
 	@Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
-        MovingObjectPosition m = this.getMovingObjectPositionFromPlayer(world, entityplayer, true);
+	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+		MovingObjectPosition m = this.getMovingObjectPositionFromPlayer(world, entityplayer, true);
 
-        if (m == null)
-        {
-            return itemstack;
-        }
-        else
-        {
-            if (m.typeOfHit == EnumMovingObjectType.TILE)
-            {
-                int i1 = m.blockX;
-                int j1 = m.blockY;
-                int k1 = m.blockZ;
+		if (m == null) {
+			return itemstack;
+		} else {
+			if (m.typeOfHit == EnumMovingObjectType.TILE) {
+				int i1 = m.blockX;
+				int j1 = m.blockY;
+				int k1 = m.blockZ;
 
-                if (!world.canMineBlock(entityplayer, i1, j1, k1))
-                {
-                    return itemstack;
-                }
+				if (!world.canMineBlock(entityplayer, i1, j1, k1)) {
+					return itemstack;
+				}
 
-                if (!entityplayer.canPlayerEdit(i1, j1, k1, m.sideHit, itemstack))
-                {
-                    return itemstack;
-                }
+				if (!entityplayer.canPlayerEdit(i1, j1, k1, m.sideHit, itemstack)) {
+					return itemstack;
+				}
 
-                if (world.getBlockMaterial(i1, j1, k1) == Material.water && world.getBlockMetadata(i1, j1, k1) == 0 && world.isAirBlock(i1, j1 + 1, k1))
-                {
-                    world.setBlock(i1, j1 + 1, k1, mod_LionKing.lily.blockID, getMetadata(itemstack.getItemDamage()), 3);
+				if (world.getBlockMaterial(i1, j1, k1) == Material.water && world.getBlockMetadata(i1, j1, k1) == 0 && world.isAirBlock(i1, j1 + 1, k1)) {
+					world.setBlock(i1, j1 + 1, k1, mod_LionKing.lily.blockID, getMetadata(itemstack.getItemDamage()), 3);
 
-                    if (!entityplayer.capabilities.isCreativeMode)
-                    {
-                        --itemstack.stackSize;
-                    }
-                }
-            }
+					if (!entityplayer.capabilities.isCreativeMode) {
+						--itemstack.stackSize;
+					}
+				}
+			}
 
-            return itemstack;
-        }
-    }
+			return itemstack;
+		}
+	}
 }

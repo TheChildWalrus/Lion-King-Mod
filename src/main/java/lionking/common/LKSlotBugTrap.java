@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,26 +30,21 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKSlotBugTrap extends Slot
-{
-    public LKSlotBugTrap(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
+public class LKSlotBugTrap extends Slot {
+	public LKSlotBugTrap(IInventory iinventory, int i, int j, int k) {
+		super(iinventory, i, j, k);
+	}
 
 	@Override
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return false;
-    }
+	public boolean isItemValid(ItemStack itemstack) {
+		return false;
+	}
 
 	@Override
-    public void onPickupFromSlot(EntityPlayer entityplayer, ItemStack itemstack)
-    {
-		if (itemstack.itemID == mod_LionKing.bug.itemID)
-		{
+	public void onPickupFromSlot(EntityPlayer entityplayer, ItemStack itemstack) {
+		if (itemstack.itemID == mod_LionKing.bug.itemID) {
 			entityplayer.triggerAchievement(LKAchievementList.bugTrap);
 		}
 		super.onPickupFromSlot(entityplayer, itemstack);
-    }
+	}
 }

@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,33 +30,28 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKSlotTimon extends Slot
-{
-	private LKEntityTimon theTimon;
+public class LKSlotTimon extends Slot {
 	public int cost;
+	private LKEntityTimon theTimon;
 
-    public LKSlotTimon(IInventory iinventory, int i, int j, int k, LKEntityTimon timon, int l)
-    {
-        super(iinventory, i, j, k);
+	public LKSlotTimon(IInventory iinventory, int i, int j, int k, LKEntityTimon timon, int l) {
+		super(iinventory, i, j, k);
 		theTimon = timon;
 		cost = l;
-    }
+	}
 
 	@Override
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return false;
-    }
+	public boolean isItemValid(ItemStack itemstack) {
+		return false;
+	}
 
 	@Override
-    public void onPickupFromSlot(EntityPlayer entityplayer, ItemStack itemstack)
-    {
-		for (int i = 0; i < cost; i++)
-		{
+	public void onPickupFromSlot(EntityPlayer entityplayer, ItemStack itemstack) {
+		for (int i = 0; i < cost; i++) {
 			entityplayer.inventory.consumeInventoryItem(mod_LionKing.bug.itemID);
 		}
 		theTimon.setEaten();
 		entityplayer.triggerAchievement(LKAchievementList.hakunaMatata);
 		super.onPickupFromSlot(entityplayer, itemstack);
-    }
+	}
 }

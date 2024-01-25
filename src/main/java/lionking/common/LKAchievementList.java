@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,15 +32,15 @@ import net.minecraft.world.storage.*;
 
 import net.minecraftforge.common.*;
 import cpw.mods.fml.common.registry.*;
+
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 
-public class LKAchievementList extends AchievementPage
-{
-    public static int minDisplayColumn;
-    public static int minDisplayRow;
-    public static int maxDisplayColumn;
-    public static int maxDisplayRow;
+public class LKAchievementList extends AchievementPage {
+	public static int minDisplayColumn;
+	public static int minDisplayRow;
+	public static int maxDisplayColumn;
+	public static int maxDisplayRow;
 	public static LKAchievement enterPrideLands;
 	public static LKAchievement killHyena;
 	public static LKAchievement getMango;
@@ -73,9 +74,12 @@ public class LKAchievementList extends AchievementPage
 	public static LKAchievement rideGiraffe;
 	public static LKAchievement behead;
 	public static LKAchievement wings;
-	
-	public static void preInitAchievements()
-	{
+
+	public LKAchievementList() {
+		super("Lion King", getLKAchievements());
+	}
+
+	public static void preInitAchievements() {
 		enterPrideLands = new LKAchievement(0, "Enter the Pride Lands", 0, -5, mod_LionKing.ticket, null).setIndependent().registerAchievement();
 		killHyena = new LKAchievement(1, "Kill a Hyena", -2, 2, mod_LionKing.hyenaBone, enterPrideLands).registerAchievement();
 		getMango = new LKAchievement(2, "Collect a Mango from a tree", -3, -4, mod_LionKing.mango, enterPrideLands).registerAchievement();
@@ -109,7 +113,7 @@ public class LKAchievementList extends AchievementPage
 		rideGiraffe = new LKAchievement(30, "Saddle and ride a Giraffe", 3, -2, mod_LionKing.giraffeSaddle, enterPrideLands).registerAchievement();
 		behead = new LKAchievement(31, "Behead a Skeletal Hyena", 0, 14, new ItemStack(mod_LionKing.hyenaHeadItem, 1, 3), enterOutlands).registerAchievement();
 		wings = new LKAchievement(32, "Craft a set of Peacock Wings and fly into the air", 2, 2, mod_LionKing.wings, peacock).registerAchievement();
-	
+
 		addTitle(enterPrideLands, "The Circle of Life");
 		addTitle(killHyena, "Hyenas!");
 		addTitle(getMango, "Underneath the Mango Tree");
@@ -144,35 +148,23 @@ public class LKAchievementList extends AchievementPage
 		addTitle(behead, "Heads Up!");
 		addTitle(wings, "Limitless");
 	}
-	
-	public LKAchievementList()
-	{
-		super("Lion King", getLKAchievements());
-	}
-	
-	private static void addTitle(LKAchievement achievement, String title)
-	{
+
+	private static void addTitle(LKAchievement achievement, String title) {
 		achievement.lkAchievementTitle = title;
 	}
-	
-	private static LKAchievement[] getLKAchievements()
-	{
+
+	private static LKAchievement[] getLKAchievements() {
 		LKAchievement[] fallback = new LKAchievement[]{enterPrideLands};
-		try
-		{
+		try {
 			LinkedList achievements = new LinkedList();
 			Field[] fields = LKAchievementList.class.getFields();
-			for (Field field : fields)
-			{
-				if (field.get(null) instanceof LKAchievement)
-				{
-					achievements.add((LKAchievement)field.get(null));
+			for (Field field : fields) {
+				if (field.get(null) instanceof LKAchievement) {
+					achievements.add((LKAchievement) field.get(null));
 				}
 			}
-			return (LKAchievement[])achievements.toArray(fallback);
-		}
-		catch (Exception e)
-		{
+			return (LKAchievement[]) achievements.toArray(fallback);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return fallback;
 		}

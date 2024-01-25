@@ -12,38 +12,31 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
-public class LKRenderLargeItem implements IItemRenderer
-{
+public class LKRenderLargeItem implements IItemRenderer {
 	private static HashMap largeItemTextures = new HashMap();
-	
+
 	@Override
-    public boolean handleRenderType(ItemStack itemstack, ItemRenderType type)
-	{
+	public boolean handleRenderType(ItemStack itemstack, ItemRenderType type) {
 		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
 	}
-    
+
 	@Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack itemstack, ItemRendererHelper helper)
-	{
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack itemstack, ItemRendererHelper helper) {
 		return false;
 	}
-    
+
 	@Override
-    public void renderItem(ItemRenderType type, ItemStack itemstack, Object... data)
-	{
+	public void renderItem(ItemRenderType type, ItemStack itemstack, Object... data) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(-0.5F, -0.5F, 0F);
 		GL11.glScalef(2F, 2F, 1F);
 		TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
 		ResourceLocation texture = null;
 		String itemName = Item.itemsList[itemstack.itemID].getUnlocalizedName();
-		
-		if (largeItemTextures.get(itemName) != null)
-		{
-			texture = (ResourceLocation)largeItemTextures.get(itemName);
-		}
-		else
-		{
+
+		if (largeItemTextures.get(itemName) != null) {
+			texture = (ResourceLocation) largeItemTextures.get(itemName);
+		} else {
 			String s = "lionking:item/large/" + itemName.substring(itemName.indexOf("lionking:") + 9) + ".png";
 			texture = new ResourceLocation(s);
 			largeItemTextures.put(itemName, texture);
@@ -54,8 +47,7 @@ public class LKRenderLargeItem implements IItemRenderer
 		Tessellator tessellator = Tessellator.instance;
 		ItemRenderer.renderItemIn2D(tessellator, 1F, 0F, 0F, 1F, 32, 32, 0.0625F);
 
-		if (itemstack != null && itemstack.hasEffect(0))
-		{
+		if (itemstack != null && itemstack.hasEffect(0)) {
 			GL11.glDepthFunc(GL11.GL_EQUAL);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			textureManager.bindTexture(LKClientProxy.itemGlintTexture);
@@ -67,14 +59,14 @@ public class LKRenderLargeItem implements IItemRenderer
 			GL11.glPushMatrix();
 			float f1 = 0.125F;
 			GL11.glScalef(f1, f1, f1);
-			float f2 = (float)(System.currentTimeMillis() % 3000L) / 3000.0F * 8.0F;
+			float f2 = (float) (System.currentTimeMillis() % 3000L) / 3000.0F * 8.0F;
 			GL11.glTranslatef(f2, 0.0F, 0.0F);
 			GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
 			ItemRenderer.renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
 			GL11.glPopMatrix();
 			GL11.glPushMatrix();
 			GL11.glScalef(f1, f1, f1);
-			f2 = (float)(System.currentTimeMillis() % 4873L) / 4873.0F * 8.0F;
+			f2 = (float) (System.currentTimeMillis() % 4873L) / 4873.0F * 8.0F;
 			GL11.glTranslatef(-f2, 0.0F, 0.0F);
 			GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
 			ItemRenderer.renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
@@ -84,7 +76,7 @@ public class LKRenderLargeItem implements IItemRenderer
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glDepthFunc(GL11.GL_LEQUAL);
 		}
-		
+
 		GL11.glPopMatrix();
 	}
 }

@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,30 +30,25 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKItemSwordCorrupt extends LKItemSword
-{
-    public LKItemSwordCorrupt(int i, EnumToolMaterial enumtoolmaterial)
-    {
-        super(i, enumtoolmaterial);
-    }
-	
+public class LKItemSwordCorrupt extends LKItemSword {
+	public LKItemSwordCorrupt(int i, EnumToolMaterial enumtoolmaterial) {
+		super(i, enumtoolmaterial);
+	}
+
 	@Override
-    public float getStrVsBlock(ItemStack itemstack, Block block, int meta)
-    {
+	public float getStrVsBlock(ItemStack itemstack, Block block, int meta) {
 		int currentDamage = itemstack.getItemDamage();
-		if (currentDamage < 0)
-		{
+		if (currentDamage < 0) {
 			currentDamage = 0;
 		}
-		
-		float f = 0.15F + ((float)(getMaxDamage() - currentDamage) / (float)getMaxDamage() * 0.85F);
+
+		float f = 0.15F + ((float) (getMaxDamage() - currentDamage) / (float) getMaxDamage() * 0.85F);
 		f *= super.getStrVsBlock(itemstack, block, meta);
-		
-		if (f < 1.5F)
-		{
+
+		if (f < 1.5F) {
 			f = 1.5F;
 		}
-		
+
 		return f;
-    }
+	}
 }

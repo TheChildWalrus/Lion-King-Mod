@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,25 +30,21 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKItemAmulet extends LKItemArmor
-{
-    public LKItemAmulet(int i)
-    {
-        super(i, mod_LionKing.armorSuit, 0, 1);
+public class LKItemAmulet extends LKItemArmor {
+	public LKItemAmulet(int i) {
+		super(i, mod_LionKing.armorSuit, 0, 1);
 		setMaxDamage(0);
 		setMaxStackSize(1);
 		setCreativeTab(LKCreativeTabs.tabQuest);
-    }
+	}
 
 	@Override
-    public boolean isDamageable()
-    {
-        return false;
-    }
-	
+	public boolean isDamageable() {
+		return false;
+	}
+
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
-	{
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
 		return "lionking:item/amulet.png";
 	}
 }

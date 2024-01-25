@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,17 +30,14 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKItemArmor extends ItemArmor
-{
-    public LKItemArmor(int i, EnumArmorMaterial enumarmormaterial, int j, int k)
-    {
-        super(i, enumarmormaterial, j, k);
+public class LKItemArmor extends ItemArmor {
+	public LKItemArmor(int i, EnumArmorMaterial enumarmormaterial, int j, int k) {
+		super(i, enumarmormaterial, j, k);
 		setCreativeTab(LKCreativeTabs.tabCombat);
-    }
-	
+	}
+
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
-	{
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
 		String s = getArmorMaterial().name().substring(3).toLowerCase();
 		String s1 = armorType == 2 ? "_2" : "_1";
 		return "lionking:item/" + s + s1 + ".png";

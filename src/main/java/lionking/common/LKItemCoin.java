@@ -7,37 +7,31 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class LKItemCoin extends LKItem
-{
+public class LKItemCoin extends LKItem {
 	private byte type;
-	
-    public LKItemCoin(int i, byte b)
-    {
-        super(i);
+
+	public LKItemCoin(int i, byte b) {
+		super(i);
 		setMaxStackSize(16);
 		type = b;
 		setCreativeTab(LKCreativeTabs.tabQuest);
-    }
- 
+	}
+
 	@Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
-		if (!world.isRemote && ((type == 0 && entityplayer.dimension == mod_LionKing.idPrideLands) || (type == 1 && entityplayer.dimension == mod_LionKing.idOutlands)))
-		{
+	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+		if (!world.isRemote && ((type == 0 && entityplayer.dimension == mod_LionKing.idPrideLands) || (type == 1 && entityplayer.dimension == mod_LionKing.idOutlands))) {
 			world.spawnEntityInWorld(new LKEntityCoin(world, entityplayer, type));
 			world.playSoundAtEntity(entityplayer, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-			if (!entityplayer.capabilities.isCreativeMode)
-			{
+			if (!entityplayer.capabilities.isCreativeMode) {
 				itemstack.stackSize--;
 			}
 		}
-        return itemstack;
-    }
+		return itemstack;
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack itemstack)
-    {
+	public EnumRarity getRarity(ItemStack itemstack) {
 		return EnumRarity.uncommon;
-    }
+	}
 }

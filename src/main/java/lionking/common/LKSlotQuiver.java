@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,17 +30,14 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKSlotQuiver extends Slot
-{
-    public LKSlotQuiver(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
-	
+public class LKSlotQuiver extends Slot {
+	public LKSlotQuiver(IInventory iinventory, int i, int j, int k) {
+		super(iinventory, i, j, k);
+	}
+
 	@Override
-	public boolean isItemValid(ItemStack itemstack)
-	{
-        Item i = itemstack.getItem();
+	public boolean isItemValid(ItemStack itemstack) {
+		Item i = itemstack.getItem();
 		return i == mod_LionKing.dartBlue || i == mod_LionKing.dartYellow || i == mod_LionKing.dartRed || i == mod_LionKing.dartBlack || i == mod_LionKing.dartPink;
 	}
 }

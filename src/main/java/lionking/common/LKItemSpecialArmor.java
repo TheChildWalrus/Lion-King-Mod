@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,23 +30,19 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKItemSpecialArmor extends LKItemArmor
-{
-	public LKItemSpecialArmor(int i, EnumArmorMaterial material, int j, int k)
-	{
+public class LKItemSpecialArmor extends LKItemArmor {
+	public LKItemSpecialArmor(int i, EnumArmorMaterial material, int j, int k) {
 		super(i, material, 0, j);
 		setMaxDamage(k);
 	}
-	
+
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
-    {
-        return "lionking:item/special.png";
-    }
-	
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
+		return "lionking:item/special.png";
+	}
+
 	@Override
-	public int getItemEnchantability()
-	{
+	public int getItemEnchantability() {
 		return 0;
 	}
 }

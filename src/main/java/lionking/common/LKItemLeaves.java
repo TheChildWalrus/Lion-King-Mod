@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,18 +30,15 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKItemLeaves extends ItemBlock
-{
-    public LKItemLeaves(int i)
-    {
-        super(i);
-        setMaxDamage(0);
-        setHasSubtypes(true);
-    }
+public class LKItemLeaves extends ItemBlock {
+	public LKItemLeaves(int i) {
+		super(i);
+		setMaxDamage(0);
+		setHasSubtypes(true);
+	}
 
 	@Override
-    public int getMetadata(int i)
-    {
-        return i | 4;
-    }
+	public int getMetadata(int i) {
+		return i | 4;
+	}
 }

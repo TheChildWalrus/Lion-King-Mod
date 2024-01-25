@@ -7,27 +7,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class LKTileEntityMountedShooterRenderer extends TileEntitySpecialRenderer
-{
-	private ModelBase model = new LKModelMountedShooter();
+public class LKTileEntityMountedShooterRenderer extends TileEntitySpecialRenderer {
 	private static final ResourceLocation textureWood = new ResourceLocation("lionking:item/shooter.png");
 	private static final ResourceLocation textureSilver = new ResourceLocation("lionking:item/shooter_silver.png");
-	
+	private ModelBase model = new LKModelMountedShooter();
+
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f)
-	{
-		LKTileEntityMountedShooter shooter = (LKTileEntityMountedShooter)tileentity;
-		renderShooter((float)d, (float)d1, (float)d2, shooter.getBlockMetadata(), shooter.getShooterType(), (float)shooter.fireCounter);
+	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
+		LKTileEntityMountedShooter shooter = (LKTileEntityMountedShooter) tileentity;
+		renderShooter((float) d, (float) d1, (float) d2, shooter.getBlockMetadata(), shooter.getShooterType(), (float) shooter.fireCounter);
 	}
 
-	private void renderShooter(float f, float f1, float f2, int metadata, int shooterType, float fireCounter)
-	{
-		if (shooterType == 0)
-		{
+	private void renderShooter(float f, float f1, float f2, int metadata, int shooterType, float fireCounter) {
+		if (shooterType == 0) {
 			bindTexture(textureWood);
-		}
-		else
-		{
+		} else {
 			bindTexture(textureSilver);
 		}
 		GL11.glPushMatrix();

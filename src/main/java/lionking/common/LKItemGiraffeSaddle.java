@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,33 +30,26 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKItemGiraffeSaddle extends LKItem
-{
-    public LKItemGiraffeSaddle(int i)
-    {
-        super(i);
-        setMaxStackSize(1);
-        setCreativeTab(LKCreativeTabs.tabMisc);
-    }
+public class LKItemGiraffeSaddle extends LKItem {
+	public LKItemGiraffeSaddle(int i) {
+		super(i);
+		setMaxStackSize(1);
+		setCreativeTab(LKCreativeTabs.tabMisc);
+	}
 
 	@Override
-    public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer entityplayer, EntityLivingBase entityliving)
-    {
-        if (entityliving instanceof LKEntityGiraffe)
-        {
-            LKEntityGiraffe giraffe = (LKEntityGiraffe)entityliving;
+	public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer entityplayer, EntityLivingBase entityliving) {
+		if (entityliving instanceof LKEntityGiraffe) {
+			LKEntityGiraffe giraffe = (LKEntityGiraffe) entityliving;
 
-            if (!giraffe.getSaddled() && !giraffe.isChild())
-            {
-                giraffe.setSaddled(true);
-                itemstack.stackSize--;
-            }
+			if (!giraffe.getSaddled() && !giraffe.isChild()) {
+				giraffe.setSaddled(true);
+				itemstack.stackSize--;
+			}
 
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

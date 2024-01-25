@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,165 +32,134 @@ import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-public class LKEntityTermite extends EntityMob
-{
-    int timeSinceIgnited;
-    int lastActiveTime;
+public class LKEntityTermite extends EntityMob {
+	int timeSinceIgnited;
+	int lastActiveTime;
 
-    public LKEntityTermite(World world)
-    {
-        super(world);
-        setSize(0.4F, 0.4F);
+	public LKEntityTermite(World world) {
+		super(world);
+		setSize(0.4F, 0.4F);
 		experienceValue = 3;
-    }
-	
-	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(9D);
-        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(1D);
-    }
+	}
 
 	@Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        dataWatcher.addObject(16, Byte.valueOf((byte)-1));
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(9D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(1D);
+	}
 
 	@Override
-    public void onUpdate()
-    {
-        lastActiveTime = timeSinceIgnited;
-        if (worldObj.isRemote)
-        {
-            int i = getTermiteState();
-            if (i > 0 && timeSinceIgnited == 0)
-            {
-                worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
-            }
-            timeSinceIgnited += i;
-            if (timeSinceIgnited < 0)
-            {
-                timeSinceIgnited = 0;
-            }
-            if (timeSinceIgnited >= 20)
-            {
-                timeSinceIgnited = 20;
-            }
-        }
-        super.onUpdate();
-        if (entityToAttack == null && timeSinceIgnited > 0)
-        {
-            setTermiteState(-1);
-            timeSinceIgnited--;
-            if (timeSinceIgnited < 0)
-            {
-                timeSinceIgnited = 0;
-            }
-        }
-    }
+	protected void entityInit() {
+		super.entityInit();
+		dataWatcher.addObject(16, Byte.valueOf((byte) -1));
+	}
 
 	@Override
-    protected String getLivingSound()
-    {
-        return "mob.silverfish.say";
-    }
+	public void onUpdate() {
+		lastActiveTime = timeSinceIgnited;
+		if (worldObj.isRemote) {
+			int i = getTermiteState();
+			if (i > 0 && timeSinceIgnited == 0) {
+				worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+			}
+			timeSinceIgnited += i;
+			if (timeSinceIgnited < 0) {
+				timeSinceIgnited = 0;
+			}
+			if (timeSinceIgnited >= 20) {
+				timeSinceIgnited = 20;
+			}
+		}
+		super.onUpdate();
+		if (entityToAttack == null && timeSinceIgnited > 0) {
+			setTermiteState(-1);
+			timeSinceIgnited--;
+			if (timeSinceIgnited < 0) {
+				timeSinceIgnited = 0;
+			}
+		}
+	}
 
 	@Override
-    protected String getHurtSound()
-    {
-        return "mob.silverfish.hit";
-    }
+	protected String getLivingSound() {
+		return "mob.silverfish.say";
+	}
 
 	@Override
-    protected String getDeathSound()
-    {
-        return "mob.silverfish.kill";
-    }
+	protected String getHurtSound() {
+		return "mob.silverfish.hit";
+	}
 
 	@Override
-    protected void attackEntity(Entity entity, float f)
-    {
-        if (worldObj.isRemote)
-        {
-            return;
-        }
-        int i = getTermiteState();
-        if (i <= 0 && f < 3F || i > 0 && f < 7F)
-        {
-            if (timeSinceIgnited == 0)
-            {
-                worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
-            }
-            setTermiteState(1);
-            timeSinceIgnited++;
-            if (timeSinceIgnited >= 20)
-            {
+	protected String getDeathSound() {
+		return "mob.silverfish.kill";
+	}
+
+	@Override
+	protected void attackEntity(Entity entity, float f) {
+		if (worldObj.isRemote) {
+			return;
+		}
+		int i = getTermiteState();
+		if (i <= 0 && f < 3F || i > 0 && f < 7F) {
+			if (timeSinceIgnited == 0) {
+				worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
+			}
+			setTermiteState(1);
+			timeSinceIgnited++;
+			if (timeSinceIgnited >= 20) {
 				worldObj.createExplosion(this, posX, posY, posZ, 1.7F, worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
-                setDead();
-            }
-            hasAttacked = true;
-        }
-		else
-        {
-            setTermiteState(-1);
-            timeSinceIgnited--;
-            if (timeSinceIgnited < 0)
-            {
-                timeSinceIgnited = 0;
-            }
-        }
-    }
+				setDead();
+			}
+			hasAttacked = true;
+		} else {
+			setTermiteState(-1);
+			timeSinceIgnited--;
+			if (timeSinceIgnited < 0) {
+				timeSinceIgnited = 0;
+			}
+		}
+	}
 
-    public float setTermiteFlashTime(float f)
-    {
-        return ((float)lastActiveTime + (float)(timeSinceIgnited - lastActiveTime) * f) / 28F;
-    }
+	public float setTermiteFlashTime(float f) {
+		return ((float) lastActiveTime + (float) (timeSinceIgnited - lastActiveTime) * f) / 28F;
+	}
 
 	@Override
-    protected int getDropItemId()
-    {
-        return 0;
-    }
+	protected int getDropItemId() {
+		return 0;
+	}
 
-    private int getTermiteState()
-    {
-        return dataWatcher.getWatchableObjectByte(16);
-    }
+	private int getTermiteState() {
+		return dataWatcher.getWatchableObjectByte(16);
+	}
 
-    private void setTermiteState(int i)
-    {
-        dataWatcher.updateObject(16, Byte.valueOf((byte)i));
-    }
+	private void setTermiteState(int i) {
+		dataWatcher.updateObject(16, Byte.valueOf((byte) i));
+	}
 
 	@Override
-    public void onDeath(DamageSource damagesource)
-    {
-        super.onDeath(damagesource);
-        if (!worldObj.isRemote && damagesource.getEntity() instanceof EntityPlayer)
-        {
-            dropItem(mod_LionKing.itemTermite.itemID, 1);
+	public void onDeath(DamageSource damagesource) {
+		super.onDeath(damagesource);
+		if (!worldObj.isRemote && damagesource.getEntity() instanceof EntityPlayer) {
+			dropItem(mod_LionKing.itemTermite.itemID, 1);
 			setDead();
-        }
-    }
-	
+		}
+	}
+
 	@Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
-	
+	protected boolean canDespawn() {
+		return false;
+	}
+
 	@Override
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
-    }
-	
+	public EnumCreatureAttribute getCreatureAttribute() {
+		return EnumCreatureAttribute.ARTHROPOD;
+	}
+
 	@Override
-    public ItemStack getPickedResult(MovingObjectPosition target)
-    {
+	public ItemStack getPickedResult(MovingObjectPosition target) {
 		return new ItemStack(mod_LionKing.spawnEgg, 1, LKEntities.getEntityID(this));
-    }
+	}
 }

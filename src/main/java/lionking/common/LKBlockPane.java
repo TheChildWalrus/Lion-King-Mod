@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,11 +30,9 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKBlockPane extends BlockPane
-{
-    public LKBlockPane(int i, String s, String s1, Material material, boolean flag)
-    {
-        super(i, s, s1, material, flag);
+public class LKBlockPane extends BlockPane {
+	public LKBlockPane(int i, String s, String s1, Material material, boolean flag) {
+		super(i, s, s1, material, flag);
 		setCreativeTab(LKCreativeTabs.tabDeco);
-    }
+	}
 }

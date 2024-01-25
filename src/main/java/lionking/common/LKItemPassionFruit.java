@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -30,48 +31,39 @@ import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
 import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.DimensionManager;
 
-public class LKItemPassionFruit extends LKItemFood
-{
-    public LKItemPassionFruit(int i)
-    {
-        super(i, 0, 0.0F, false);
-    }
+public class LKItemPassionFruit extends LKItemFood {
+	public LKItemPassionFruit(int i) {
+		super(i, 0, 0.0F, false);
+	}
 
 	@Override
-    public ItemStack onEaten(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
-        itemstack.stackSize--;
+	public ItemStack onEaten(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+		itemstack.stackSize--;
 		mod_LionKing.proxy.playPortalFXForUpendi(world);
-        if (!world.isRemote && entityplayer instanceof EntityPlayerMP)
-        {
-            byte dimension = (byte)mod_LionKing.idUpendi;
-			if (entityplayer.dimension == mod_LionKing.idUpendi)
-			{
-				dimension = (byte)mod_LionKing.idPrideLands;
+		if (!world.isRemote && entityplayer instanceof EntityPlayerMP) {
+			byte dimension = (byte) mod_LionKing.idUpendi;
+			if (entityplayer.dimension == mod_LionKing.idUpendi) {
+				dimension = (byte) mod_LionKing.idPrideLands;
+			} else {
+				dimension = (byte) mod_LionKing.idUpendi;
 			}
-			else
-			{
-				dimension = (byte)mod_LionKing.idUpendi;
-			}
-			MinecraftServer.getServer().getConfigurationManager().transferPlayerToDimension((EntityPlayerMP)entityplayer, dimension, new LKTeleporterUpendi(DimensionManager.getWorld(dimension), LKIngame.getSimbas(entityplayer)));
-        }
+			MinecraftServer.getServer().getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) entityplayer, dimension, new LKTeleporterUpendi(DimensionManager.getWorld(dimension), LKIngame.getSimbas(entityplayer)));
+		}
 		return itemstack;
-    }
+	}
 
 	@Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
-		if (entityplayer.dimension == mod_LionKing.idUpendi || entityplayer.dimension == mod_LionKing.idPrideLands)
-		{
-			if (entityplayer.capabilities.isCreativeMode || entityplayer.getHealth() == entityplayer.getMaxHealth())
-			{
+	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+		if (entityplayer.dimension == mod_LionKing.idUpendi || entityplayer.dimension == mod_LionKing.idPrideLands) {
+			if (entityplayer.capabilities.isCreativeMode || entityplayer.getHealth() == entityplayer.getMaxHealth()) {
 				entityplayer.setItemInUse(itemstack, getMaxItemUseDuration(itemstack));
 			}
 		}
-        return itemstack;
-    }
+		return itemstack;
+	}
 }

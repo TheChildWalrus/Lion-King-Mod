@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,50 +30,38 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEntityAIBugFindTrap extends EntityAIBase
-{
-    private LKEntityBug entity;
-    private double xPosition;
-    private double yPosition;
-    private double zPosition;
-    private double speed;
+public class LKEntityAIBugFindTrap extends EntityAIBase {
+	private LKEntityBug entity;
+	private double xPosition;
+	private double yPosition;
+	private double zPosition;
+	private double speed;
 	private World worldObj;
 	private LKTileEntityBugTrap theTrap;
 
-    public LKEntityAIBugFindTrap(LKEntityBug bug, double d)
-    {
-        entity = bug;
-        speed = d;
+	public LKEntityAIBugFindTrap(LKEntityBug bug, double d) {
+		entity = bug;
+		speed = d;
 		worldObj = bug.worldObj;
-        setMutexBits(1);
-    }
+		setMutexBits(1);
+	}
 
 	@Override
-    public boolean shouldExecute()
-    {
-		if (entity.getRNG().nextInt(5) != 0)
-        {
-            return false;
-        }
-        else
-        {
-			for (int i = -8; i <= 8; i++)
-			{
-				for (int j = -4; j <= 4; j++)
-				{
-					for (int k = -8; k <= 8; k++)
-					{
+	public boolean shouldExecute() {
+		if (entity.getRNG().nextInt(5) != 0) {
+			return false;
+		} else {
+			for (int i = -8; i <= 8; i++) {
+				for (int j = -4; j <= 4; j++) {
+					for (int k = -8; k <= 8; k++) {
 						int i1 = i + MathHelper.floor_double(entity.posX);
 						int j1 = j + MathHelper.floor_double(entity.posY);
 						int k1 = k + MathHelper.floor_double(entity.posZ);
-						if (worldObj.getBlockId(i1, j1, k1) == mod_LionKing.bugTrap.blockID)
-						{
-							LKTileEntityBugTrap tileentity = (LKTileEntityBugTrap)worldObj.getBlockTileEntity(i1, j1, k1);
-							if (tileentity != null)
-							{
+						if (worldObj.getBlockId(i1, j1, k1) == mod_LionKing.bugTrap.blockID) {
+							LKTileEntityBugTrap tileentity = (LKTileEntityBugTrap) worldObj.getBlockTileEntity(i1, j1, k1);
+							if (tileentity != null) {
 								int l = entity.getRNG().nextInt(4);
-								if (tileentity.getAverageBaitSaturation() > 0.0F)
-								{
+								if (tileentity.getAverageBaitSaturation() > 0.0F) {
 									xPosition = i1;
 									yPosition = j1;
 									zPosition = k1;
@@ -85,19 +74,17 @@ public class LKEntityAIBugFindTrap extends EntityAIBase
 					}
 				}
 			}
-        }
+		}
 		return false;
-    }
+	}
 
 	@Override
-    public boolean continueExecuting()
-    {
-        return !entity.getNavigator().noPath() && theTrap != null && (theTrap.getAverageBaitSaturation() > 0.0F || entity.trapTick > -1);
-    }
+	public boolean continueExecuting() {
+		return !entity.getNavigator().noPath() && theTrap != null && (theTrap.getAverageBaitSaturation() > 0.0F || entity.trapTick > -1);
+	}
 
 	@Override
-    public void startExecuting()
-    {
-        entity.getNavigator().tryMoveToXYZ(xPosition, yPosition, zPosition, speed);
-    }
+	public void startExecuting() {
+		entity.getNavigator().tryMoveToXYZ(xPosition, yPosition, zPosition, speed);
+	}
 }

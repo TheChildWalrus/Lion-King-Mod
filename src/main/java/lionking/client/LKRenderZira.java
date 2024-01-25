@@ -10,49 +10,37 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
-public class LKRenderZira extends RenderLiving
-{
+public class LKRenderZira extends RenderLiving {
 	private static ResourceLocation texture = new ResourceLocation("lionking:mob/zira.png");
-	
-    public LKRenderZira()
-    {
-        super(new LKModelLion(true), 0.5F);
-    }
-	
-	@Override
-    protected ResourceLocation getEntityTexture(Entity entity)
-    {
-        return texture;
-    }
+
+	public LKRenderZira() {
+		super(new LKModelLion(true), 0.5F);
+	}
 
 	@Override
-    public void doRenderLiving(EntityLiving entity, double d, double d1, double d2, float f, float f1)
-    {
-        super.doRenderLiving(entity, d, d1, d2, f, f1);
-		if (renderName())
-		{
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		return texture;
+	}
+
+	@Override
+	public void doRenderLiving(EntityLiving entity, double d, double d1, double d2, float f, float f1) {
+		super.doRenderLiving(entity, d, d1, d2, f, f1);
+		if (renderName()) {
 			renderLivingLabel(entity, "Zira", d, d1, d2, 64);
 		}
-		
-		if (LKLevelData.ziraStage > 25)
-		{
-			LKTickHandlerClient.ziraBoss = (LKEntityZira)entity;
+
+		if (LKLevelData.ziraStage > 25) {
+			LKTickHandlerClient.ziraBoss = (LKEntityZira) entity;
 		}
-    }
-	
-	private boolean renderName()
-	{
+	}
+
+	private boolean renderName() {
 		EntityLivingBase player = renderManager.livingPlayer;
-		if (player != null && player instanceof EntityPlayer && ((EntityPlayer)player).capabilities.isCreativeMode)
-		{
+		if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
 			return true;
-		}
-		else if (LKQuestBase.outlandsQuest.getQuestStage() > 1)
-		{
+		} else if (LKQuestBase.outlandsQuest.getQuestStage() > 1) {
 			return true;
-		}
-		else if (LKQuestBase.outlandsQuest.getQuestStage() == 1 && !LKQuestBase.outlandsQuest.isDelayed())
-		{
+		} else if (LKQuestBase.outlandsQuest.getQuestStage() == 1 && !LKQuestBase.outlandsQuest.isDelayed()) {
 			return true;
 		}
 		return false;

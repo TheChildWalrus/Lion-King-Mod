@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -32,36 +33,32 @@ import net.minecraft.world.storage.*;
 import java.util.Random;
 import java.util.List;
 
-public class LKTeleporterUpendi extends Teleporter
-{
+public class LKTeleporterUpendi extends Teleporter {
 	private List simbaData;
 	private WorldServer worldObj;
-	
-    public LKTeleporterUpendi(WorldServer world, List list)
-    {
+
+	public LKTeleporterUpendi(WorldServer world, List list) {
 		super(world);
 		worldObj = world;
 		simbaData = list;
-    }
+	}
 
 	@Override
-    public void placeInPortal(Entity entity, double d, double d1, double d2, float f)
-    {
+	public void placeInPortal(Entity entity, double d, double d1, double d2, float f) {
 		int i = MathHelper.floor_double(entity.posX);
 		int k = MathHelper.floor_double(entity.posZ);
 		int j = worldObj.getTopSolidOrLiquidBlock(i, k);
-		entity.setLocationAndAngles((double)i + 0.5D, (double)j + 1D, (double)k + 0.5D, entity.rotationYaw, 0.0F);
+		entity.setLocationAndAngles((double) i + 0.5D, (double) j + 1D, (double) k + 0.5D, entity.rotationYaw, 0.0F);
 
-		for (int l = 0; l < simbaData.size(); l++)
-		{
+		for (int l = 0; l < simbaData.size(); l++) {
 			LKEntitySimba simba = new LKEntitySimba(worldObj);
-			simba.readFromNBT((NBTTagCompound)simbaData.get(l));
-			
-			simba.setLocationAndAngles((double)i + 0.5D, (double)j + 1D, (double)k + 0.5D, entity.rotationYaw, 0.0F);
+			simba.readFromNBT((NBTTagCompound) simbaData.get(l));
+
+			simba.setLocationAndAngles((double) i + 0.5D, (double) j + 1D, (double) k + 0.5D, entity.rotationYaw, 0.0F);
 			simba.setVelocity(0D, 0D, 0D);
-			
+
 			worldObj.spawnEntityInWorld(simba);
 			simba.applyTeleportationEffects(entity);
 		}
-    }
+	}
 }

@@ -10,47 +10,11 @@ import java.util.Map;
 
 import static lionking.common.mod_LionKing.*;
 
-public class LKItemInfo
-{
+public class LKItemInfo {
 	private static Map itemInfo = new HashMap();
 	private static Map metaItemInfo = new HashMap();
-	
-	private static void addInfo(Block block, String... lines)
-	{
-		itemInfo.put(Integer.valueOf(block.blockID), lines);
-	}
-	
-	private static void addInfo(Block block, int i, String... lines)
-	{
-		metaItemInfo.put(Arrays.asList(block.blockID, i), lines);
-	}
-	
-	private static void addInfo(Item item, String... lines)
-	{
-		itemInfo.put(Integer.valueOf(item.itemID), lines);
-	}
-	
-	private static void addInfo(Item item, int i, String... lines)
-	{
-		metaItemInfo.put(Arrays.asList(item.itemID, i), lines);
-	}
-	
-    public static String[] getItemInfo(ItemStack itemstack)
-    {
-        if (itemstack == null)
-        {
-            return null;
-        }
-        String[] info = (String[])metaItemInfo.get(Arrays.asList(itemstack.itemID, itemstack.getItemDamage()));
-        if (info != null)
-        {
-            return info;
-        }
-        return (String[])itemInfo.get(Integer.valueOf(itemstack.itemID));
-    }
-	
-	static
-	{
+
+	static {
 		addInfo(lionPortalFrame, "The indestructible frame of a", "Pride Lands Portal.", "", "Found in Lion King Ticket Booths", "and can be activated with a", "Lion King Ticket.");
 		addInfo(lionPortal, "A block which transports the", "player between the Pride Lands", "and the Overworld.");
 		addInfo(whiteFlower, "A common flower found", "in the Pride Lands.", "", "Can be ground into Rug Whitener.");
@@ -69,7 +33,7 @@ public class LKItemInfo
 		addInfo(outlandsPortalFrame, 0, "The indestructible frame of an", "Outlands Portal.");
 		addInfo(outlandsPortalFrame, 1, "The block which makes up Zira's", "Mound in the Outlands.", "It cannot be destroyed.");
 		addInfo(outlandsPortalFrame, 2, "The block which makes up Zira's", "Mound in the Outlands.", "It cannot be destroyed.");
-		addInfo(outlandsPortal,	"A block which transports the", "player between the Pride Lands", "and the Outlands.");
+		addInfo(outlandsPortal, "A block which transports the", "player between the Pride Lands", "and the Outlands.");
 		addInfo(bugTrap, "Can be placed and baited to", "catch bugs for Timon and Pumbaa.", "", "The likelihood of catching a bug", "can be increased or decreased", "by certain conditions.", "The trap will not catch bugs", "if there are any players", "within sixteen blocks of it.");
 		addInfo(pridestone, 0, "A block found in abundance", "in the Pride Lands.", "", "Can be made into a range of", "tools and building blocks.");
 		addInfo(pridestone, 1, "A block found in abundance", "in the Outlands.", "", "Can be made into a range of", "tools and building blocks.");
@@ -148,7 +112,7 @@ public class LKItemInfo
 		addInfo(driedMaizeBlock, "A building block made from dried", "stalks of maize.", "", "Can be crafted into stairs and", "slabs.");
 		addInfo(driedMaizeSlabSingle, "Half blocks made from Dried", "Maize blocks.");
 		addInfo(stairsDriedMaize, "Stairs made from Dried Maize", "blocks.");
-		
+
 		addInfo(ticket, 0, "Purchased from Ticket Lions in", "exchange for a gold ingot.", "", "Used to activate portals to", "the Pride Lands.");
 		addInfo(ticket, 1, "Pull it and see what happens!");
 		addInfo(hyenaBone, "Dropped by Hyenas.", "", "Used in crafting recipes,", "grinding, and breeding lions.");
@@ -218,7 +182,7 @@ public class LKItemInfo
 		addInfo(legsGemsbok, "Can be equipped to give", "protection against most", "forms of damage.");
 		addInfo(bootsGemsbok, "Can be equipped to give", "protection against most", "forms of damage.");
 		addInfo(jarLava, "A Pridestone Jar filled with lava.");
-		addInfo(peacockGem,	"Made by smelting Peacock Ore in", "a furnace.", "", "Used to make tools, armour", "and other items.");
+		addInfo(peacockGem, "Made by smelting Peacock Ore in", "a furnace.", "", "Used to make tools, armour", "and other items.");
 		addInfo(shovelPeacock, "Used to harvest blocks like", "dirt and sand more quickly.");
 		addInfo(pickaxePeacock, "Used to harvest stone-type", "blocks.");
 		addInfo(axePeacock, "Used to harvest wood-type", "blocks more quickly.");
@@ -296,5 +260,32 @@ public class LKItemInfo
 		addInfo(hyenaMeal, "Used to grow plants and crops in", "the Pride Lands.");
 		addInfo(cornKernels, "Can be used as an alternative to", "seeds for breeding Zazus.");
 		addInfo(driedMaize, "Can be crafted into Dried Maize", "building materials.");
+	}
+
+	private static void addInfo(Block block, String... lines) {
+		itemInfo.put(Integer.valueOf(block.blockID), lines);
+	}
+
+	private static void addInfo(Block block, int i, String... lines) {
+		metaItemInfo.put(Arrays.asList(block.blockID, i), lines);
+	}
+
+	private static void addInfo(Item item, String... lines) {
+		itemInfo.put(Integer.valueOf(item.itemID), lines);
+	}
+
+	private static void addInfo(Item item, int i, String... lines) {
+		metaItemInfo.put(Arrays.asList(item.itemID, i), lines);
+	}
+
+	public static String[] getItemInfo(ItemStack itemstack) {
+		if (itemstack == null) {
+			return null;
+		}
+		String[] info = (String[]) metaItemInfo.get(Arrays.asList(itemstack.itemID, itemstack.getItemDamage()));
+		if (info != null) {
+			return info;
+		}
+		return (String[]) itemInfo.get(Integer.valueOf(itemstack.itemID));
 	}
 }

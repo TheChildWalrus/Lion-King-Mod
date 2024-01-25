@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,25 +32,19 @@ import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-public class LKWorldGenRafiki extends WorldGenerator
-{
+public class LKWorldGenRafiki extends WorldGenerator {
 	@Override
-   	public boolean generate(World world, Random random, int i, int j, int k)
-   	{
-		for (int j1 = 0; j1 < 40; j1++)
-		{
-			for (int i1 = 0; i1 > -2; i1--)
-			{
-				for (int k1 = 0; k1 > -2; k1--)
-				{
+	public boolean generate(World world, Random random, int i, int j, int k) {
+		for (int j1 = 0; j1 < 40; j1++) {
+			for (int i1 = 0; i1 > -2; i1--) {
+				for (int k1 = 0; k1 > -2; k1--) {
 					generateCircle(world, i + i1 + MathHelper.floor_double(j1 / 6), j + j1, k + k1, 20 - MathHelper.floor_double(j1 / 4), mod_LionKing.rafikiWood.blockID, 0, true);
 					generateCircle(world, i + i1 + MathHelper.floor_double(j1 / 6), j + j1 - 1, k + k1, 20 - MathHelper.floor_double(j1 / 4), mod_LionKing.rafikiWood.blockID, 0, true);
 					generateCircle(world, i + i1 + MathHelper.floor_double(j1 / 6), j + j1 - 2, k + k1, 20 - MathHelper.floor_double(j1 / 4), mod_LionKing.rafikiWood.blockID, 0, true);
 				}
 			}
 		}
-		for (int i1 = -3; i1 < 15; i1++)
-		{
+		for (int i1 = -3; i1 < 15; i1++) {
 			world.setBlock(i + i1, j + 39, k, 0, 0, 2);
 			world.setBlock(i + i1, j + 38, k, mod_LionKing.rafikiWood.blockID, 2, 2);
 		}
@@ -58,17 +53,13 @@ public class LKWorldGenRafiki extends WorldGenerator
 		generateCircle(world, i + 5, j + 39, k - 1, 8, 0, 0, true);
 		generateCircle(world, i + 5, j + 39, k, 8, 0, 0, true);
 		generateCircle(world, i + 6, j + 38, k, 10, mod_LionKing.rafikiWood.blockID, 2, true);
-		for (int i1 = 0; i1 > -2; i1--)
-		{
-			for (int k1 = 0; k1 > -2; k1--)
-			{
+		for (int i1 = 0; i1 > -2; i1--) {
+			for (int k1 = 0; k1 > -2; k1--) {
 				generateCircle(world, i + i1 + 6, j + 40, k + k1, 11, mod_LionKing.rafikiWood.blockID, 1, false);
 			}
 		}
-		for (int i1 = 0; i1 > -2; i1--)
-		{
-			for (int k1 = 0; k1 > -2; k1--)
-			{
+		for (int i1 = 0; i1 > -2; i1--) {
+			for (int k1 = 0; k1 > -2; k1--) {
 				generateCircle(world, i + i1 + 6, j + 40, k + k1, 10, 0, 0, false);
 			}
 		}
@@ -79,25 +70,22 @@ public class LKWorldGenRafiki extends WorldGenerator
 		rafiki.isThisTheRealRafiki = true;
 		world.spawnEntityInWorld(rafiki);
 		return true;
-   	}
-	
-	private void generateCircle(World world, int x0, int j, int y0, int radius, int blockID, int metadata, boolean fill)
-	{
+	}
+
+	private void generateCircle(World world, int x0, int j, int y0, int radius, int blockID, int metadata, boolean fill) {
 		int f = 1 - radius;
 		int ddF_x = 1;
 		int ddF_y = -2 * radius;
 		int x = 0;
 		int y = radius;
- 
+
 		world.setBlock(x0, j, y0 + radius, blockID, metadata, 2);
 		world.setBlock(x0, j, y0 - radius, blockID, metadata, 2);
 		world.setBlock(x0 + radius, j, y0, blockID, metadata, 2);
 		world.setBlock(x0 - radius, j, y0, blockID, metadata, 2);
- 
-		while(x < y)
-		{
-			if (f >= 0) 
-			{
+
+		while (x < y) {
+			if (f >= 0) {
 				y--;
 				ddF_y += 2;
 				f += ddF_y;
@@ -105,27 +93,20 @@ public class LKWorldGenRafiki extends WorldGenerator
 			x++;
 			ddF_x += 2;
 			f += ddF_x;
-			if (fill)
-			{
-				for (int i = x0 - x; i <= x0 + x; i++)
-				{
+			if (fill) {
+				for (int i = x0 - x; i <= x0 + x; i++) {
 					world.setBlock(i, j, y0 + y, blockID, metadata, 2);
 				}
-				for (int i = x0 - x; i <= x0 + x; i++)
-				{
+				for (int i = x0 - x; i <= x0 + x; i++) {
 					world.setBlock(i, j, y0 - y, blockID, metadata, 2);
 				}
-				for (int i = x0 - y; i <= x0 + y; i++)
-				{
+				for (int i = x0 - y; i <= x0 + y; i++) {
 					world.setBlock(i, j, y0 + x, blockID, metadata, 2);
 				}
-				for (int i = x0 - y; i <= x0 + y; i++)
-				{
+				for (int i = x0 - y; i <= x0 + y; i++) {
 					world.setBlock(i, j, y0 - x, blockID, metadata, 2);
 				}
-			}
-			else
-			{
+			} else {
 				world.setBlock(x0 - x, j, y0 + y, blockID, metadata, 2);
 				world.setBlock(x0 + x, j, y0 + y, blockID, metadata, 2);
 				world.setBlock(x0 - x, j, y0 - y, blockID, metadata, 2);
@@ -137,9 +118,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 			}
 		}
 	}
-	
-	private void placeUpperTorches(World world, int i, int j, int k)
-	{
+
+	private void placeUpperTorches(World world, int i, int j, int k) {
 		world.setBlock(i - 2, j + 39, k - 5, Block.torchWood.blockID, 0, 2);
 		world.setBlock(i - 3, j + 39, k - 3, Block.torchWood.blockID, 0, 2);
 		world.setBlock(i - 3, j + 39, k + 2, Block.torchWood.blockID, 0, 2);
@@ -181,9 +161,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i + 1, j + 40, k - 10, Block.torchWood.blockID, 0, 2);
 		world.setBlock(i - 1, j + 40, k - 9, Block.torchWood.blockID, 0, 2);
 	}
-	
-	private void finishGeneration1(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration1(World world, int i, int j, int k) {
 		world.setBlock(i - 2, j + 36, k + 9, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i - 2, j + 36, k + 10, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i - 3, j + 36, k + 10, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -1847,9 +1826,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		j -= 40;
 		finishGeneration2(world, i, j, k);
 	}
-	
-	private void finishGeneration2(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration2(World world, int i, int j, int k) {
 		world.setBlock(i - 5, j + 78, k - 7, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i - 6, j + 78, k - 7, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i - 7, j + 77, k - 7, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -3348,9 +3326,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		j += 40;
 		finishGeneration3(world, i, j, k);
 	}
-	
-	private void finishGeneration3(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration3(World world, int i, int j, int k) {
 		world.setBlock(i + 9, j + 46, k + 21, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 9, j + 45, k + 20, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 9, j + 44, k + 19, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -5008,9 +4985,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 15, j + 70, k - 6, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		finishGeneration4(world, i, j, k);
 	}
-	
-	private void finishGeneration4(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration4(World world, int i, int j, int k) {
 		world.setBlock(i - 15, j + 70, k - 5, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i - 15, j + 70, k - 4, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i - 15, j + 70, k - 3, mod_LionKing.rafikiLeaves.blockID, 0, 2);
@@ -6212,9 +6188,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 8, j + 30, k + 7, mod_LionKing.rafikiWood.blockID, 0, 2);
 		finishGeneration5(world, i, j, k);
 	}
-	
-	private void finishGeneration5(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration5(World world, int i, int j, int k) {
 		world.setBlock(i + 6, j + 39, k - 1, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 6, j + 39, k, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 5, j + 39, k - 2, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -6934,9 +6909,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 11, j + 56, k - 11, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		finishGeneration6(world, i, j, k);
 	}
-	
-	private void finishGeneration6(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration6(World world, int i, int j, int k) {
 		world.setBlock(i + 2, j + 49, k + 1, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i + 2, j + 49, k + 2, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i + 3, j + 49, k + 1, mod_LionKing.rafikiLeaves.blockID, 0, 2);
@@ -7388,9 +7362,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i + 17, j + 44, k + 11, mod_LionKing.rafikiWood.blockID, 0, 2);
 		finishGeneration7(world, i, j, k);
 	}
-	
-	private void finishGeneration7(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration7(World world, int i, int j, int k) {
 		world.setBlock(i + 16, j + 44, k + 11, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 15, j + 44, k + 11, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 15, j + 44, k + 10, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -7883,9 +7856,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i + 15, j + 45, k + 15, mod_LionKing.rafikiWood.blockID, 0, 2);
 		finishGeneration8(world, i, j, k);
 	}
-	
-	private void finishGeneration8(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration8(World world, int i, int j, int k) {
 		world.setBlock(i + 15, j + 45, k + 15, 0, 0, 2);
 		world.setBlock(i + 14, j + 45, k + 14, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 14, j + 44, k + 14, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -8435,9 +8407,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i + 17, j + 41, k + 11, 0, 0, 2);
 		finishGeneration9(world, i, j, k);
 	}
-	
-	private void finishGeneration9(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration9(World world, int i, int j, int k) {
 		world.setBlock(i + 16, j + 41, k + 11, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 17, j + 41, k + 8, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 18, j + 41, k + 8, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -8981,9 +8952,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i + 24, j + 49, k + 11, 0, 0, 2);
 		finishGeneration10(world, i, j, k);
 	}
-	
-	private void finishGeneration10(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration10(World world, int i, int j, int k) {
 		world.setBlock(i + 24, j + 49, k + 13, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i + 24, j + 49, k + 14, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i + 25, j + 49, k + 12, mod_LionKing.rafikiLeaves.blockID, 0, 2);
@@ -9349,9 +9319,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 7, j + 41, k - 2, 0, 0, 2);
 		finishGeneration11(world, i, j, k);
 	}
-	
-	private void finishGeneration11(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration11(World world, int i, int j, int k) {
 		world.setBlock(i + 21, j + 54, k + 6, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i + 22, j + 54, k + 7, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		world.setBlock(i + 21, j + 54, k + 3, mod_LionKing.rafikiLeaves.blockID, 0, 2);
@@ -9439,9 +9408,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 7, j + 47, k + 18, mod_LionKing.rafikiLeaves.blockID, 0, 2);
 		finishGeneration12(world, i, j, k);
 	}
-	
-	private void finishGeneration12(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration12(World world, int i, int j, int k) {
 		world.setBlock(i + 7, j + 39, k - 13, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 6, j + 39, k - 13, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 5, j + 39, k - 13, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -9868,9 +9836,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 12, j + 40, k, 0, 0, 2);
 		finishGeneration13(world, i, j, k);
 	}
-	
-	private void finishGeneration13(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration13(World world, int i, int j, int k) {
 		world.setBlock(i - 12, j + 40, k, mod_LionKing.outlandsPortalFrame.blockID, 0, 2);
 		world.setBlock(i - 11, j + 40, k + 1, 0, 0, 2);
 		world.setBlock(i - 12, j + 40, k + 1, 0, 0, 2);
@@ -10331,9 +10298,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i + 13, j + 33, k - 11, 0, 0, 2);
 		finishGeneration14(world, i, j, k);
 	}
-	
-	private void finishGeneration14(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration14(World world, int i, int j, int k) {
 		world.setBlock(i + 13, j + 32, k - 11, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 12, j + 32, k - 11, mod_LionKing.rafikiWood.blockID, 0, 2);
 		world.setBlock(i + 12, j + 33, k - 11, mod_LionKing.rafikiWood.blockID, 0, 2);
@@ -10792,9 +10758,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 7, j + 22, k - 14, 0, 0, 2);
 		finishGeneration15(world, i, j, k);
 	}
-	
-	private void finishGeneration15(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration15(World world, int i, int j, int k) {
 		world.setBlock(i - 8, j + 22, k - 14, mod_LionKing.rafikiWood.blockID, 2, 2);
 		world.setBlock(i - 8, j + 22, k - 15, mod_LionKing.rafikiWood.blockID, 2, 2);
 		world.setBlock(i - 9, j + 22, k - 12, mod_LionKing.rafikiWood.blockID, 2, 2);
@@ -11230,9 +11195,8 @@ public class LKWorldGenRafiki extends WorldGenerator
 		world.setBlock(i - 9, j + 4, k + 20, 0, 0, 2);
 		finishGeneration16(world, i, j, k);
 	}
-	
-	private void finishGeneration16(World world, int i, int j, int k)
-	{
+
+	private void finishGeneration16(World world, int i, int j, int k) {
 		world.setBlock(i - 10, j + 4, k + 21, mod_LionKing.rafikiWood.blockID, 2, 2);
 		world.setBlock(i - 11, j + 4, k + 21, mod_LionKing.rafikiWood.blockID, 2, 2);
 		world.setBlock(i - 8, j + 4, k + 21, mod_LionKing.rafikiWood.blockID, 2, 2);

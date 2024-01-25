@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -30,156 +31,8 @@ import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-public class LKWorldGenZiraMound extends WorldGenerator
-{
-	@Override
-	public boolean generate(World world, Random random, int i, int j, int k)
-	{
-		generate0(world, i, j, k);
-		generate1(world, i, j, k);
-		generate2(world, i, j, k);
-		generate3(world, i, j, k);
-		generate4(world, i, j, k);
-		generate5(world, i, j, k);
-		generate6(world, i, j, k);
-		generate7(world, i, j, k);
-		generate8(world, i, j, k);
-		generate9(world, i, j, k);
-		generate10(world, i, j, k);
-		generate11(world, i, j, k);
-		generate12(world, i, j, k);
-		generate13(world, i, j, k);
-		generate14(world, i, j, k);
-		generate15(world, i, j, k);
-		generate16(world, i, j, k);
-		generate17(world, i, j, k);
-		generate18(world, i, j, k);
-		generate19(world, i, j, k);
-		generate20(world, i, j, k);
-		generate21(world, i, j, k);
-		generate22(world, i, j, k);
-		generate23(world, i, j, k);
-		generate24(world, i, j, k);
-		generate25(world, i, j, k);
-		generate26(world, i, j, k);
-		generate27(world, i, j, k);
-		generate28(world, i, j, k);
-		generate29(world, i, j, k);
-		generate30(world, i, j, k);
-		generate31(world, i, j, k);
-		generate32(world, i, j, k);
-		generatePoolCover(world, i, j, k);
-		
-		for (int i1 = i - 28; i1 <= i + 28; i1++)
-		{
-			for (int k1 = k - 28; k1 <= k + 28; k1++)
-			{
-                int i2 = i1 - i;
-                int k2 = k1 - k;
-                if (i2 * i2 + k2 * k2 > 28 * 28)
-                {
-                    continue;
-                }
-				for (int j1 = 255; j1 >= j + 3; j1--)
-				{
-					if (canReplace(world, i1, j1, k1))
-					{
-						world.setBlockToAir(i1, j1, k1);
-					}
-				}
-			}
-		}
-		
-		for (int i1 = i - 28; i1 <= i + 28; i1++)
-		{
-			for (int k1 = k - 28; k1 <= k + 28; k1++)
-			{
-                int i2 = i1 - i;
-                int k2 = k1 - k;
-                if (i2 * i2 + k2 * k2 > 28 * 28)
-                {
-                    continue;
-                }
-				world.setBlock(i1, j + 2, k1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
-				for (int j1 = j + 3; j1 <= j + 51; j1++)
-				{
-					if (world.isAirBlock(i1, j1, k1) && world.canBlockSeeTheSky(i1, j1, k1))
-					{
-						int[] blockAndMetadata = new int[2];
-						if (j1 > j + 48)
-						{
-							blockAndMetadata[0] = Block.sand.blockID;
-						}
-						else if (j1 > j + 46)
-						{
-							blockAndMetadata[0] = Block.sandStone.blockID;
-						}
-						else if (j1 > 4)
-						{
-							blockAndMetadata[0] = mod_LionKing.pridestone.blockID;
-							blockAndMetadata[1] = 1;
-						}
-						else if (j1 <= 4)
-						{
-							blockAndMetadata[0] = Block.bedrock.blockID;
-						}
-						world.setBlock(i1, j1, k1, blockAndMetadata[0], blockAndMetadata[1], 2);
-					}
-				}
-			}
-		}
-		
-		for (int x = 1; x < 6; x++)
-		{
-			for (int i1 = i - (28 + x * 2); i1 <= i + (28 + x * 2); i1++)
-			{
-				for (int k1 = k - (28 + x * 2); k1 <= k + (28 + x * 2); k1++)
-				{
-					int i2 = i1 - i;
-					int k2 = k1 - k;
-					if (i2 * i2 + k2 * k2 > (28 + x * 2) * (28 + x * 2))
-					{
-						continue;
-					}
-					for (int j1 = j + 3; j1 <= j + (51 - x); j1++)
-					{
-						if (j1 > 60 && world.isAirBlock(i1, j1, k1) && world.canBlockSeeTheSky(i1, j1, k1))
-						{
-							if (j1 > j + 48)
-							{
-								world.setBlock(i1, j1, k1, Block.sand.blockID, 0, 2);
-							}
-							else if (j1 > j + 46)
-							{
-								world.setBlock(i1, j1, k1, Block.sandStone.blockID, 0, 2);
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		world.setBlock(i, j + 8, k, mod_LionKing.outlandsAltar.blockID, 0, 2);
-		LKEntityZira zira = new LKEntityZira(world);
-		zira.setLocationAndAngles(i, j + 17, k, 0.0F, 0.0F);
-		if (!world.isRemote)
-		{
-			world.spawnEntityInWorld(zira);
-			zira.spawnOutlandersInMound();
-		}
-		
-		LKLevelData.markMoundLocation(i, j, k);
-		return true;
-	}
-	
-	private boolean canReplace(World world, int i, int j, int k)
-	{
-		Block block = Block.blocksList[world.getBlockId(i, j, k)];
-		return block != null && block != mod_LionKing.outlandsPortalFrame && block != mod_LionKing.outshroomGlowing && block != mod_LionKing.outlandsPool;
-	}
-	
-	public static void clearPoolCover(World world)
-	{
+public class LKWorldGenZiraMound extends WorldGenerator {
+	public static void clearPoolCover(World world) {
 		int i = LKLevelData.moundX;
 		int j = LKLevelData.moundY;
 		int k = LKLevelData.moundZ;
@@ -260,11 +113,127 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlockToAir(i + -3, j + 27, k + 10);
 		world.setBlockToAir(i + -3, j + 28, k + 10);
 		world.setBlockToAir(i + -4, j + 20, k + 9);
-		world.createExplosion(null, (double)i + -3, (double) j + 20, (double)k + 10, 0F, false);
+		world.createExplosion(null, (double) i + -3, (double) j + 20, (double) k + 10, 0F, false);
 	}
-	
-	private void generatePoolCover(World world, int i, int j, int k)
-	{
+
+	@Override
+	public boolean generate(World world, Random random, int i, int j, int k) {
+		generate0(world, i, j, k);
+		generate1(world, i, j, k);
+		generate2(world, i, j, k);
+		generate3(world, i, j, k);
+		generate4(world, i, j, k);
+		generate5(world, i, j, k);
+		generate6(world, i, j, k);
+		generate7(world, i, j, k);
+		generate8(world, i, j, k);
+		generate9(world, i, j, k);
+		generate10(world, i, j, k);
+		generate11(world, i, j, k);
+		generate12(world, i, j, k);
+		generate13(world, i, j, k);
+		generate14(world, i, j, k);
+		generate15(world, i, j, k);
+		generate16(world, i, j, k);
+		generate17(world, i, j, k);
+		generate18(world, i, j, k);
+		generate19(world, i, j, k);
+		generate20(world, i, j, k);
+		generate21(world, i, j, k);
+		generate22(world, i, j, k);
+		generate23(world, i, j, k);
+		generate24(world, i, j, k);
+		generate25(world, i, j, k);
+		generate26(world, i, j, k);
+		generate27(world, i, j, k);
+		generate28(world, i, j, k);
+		generate29(world, i, j, k);
+		generate30(world, i, j, k);
+		generate31(world, i, j, k);
+		generate32(world, i, j, k);
+		generatePoolCover(world, i, j, k);
+
+		for (int i1 = i - 28; i1 <= i + 28; i1++) {
+			for (int k1 = k - 28; k1 <= k + 28; k1++) {
+				int i2 = i1 - i;
+				int k2 = k1 - k;
+				if (i2 * i2 + k2 * k2 > 28 * 28) {
+					continue;
+				}
+				for (int j1 = 255; j1 >= j + 3; j1--) {
+					if (canReplace(world, i1, j1, k1)) {
+						world.setBlockToAir(i1, j1, k1);
+					}
+				}
+			}
+		}
+
+		for (int i1 = i - 28; i1 <= i + 28; i1++) {
+			for (int k1 = k - 28; k1 <= k + 28; k1++) {
+				int i2 = i1 - i;
+				int k2 = k1 - k;
+				if (i2 * i2 + k2 * k2 > 28 * 28) {
+					continue;
+				}
+				world.setBlock(i1, j + 2, k1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
+				for (int j1 = j + 3; j1 <= j + 51; j1++) {
+					if (world.isAirBlock(i1, j1, k1) && world.canBlockSeeTheSky(i1, j1, k1)) {
+						int[] blockAndMetadata = new int[2];
+						if (j1 > j + 48) {
+							blockAndMetadata[0] = Block.sand.blockID;
+						} else if (j1 > j + 46) {
+							blockAndMetadata[0] = Block.sandStone.blockID;
+						} else if (j1 > 4) {
+							blockAndMetadata[0] = mod_LionKing.pridestone.blockID;
+							blockAndMetadata[1] = 1;
+						} else if (j1 <= 4) {
+							blockAndMetadata[0] = Block.bedrock.blockID;
+						}
+						world.setBlock(i1, j1, k1, blockAndMetadata[0], blockAndMetadata[1], 2);
+					}
+				}
+			}
+		}
+
+		for (int x = 1; x < 6; x++) {
+			for (int i1 = i - (28 + x * 2); i1 <= i + (28 + x * 2); i1++) {
+				for (int k1 = k - (28 + x * 2); k1 <= k + (28 + x * 2); k1++) {
+					int i2 = i1 - i;
+					int k2 = k1 - k;
+					if (i2 * i2 + k2 * k2 > (28 + x * 2) * (28 + x * 2)) {
+						continue;
+					}
+					for (int j1 = j + 3; j1 <= j + (51 - x); j1++) {
+						if (j1 > 60 && world.isAirBlock(i1, j1, k1) && world.canBlockSeeTheSky(i1, j1, k1)) {
+							if (j1 > j + 48) {
+								world.setBlock(i1, j1, k1, Block.sand.blockID, 0, 2);
+							} else if (j1 > j + 46) {
+								world.setBlock(i1, j1, k1, Block.sandStone.blockID, 0, 2);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		world.setBlock(i, j + 8, k, mod_LionKing.outlandsAltar.blockID, 0, 2);
+		LKEntityZira zira = new LKEntityZira(world);
+		zira.setLocationAndAngles(i, j + 17, k, 0.0F, 0.0F);
+		if (!world.isRemote) {
+			world.spawnEntityInWorld(zira);
+			zira.spawnOutlandersInMound();
+		}
+
+		LKLevelData.markMoundLocation(i, j, k);
+		return true;
+	}
+
+	private boolean canReplace(World world, int i, int j, int k) {
+		Block block = Block.blocksList[world.getBlockId(i, j, k)];
+		return block != null && block != mod_LionKing.outlandsPortalFrame && block != mod_LionKing.outshroomGlowing && block != mod_LionKing.outlandsPool;
+	}
+
+	private void generatePoolCover(World world, int i, int j, int k) {
 		world.setBlock(i + -4, j + 17, k + 12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -4, j + 17, k + 11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -3, j + 17, k + 12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -343,9 +312,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -3, j + 28, k + 10, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -4, j + 20, k + 9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate0(World world, int i, int j, int k)
-	{
+
+	private void generate0(World world, int i, int j, int k) {
 		world.setBlock(i + 0, j + 3, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 0, j + 3, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 0, j + 3, k + 1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -747,9 +715,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -9, j + 4, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -10, j + 4, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate1(World world, int i, int j, int k)
-	{
+
+	private void generate1(World world, int i, int j, int k) {
 		world.setBlock(i + -10, j + 4, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -10, j + 4, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -9, j + 4, k + 1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -1151,9 +1118,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 1, j + 4, k + -1, mod_LionKing.outlandsPool.blockID, 0, 2);
 		world.setBlock(i + 1, j + 4, k + -3, mod_LionKing.outlandsPool.blockID, 0, 2);
 	}
-	
-	private void generate2(World world, int i, int j, int k)
-	{
+
+	private void generate2(World world, int i, int j, int k) {
 		world.setBlock(i + 2, j + 4, k + -1, mod_LionKing.outlandsPool.blockID, 0, 2);
 		world.setBlock(i + 2, j + 4, k + -2, mod_LionKing.outlandsPool.blockID, 0, 2);
 		world.setBlock(i + 2, j + 4, k + -3, mod_LionKing.outlandsPool.blockID, 0, 2);
@@ -1555,9 +1521,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -6, j + 9, k + -12, 0, 0, 2);
 		world.setBlock(i + -6, j + 11, k + -12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate3(World world, int i, int j, int k)
-	{
+
+	private void generate3(World world, int i, int j, int k) {
 		world.setBlock(i + -6, j + 12, k + -12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -6, j + 13, k + -12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -3, j + 10, k + -14, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -1959,9 +1924,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 13, j + 12, k + 4, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 13, j + 12, k + 5, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate4(World world, int i, int j, int k)
-	{
+
+	private void generate4(World world, int i, int j, int k) {
 		world.setBlock(i + 13, j + 13, k + 4, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 13, j + 13, k + 5, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 11, j + 6, k + 6, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -2363,9 +2327,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -7, j + 14, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -8, j + 14, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate5(World world, int i, int j, int k)
-	{
+
+	private void generate5(World world, int i, int j, int k) {
 		world.setBlock(i + -7, j + 14, k + -9, 0, 0, 2);
 		world.setBlock(i + -8, j + 15, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -8, j + 14, k + -8, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -2767,9 +2730,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 8, j + 5, k + 9, 0, 0, 2);
 		world.setBlock(i + 9, j + 5, k + 8, 0, 0, 2);
 	}
-	
-	private void generate6(World world, int i, int j, int k)
-	{
+
+	private void generate6(World world, int i, int j, int k) {
 		world.setBlock(i + 9, j + 6, k + 8, 0, 0, 2);
 		world.setBlock(i + 8, j + 6, k + 8, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 1, j + 5, k + 11, mod_LionKing.outshroomGlowing.blockID, 0, 2);
@@ -3171,9 +3133,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -12, j + 15, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -12, j + 15, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate7(World world, int i, int j, int k)
-	{
+
+	private void generate7(World world, int i, int j, int k) {
 		world.setBlock(i + -12, j + 15, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -11, j + 15, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -11, j + 15, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -3575,9 +3536,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 2, j + 17, k + -15, 0, 0, 2);
 		world.setBlock(i + 1, j + 17, k + -15, 0, 0, 2);
 	}
-	
-	private void generate8(World world, int i, int j, int k)
-	{
+
+	private void generate8(World world, int i, int j, int k) {
 		world.setBlock(i + 1, j + 16, k + -14, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 1, j + 16, k + -15, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 1, j + 16, k + -16, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -3979,9 +3939,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -18, j + 16, k + 3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -18, j + 16, k + 1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate9(World world, int i, int j, int k)
-	{
+
+	private void generate9(World world, int i, int j, int k) {
 		world.setBlock(i + -18, j + 16, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -18, j + 16, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -17, j + 16, k + 4, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -4383,9 +4342,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -11, j + 21, k + 17, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -10, j + 18, k + 18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate10(World world, int i, int j, int k)
-	{
+
+	private void generate10(World world, int i, int j, int k) {
 		world.setBlock(i + -10, j + 19, k + 18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -10, j + 20, k + 18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -9, j + 17, k + 18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -4787,9 +4745,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -1, j + 18, k + -18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -1, j + 17, k + -19, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate11(World world, int i, int j, int k)
-	{
+
+	private void generate11(World world, int i, int j, int k) {
 		world.setBlock(i + -1, j + 18, k + -18, 0, 0, 2);
 		world.setBlock(i + -1, j + 18, k + -19, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -1, j + 19, k + -19, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -5191,9 +5148,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -3, j + 29, k + 20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -2, j + 20, k + 20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate12(World world, int i, int j, int k)
-	{
+
+	private void generate12(World world, int i, int j, int k) {
 		world.setBlock(i + -2, j + 21, k + 19, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -2, j + 21, k + 20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -2, j + 21, k + 19, 0, 0, 2);
@@ -5595,9 +5551,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -5, j + 23, k + -20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -5, j + 24, k + -20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate13(World world, int i, int j, int k)
-	{
+
+	private void generate13(World world, int i, int j, int k) {
 		world.setBlock(i + -5, j + 25, k + -20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -5, j + 26, k + -20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -5, j + 27, k + -20, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -5999,9 +5954,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 0, j + 24, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 0, j + 25, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate14(World world, int i, int j, int k)
-	{
+
+	private void generate14(World world, int i, int j, int k) {
 		world.setBlock(i + 0, j + 26, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 0, j + 27, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 0, j + 28, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -6403,9 +6357,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -1, j + 32, k + 2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -1, j + 31, k + 2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate15(World world, int i, int j, int k)
-	{
+
+	private void generate15(World world, int i, int j, int k) {
 		world.setBlock(i + -1, j + 34, k + 3, 0, 0, 2);
 		world.setBlock(i + -1, j + 35, k + 2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 2, j + 17, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -6807,9 +6760,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -5, j + 26, k + -1, 0, 0, 2);
 		world.setBlock(i + -5, j + 24, k + 0, 0, 0, 2);
 	}
-	
-	private void generate16(World world, int i, int j, int k)
-	{
+
+	private void generate16(World world, int i, int j, int k) {
 		world.setBlock(i + -5, j + 25, k + 0, 0, 0, 2);
 		world.setBlock(i + -5, j + 26, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -5, j + 24, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -7211,9 +7163,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -15, j + 28, k + 12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -15, j + 29, k + 12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate17(World world, int i, int j, int k)
-	{
+
+	private void generate17(World world, int i, int j, int k) {
 		world.setBlock(i + -15, j + 30, k + 12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -15, j + 27, k + 13, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -15, j + 26, k + 13, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -7615,9 +7566,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 0, j + 51, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 1, j + 51, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate18(World world, int i, int j, int k)
-	{
+
+	private void generate18(World world, int i, int j, int k) {
 		world.setBlock(i + 2, j + 51, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 3, j + 51, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 0, j + 51, k + -4, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -8015,9 +7965,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 3, j + 51, k + 4, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 5, j + 51, k + 3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate19(World world, int i, int j, int k)
-	{
+
+	private void generate19(World world, int i, int j, int k) {
 		world.setBlock(i + 4, j + 51, k + 3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 5, j + 51, k + 3, 0, 0, 2);
 		world.setBlock(i + 18, j + 25, k + -5, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -8419,9 +8368,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -6, j + 32, k + -18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -6, j + 33, k + -18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate20(World world, int i, int j, int k)
-	{
+
+	private void generate20(World world, int i, int j, int k) {
 		world.setBlock(i + -6, j + 34, k + -18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -6, j + 35, k + -18, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -6, j + 35, k + -18, 0, 0, 2);
@@ -8823,9 +8771,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -14, j + 33, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -14, j + 34, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate21(World world, int i, int j, int k)
-	{
+
+	private void generate21(World world, int i, int j, int k) {
 		world.setBlock(i + -14, j + 35, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -19, j + 33, k + 1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -13, j + 31, k + -12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -9227,9 +9174,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -3, j + 36, k + -16, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -3, j + 37, k + -16, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate22(World world, int i, int j, int k)
-	{
+
+	private void generate22(World world, int i, int j, int k) {
 		world.setBlock(i + -4, j + 36, k + -16, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -4, j + 37, k + -17, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -4, j + 37, k + -17, 0, 0, 2);
@@ -9621,9 +9567,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 13, j + 37, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 13, j + 38, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate23(World world, int i, int j, int k)
-	{
+
+	private void generate23(World world, int i, int j, int k) {
 		world.setBlock(i + 13, j + 36, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 13, j + 37, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 12, j + 37, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -10025,9 +9970,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 7, j + 41, k + -10, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 8, j + 40, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate24(World world, int i, int j, int k)
-	{
+
+	private void generate24(World world, int i, int j, int k) {
 		world.setBlock(i + 8, j + 41, k + -10, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 8, j + 41, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 9, j + 39, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -10429,9 +10373,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -2, j + 45, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -2, j + 46, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate25(World world, int i, int j, int k)
-	{
+
+	private void generate25(World world, int i, int j, int k) {
 		world.setBlock(i + 0, j + 45, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 0, j + 46, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -1, j + 45, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -10836,9 +10779,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 2, j + 49, k + -8, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 3, j + 47, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate26(World world, int i, int j, int k)
-	{
+
+	private void generate26(World world, int i, int j, int k) {
 		world.setBlock(i + 3, j + 48, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 3, j + 48, k + -8, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 3, j + 49, k + -8, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -11239,9 +11181,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -8, j + 51, k + -7, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -8, j + 51, k + -8, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate27(World world, int i, int j, int k)
-	{
+
+	private void generate27(World world, int i, int j, int k) {
 		world.setBlock(i + -8, j + 51, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -9, j + 51, k + -5, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -9, j + 51, k + -6, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -11640,9 +11581,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -5, j + 60, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -5, j + 61, k + 0, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate28(World world, int i, int j, int k)
-	{
+
+	private void generate28(World world, int i, int j, int k) {
 		world.setBlock(i + -5, j + 58, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -5, j + 58, k + -1, 0, 0, 2);
 		world.setBlock(i + -5, j + 60, k + -1, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -12044,9 +11984,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 6, j + 50, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 3, j + 51, k + -3, 0, 0, 2);
 	}
-	
-	private void generate29(World world, int i, int j, int k)
-	{
+
+	private void generate29(World world, int i, int j, int k) {
 		world.setBlock(i + 3, j + 51, k + -2, 0, 0, 2);
 		world.setBlock(i + 3, j + 51, k + -1, 0, 0, 2);
 		world.setBlock(i + 3, j + 51, k + 0, 0, 0, 2);
@@ -12448,9 +12387,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + -8, j + 31, k + -12, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -8, j + 31, k + -11, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate30(World world, int i, int j, int k)
-	{
+
+	private void generate30(World world, int i, int j, int k) {
 		world.setBlock(i + -8, j + 31, k + -10, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -8, j + 31, k + -9, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + -8, j + 31, k + -8, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -12852,9 +12790,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 15, j + 19, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 14, j + 19, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate31(World world, int i, int j, int k)
-	{
+
+	private void generate31(World world, int i, int j, int k) {
 		world.setBlock(i + 13, j + 19, k + -3, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 16, j + 18, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 15, j + 18, k + -2, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
@@ -13256,9 +13193,8 @@ public class LKWorldGenZiraMound extends WorldGenerator
 		world.setBlock(i + 0, j + 29, k + -27, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 1, j + 29, k + -27, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 	}
-	
-	private void generate32(World world, int i, int j, int k)
-	{
+
+	private void generate32(World world, int i, int j, int k) {
 		world.setBlock(i + 2, j + 29, k + -27, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 3, j + 29, k + -28, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);
 		world.setBlock(i + 4, j + 29, k + -28, mod_LionKing.outlandsPortalFrame.blockID, 1, 2);

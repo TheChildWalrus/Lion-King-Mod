@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -32,103 +33,83 @@ import net.minecraft.world.storage.*;
 import java.util.Map;
 import java.util.HashMap;
 
-public class LKInventoryQuiver extends WorldSavedData implements IInventory
-{
+public class LKInventoryQuiver extends WorldSavedData implements IInventory {
 	private ItemStack[] inventory;
 	private ItemStack theQuiver;
 
-	public LKInventoryQuiver(String s)
-	{
+	public LKInventoryQuiver(String s) {
 		super(s);
 		inventory = new ItemStack[6];
 	}
 
 	@Override
-	public int getSizeInventory()
-	{
+	public int getSizeInventory() {
 		return 6;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int i)
-	{
+	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
 	@Override
-	public ItemStack decrStackSize(int i, int j)
-	{
-		if (inventory[i] != null)
-		{
-			if (inventory[i].stackSize <= j)
-			{
+	public ItemStack decrStackSize(int i, int j) {
+		if (inventory[i] != null) {
+			if (inventory[i].stackSize <= j) {
 				ItemStack itemstack = inventory[i];
 				inventory[i] = null;
 				onInventoryChanged();
 				return itemstack;
 			}
 			ItemStack itemstack1 = inventory[i].splitStack(j);
-			if (inventory[i].stackSize == 0)
-			{
+			if (inventory[i].stackSize == 0) {
 				inventory[i] = null;
 			}
 			onInventoryChanged();
 			return itemstack1;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack)
-	{
+	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-		{
+		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 		onInventoryChanged();
 	}
 
 	@Override
-	public String getInvName()
-	{
+	public String getInvName() {
 		return "Quiver";
 	}
 
 	@Override
-	public int getInventoryStackLimit()
-	{
+	public int getInventoryStackLimit() {
 		return 64;
 	}
 
 	@Override
-	public void onInventoryChanged()
-	{
+	public void onInventoryChanged() {
 		markDirty();
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		return true;
 	}
-	
+
 	@Override
-	public void readFromNBT(NBTTagCompound data)
-	{
+	public void readFromNBT(NBTTagCompound data) {
 		ItemStack[] quiverInventory = new ItemStack[6];
 		NBTTagList taglist = data.getTagList("QuiverSlots");
-		if (taglist != null)
-		{
-			for	(int i = 0; i < taglist.tagCount(); i++)
-			{
-				NBTTagCompound nbt = (NBTTagCompound)taglist.tagAt(i);
+		if (taglist != null) {
+			for (int i = 0; i < taglist.tagCount(); i++) {
+				NBTTagCompound nbt = (NBTTagCompound) taglist.tagAt(i);
 				byte byte0 = nbt.getByte("Slot");
-				if (byte0 >= 0 && byte0 < quiverInventory.length)
-				{
+				if (byte0 >= 0 && byte0 < quiverInventory.length) {
 					quiverInventory[byte0] = ItemStack.loadItemStackFromNBT(nbt);
 				}
 			}
@@ -137,15 +118,12 @@ public class LKInventoryQuiver extends WorldSavedData implements IInventory
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound data)
-	{
+	public void writeToNBT(NBTTagCompound data) {
 		NBTTagList taglist = new NBTTagList();
-		for	(int i = 0; i < inventory.length; i++)
-		{
-			if (inventory[i] != null)
-			{
+		for (int i = 0; i < inventory.length; i++) {
+			if (inventory[i] != null) {
 				NBTTagCompound nbt = new NBTTagCompound();
-				nbt.setByte("Slot", (byte)i);
+				nbt.setByte("Slot", (byte) i);
 				inventory[i].writeToNBT(nbt);
 				taglist.appendTag(nbt);
 			}
@@ -154,29 +132,26 @@ public class LKInventoryQuiver extends WorldSavedData implements IInventory
 	}
 
 	@Override
-	public void openChest() {}
+	public void openChest() {
+	}
 
 	@Override
-	public void closeChest()
-	{
+	public void closeChest() {
 		onInventoryChanged();
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int i)
-	{
+	public ItemStack getStackInSlotOnClosing(int i) {
 		return getStackInSlot(i);
 	}
-	
+
 	@Override
-    public boolean isItemValidForSlot(int slot, ItemStack itemstack)
-    {
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
 		return true;
 	}
-	
+
 	@Override
-    public boolean isInvNameLocalized()
-    {
-        return false;
-    }
+	public boolean isInvNameLocalized() {
+		return false;
+	}
 }

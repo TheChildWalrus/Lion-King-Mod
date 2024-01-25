@@ -9,51 +9,28 @@ import net.minecraft.util.Icon;
 
 import java.util.List;
 
-public class LKItemNote extends LKItem
-{
+public class LKItemNote extends LKItem {
 	@SideOnly(Side.CLIENT)
 	private Icon[] noteIcons;
 	private String[] noteNames = {"c", "d", "e", "f", "g", "a", "b"};
-	
-    public LKItemNote(int i)
-    {
-        super(i);
-        setHasSubtypes(true);
-        setMaxDamage(0);
+
+	public LKItemNote(int i) {
+		super(i);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 		setCreativeTab(LKCreativeTabs.tabMisc);
-    }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int i)
-    {
-		if (i >= noteNames.length)
-		{
-			i = 0;
-		}
-		return noteIcons[i];
 	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconregister)
-    {
-		noteIcons = new Icon[noteNames.length];
-		for (int i = 0; i < noteNames.length; i++)
-		{
-			noteIcons[i] = iconregister.registerIcon("lionking:note_" + noteNames[i]);
-		}
-    }
-	
-	public static int getNoteValue(int damage)
-	{
-		switch (damage)
-		{
-			case 0: case 1: default:
+
+	public static int getNoteValue(int damage) {
+		switch (damage) {
+			case 0:
+			case 1:
+			default:
 				return 1;
 			case 2:
 				return 2;
-			case 3: case 4:
+			case 3:
+			case 4:
 				return 5;
 			case 5:
 				return 10;
@@ -61,27 +38,41 @@ public class LKItemNote extends LKItem
 				return 20;
 		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack itemstack, int pass)
-	{
+	public Icon getIconFromDamage(int i) {
+		if (i >= noteNames.length) {
+			i = 0;
+		}
+		return noteIcons[i];
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconregister) {
+		noteIcons = new Icon[noteNames.length];
+		for (int i = 0; i < noteNames.length; i++) {
+			noteIcons[i] = iconregister.registerIcon("lionking:note_" + noteNames[i]);
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasEffect(ItemStack itemstack, int pass) {
 		return true;
 	}
 
 	@Override
-    public String getUnlocalizedName(ItemStack itemstack)
-    {
-        return super.getUnlocalizedName() + "." + itemstack.getItemDamage();
-    }
-	
+	public String getUnlocalizedName(ItemStack itemstack) {
+		return super.getUnlocalizedName() + "." + itemstack.getItemDamage();
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubItems(int i, CreativeTabs tab, List list)
-    {    	
-		for (int j = 0; j < 7; j++)
-		{
+	public void getSubItems(int i, CreativeTabs tab, List list) {
+		for (int j = 0; j < 7; j++) {
 			list.add(new ItemStack(i, 1, j));
 		}
-    }
+	}
 }

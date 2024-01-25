@@ -30,10 +30,12 @@ import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.lang.reflect.Field;
+
 import lionking.common.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
@@ -51,42 +53,22 @@ import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "lionking", version = "v1.14 for Minecraft 1.6.4")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
-public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNotifier, IWorldGenerator
-{
+public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNotifier, IWorldGenerator {
 	@SidedProxy(clientSide = "lionking.client.LKClientProxy", serverSide = "lionking.common.LKCommonProxy")
 	public static LKCommonProxy proxy;
-	
+
 	@Mod.Instance("lionking")
 	public static mod_LionKing instance;
 
 	public static int idPrideLands;
 	public static int idOutlands;
 	public static int idUpendi;
-	
-	private static int idHyenaEnchantment;
-	private static int idDiggahEnchantment;
-	private static int idRafikiStickDamage;
-	private static int idRafikiStickDurability;
-	private static int idRafikiStickThunder;
-	private static int idDiggahPrecision;
-	
 	public static int boothLimit;
 	public static boolean shouldCheckUpdates;
 	public static boolean randomBooths;
 	public static int lkMusicChance;
-	
-	private static EnumToolMaterial toolPridestone = EnumHelper.addToolMaterial("LK_PRIDESTONE", 1, 150, 4.0F, 1, 5);
-	private static EnumToolMaterial toolSilver = EnumHelper.addToolMaterial("LK_SILVER", 2, 490, 6.0F, 2, 16);
-	private static EnumToolMaterial toolPeacock = EnumHelper.addToolMaterial("LK_PEACOCK", 3, 1475, 8.0F, 3, 9);
-	private static EnumToolMaterial toolKivulite = EnumHelper.addToolMaterial("LK_KIVULITE", 2, 70, 6.0F, 0, 3);
-	private static EnumToolMaterial toolCorrupt = EnumHelper.addToolMaterial("LK_CORRUPT_PRIDESTONE", 1, 120, 5.5F, 0, 7);
-
-    private static EnumArmorMaterial armorSilver = EnumHelper.addArmorMaterial("LK_SILVER", 19, new int[] {2, 7, 5, 2}, 16);
-    private static EnumArmorMaterial armorGemsbok = EnumHelper.addArmorMaterial("LK_GEMSBOK", 8, new int[] {2, 5, 4, 1}, 8);
-    private static EnumArmorMaterial armorPeacock = EnumHelper.addArmorMaterial("LK_PEACOCK", 31, new int[] {3, 8, 6, 3}, 9);
-	public static EnumArmorMaterial armorSuit = EnumHelper.addArmorMaterial("LK_TICKET_LION_SUIT", 0, new int[] {0, 0, 0, 0}, 0);
-	public static EnumArmorMaterial armorOutlandsHelm = EnumHelper.addArmorMaterial("LK_OUTLANDISH_HELM", 12, new int[] {2, 6, 5, 2}, 0);
-
+	public static EnumArmorMaterial armorSuit = EnumHelper.addArmorMaterial("LK_TICKET_LION_SUIT", 0, new int[]{0, 0, 0, 0}, 0);
+	public static EnumArmorMaterial armorOutlandsHelm = EnumHelper.addArmorMaterial("LK_OUTLANDISH_HELM", 12, new int[]{2, 6, 5, 2}, 0);
 	public static Block lionPortalFrame;
 	public static Block lionPortal;
 	public static Block woodSlabDouble;
@@ -107,18 +89,18 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 	public static Block pridestone;
 	public static Block prideCoal;
 	public static Block prideBrick;
-    public static Block pridePillar; 
-	public static Block sapling;  
+	public static Block pridePillar;
+	public static Block sapling;
 	public static Block leaves;
 	public static Block termite;
 	public static Block stoneStairs;
 	public static Block brickStairs;
 	public static Block prideBrickMossy;
 	public static Block oreSilver;
-	public static Block outsand;  
+	public static Block outsand;
 	public static Block outglass;
 	public static Block outglassPane;
-	public static Block starAltar; 
+	public static Block starAltar;
 	public static Block slabSingle;
 	public static Block slabDouble;
 	public static Block log;
@@ -171,7 +153,6 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 	public static Block driedMaizeSlabSingle;
 	public static Block driedMaizeSlabDouble;
 	public static Block stairsDriedMaize;
-
 	public static Item ticket;
 	public static Item hyenaBone;
 	public static Item lionRaw;
@@ -179,77 +160,78 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 	public static Item rafikiStick;
 	public static Item purpleFlower;
 	public static Item mango;
-	public static Item featherBlue; 
-    public static Item featherYellow; 
-    public static Item featherRed; 
-    public static Item dartBlue; 
-    public static Item dartYellow; 
-    public static Item dartRed; 
-	public static Item dartShooter; 
+	public static Item featherBlue;
+	public static Item featherYellow;
+	public static Item featherRed;
+	public static Item dartBlue;
+	public static Item dartYellow;
+	public static Item dartRed;
+	public static Item dartShooter;
 	public static Item hyenaBoneShard;
 	public static Item zebraBoots;
 	public static Item zebraHide;
 	public static Item itemGrindingBowl;
 	public static Item mangoDust;
-    public static Item dartBlack;
-    public static Item featherBlack; 
-    public static Item shovel;
-    public static Item pickaxe;
-    public static Item axe;
-    public static Item sword;
-    public static Item hoe;
-    public static Item itemTermite;
-    public static Item scarRug;
-    public static Item jar;
-    public static Item jarWater;
-    public static Item silver;
-	public static Item silverDartShooter; 
-    public static Item shovelSilver;
-    public static Item pickaxeSilver;
-    public static Item axeSilver;
-    public static Item swordSilver;
-    public static Item hoeSilver;
-    public static Item rafikiCoin;
+	public static Item dartBlack;
+	public static Item featherBlack;
+	public static Item shovel;
+	public static Item pickaxe;
+	public static Item axe;
+	public static Item sword;
+	public static Item hoe;
+	public static Item itemTermite;
+	public static Item scarRug;
+	public static Item jar;
+	public static Item jarWater;
+	public static Item silver;
+	public static Item silverDartShooter;
+	public static Item shovelSilver;
+	public static Item pickaxeSilver;
+	public static Item axeSilver;
+	public static Item swordSilver;
+	public static Item hoeSilver;
+	public static Item rafikiCoin;
 	public static Item termiteDust;
-    public static Item lionDust;
+	public static Item lionDust;
 	public static Item tunnahDiggah;
-	public static Item crystal;;
+	public static Item crystal;
 	public static Item bug;
 	public static Item chocolateMufasa;
 	public static Item pumbaaBomb;
-    public static Item fur;
+	public static Item fur;
 	public static Item jarMilk;
 	public static Item zebraRaw;
 	public static Item zebraCooked;
 	public static Item rhinoRaw;
 	public static Item rhinoCooked;
-    public static Item helmetSilver;
-    public static Item bodySilver;
-    public static Item legsSilver;
-    public static Item bootsSilver;
-    public static Item vase;
-    public static Item horn;
-    public static Item hornGround;
-    public static Item bed;
-    public static Item gemsbokHide;
-    public static Item gemsbokHorn;
-    public static Item gemsbokSpear;
-    public static Item juice;
-    public static Item helmetGemsbok;
-    public static Item bodyGemsbok;
-    public static Item legsGemsbok;
-    public static Item bootsGemsbok;
-    public static Item jarLava;
+	public static Item helmetSilver;
+	public static Item bodySilver;
+	public static Item legsSilver;
+	public static Item bootsSilver;
+	public static Item vase;
+	;
+	public static Item horn;
+	public static Item hornGround;
+	public static Item bed;
+	public static Item gemsbokHide;
+	public static Item gemsbokHorn;
+	public static Item gemsbokSpear;
+	public static Item juice;
+	public static Item helmetGemsbok;
+	public static Item bodyGemsbok;
+	public static Item legsGemsbok;
+	public static Item bootsGemsbok;
+	public static Item jarLava;
 	public static Item peacockGem;
-    public static Item shovelPeacock;
-    public static Item pickaxePeacock;
-    public static Item axePeacock;
-    public static Item swordPeacock;
-    public static Item hoePeacock;
-    public static Item helmetPeacock;
-    public static Item bodyPeacock;
-    public static Item legsPeacock;
-    public static Item bootsPeacock;
+	public static Item shovelPeacock;
+	public static Item pickaxePeacock;
+	public static Item axePeacock;
+	public static Item swordPeacock;
+	public static Item hoePeacock;
+	public static Item helmetPeacock;
+	public static Item bodyPeacock;
+	public static Item legsPeacock;
+	public static Item bootsPeacock;
 	public static Item rugDye;
 	public static Item wings;
 	public static Item corn;
@@ -261,19 +243,19 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 	public static Item passionFruit;
 	public static Item redFlower;
 	public static Item kivulite;
-    public static Item shovelKivulite;
-    public static Item pickaxeKivulite;
-    public static Item axeKivulite;
-    public static Item swordKivulite;
+	public static Item shovelKivulite;
+	public static Item pickaxeKivulite;
+	public static Item axeKivulite;
+	public static Item swordKivulite;
 	public static Item bugStew;
 	public static Item crocodileMeat;
 	public static Item poison;
 	public static Item poisonedSpear;
 	public static Item xpGrub;
-    public static Item shovelCorrupt;
-    public static Item pickaxeCorrupt;
-    public static Item axeCorrupt;
-    public static Item swordCorrupt;
+	public static Item shovelCorrupt;
+	public static Item pickaxeCorrupt;
+	public static Item axeCorrupt;
+	public static Item swordCorrupt;
 	public static Item charm;
 	public static Item zazuEgg;
 	public static Item kiwano;
@@ -300,28 +282,51 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 	public static Item roastYam;
 	public static Item banana;
 	public static Item bananaCake;
-	public static Item featherPink; 
-    public static Item dartPink;
+	public static Item featherPink;
+	public static Item dartPink;
 	public static Item bananaBread;
 	public static Item hyenaMeal;
 	public static Item cornKernels;
 	public static Item driedMaize;
-
 	public static Enchantment hyenaEnchantment;
 	public static Enchantment diggahEnchantment;
 	public static Enchantment rafikiStickDamage;
 	public static Enchantment rafikiStickDurability;
 	public static Enchantment rafikiStickThunder;
 	public static Enchantment diggahPrecision;
-	
+	private static int idHyenaEnchantment;
+	private static int idDiggahEnchantment;
+	private static int idRafikiStickDamage;
+	private static int idRafikiStickDurability;
+	private static int idRafikiStickThunder;
+	private static int idDiggahPrecision;
+	private static EnumToolMaterial toolPridestone = EnumHelper.addToolMaterial("LK_PRIDESTONE", 1, 150, 4.0F, 1, 5);
+	private static EnumToolMaterial toolSilver = EnumHelper.addToolMaterial("LK_SILVER", 2, 490, 6.0F, 2, 16);
+	private static EnumToolMaterial toolPeacock = EnumHelper.addToolMaterial("LK_PEACOCK", 3, 1475, 8.0F, 3, 9);
+	private static EnumToolMaterial toolKivulite = EnumHelper.addToolMaterial("LK_KIVULITE", 2, 70, 6.0F, 0, 3);
+	private static EnumToolMaterial toolCorrupt = EnumHelper.addToolMaterial("LK_CORRUPT_PRIDESTONE", 1, 120, 5.5F, 0, 7);
+	private static EnumArmorMaterial armorSilver = EnumHelper.addArmorMaterial("LK_SILVER", 19, new int[]{2, 7, 5, 2}, 16);
+	private static EnumArmorMaterial armorGemsbok = EnumHelper.addArmorMaterial("LK_GEMSBOK", 8, new int[]{2, 5, 4, 1}, 8);
+	private static EnumArmorMaterial armorPeacock = EnumHelper.addArmorMaterial("LK_PEACOCK", 31, new int[]{3, 8, 6, 3}, 9);
 	private static LKPacketHandlerServer serverHandler = new LKPacketHandlerServer();
-	
+
+	public static void dropItemsFromBlock(World par1World, int par2, int par3, int par4, ItemStack par5ItemStack) {
+		if (!par1World.isRemote && par1World.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+			float var6 = 0.7F;
+			double var7 = (double) (par1World.rand.nextFloat() * var6) + (double) (1.0F - var6) * 0.5D;
+			double var9 = (double) (par1World.rand.nextFloat() * var6) + (double) (1.0F - var6) * 0.5D;
+			double var11 = (double) (par1World.rand.nextFloat() * var6) + (double) (1.0F - var6) * 0.5D;
+			EntityItem var13 = new EntityItem(par1World, (double) par2 + var7, (double) par3 + var9, (double) par4 + var11, par5ItemStack);
+			var13.delayBeforeCanPickup = 10;
+			par1World.spawnEntityInWorld(var13);
+		}
+	}
+
 	@Mod.EventHandler
-	public void preload(FMLPreInitializationEvent event)
-	{
+	public void preload(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		
-        int idLionPortalFrame = config.getBlock("Pride Lands Portal Frame", 1200).getInt();
+
+		int idLionPortalFrame = config.getBlock("Pride Lands Portal Frame", 1200).getInt();
 		int idLionPortal = config.getBlock("Pride Lands Portal", 1201).getInt();
 		int idWoodSlabDouble = config.getBlock("Double Wooden Slabs", 1202).getInt();
 		int idWhiteFlower = config.getBlock("White Flower", 1203).getInt();
@@ -406,7 +411,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		int idDriedMaizeSlabDouble = config.getBlock("Dried Maize Double Slab", 1282).getInt();
 		int idStairsDriedMaize = config.getBlock("Dried Maize Stairs", 1283).getInt();
 
-        int idTicket = config.getItem("Lion King Ticket", 4256).getInt();
+		int idTicket = config.getItem("Lion King Ticket", 4256).getInt();
 		int idHyenaBone = config.getItem("Hyena Bone", 4257).getInt();
 		int idLionRaw = config.getItem("Raw Lion", 4258).getInt();
 		int idLionCooked = config.getItem("Lion Chop", 4259).getInt();
@@ -540,9 +545,9 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		int idHyenaMeal = config.getItem("Hyena Meal", 4387).getInt();
 		int idCornKernels = config.getItem("Corn Kernels", 4388).getInt();
 		int idDriedMaize = config.getItem("Dried Maize", 4389).getInt();
-		
+
 		planks = new LKBlockPlanks(idPlanks).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("lionking:planks");
-		
+
 		lionPortalFrame = new LKBlockPortalFrame(idLionPortalFrame).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:portalFrame");
 		lionPortal = new LKBlockPortal(idLionPortal).setBlockUnbreakable().setResistance(6000000F).setStepSound(Block.soundGlassFootstep).setLightValue(0.75F).setUnlocalizedName("lionking:portal");
 		woodSlabDouble = new LKBlockWoodSlab(idWoodSlabDouble, true).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("lionking:woodSlabDouble");
@@ -560,21 +565,21 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		outlandsPortalFrame = new LKBlockPortalFrame(idOutlandsPortalFrame).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:outlandsPortalFrame");
 		outlandsPortal = new LKBlockOutlandsPortal(idOutlandsPortal).setBlockUnbreakable().setResistance(6000000F).setStepSound(Block.soundGlassFootstep).setLightValue(0.75F).setUnlocalizedName("lionking:outlandsPortal");
 		bugTrap = new LKBlockBugTrap(idBugTrap).setHardness(1.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("lionking:bugTrap");
-		pridestone =  new LKBlockPridestone(idPridestone).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:pridestone");
+		pridestone = new LKBlockPridestone(idPridestone).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:pridestone");
 		prideCoal = new LKBlockOre(idPrideCoal).setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:oreCoal");
 		prideBrick = new LKBlockPrideBrick(idPrideBrick).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:pridestoneBrick");
-		pridePillar = new LKBlockPillar(idPridePillar).setHardness(1.2F).setResistance(8.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:pillar"); 
-		sapling = new LKBlockSapling(idSapling).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("lionking:acaciaSapling");  
+		pridePillar = new LKBlockPillar(idPridePillar).setHardness(1.2F).setResistance(8.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:pillar");
+		sapling = new LKBlockSapling(idSapling).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("lionking:acaciaSapling");
 		leaves = new LKBlockLeaves(idLeaves).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("lionking:acaciaLeaves");
 		termite = new LKBlockTermite(idTermite).setHardness(0.5F).setResistance(3.0F).setUnlocalizedName("lionking:termiteMound");
 		stoneStairs = new LKBlockStairs(idStoneStairs, pridestone, 0).setUnlocalizedName("lionking:stairsStone");
 		brickStairs = new LKBlockStairs(idBrickStairs, prideBrick, 0).setUnlocalizedName("lionking:stairsBrick");
 		prideBrickMossy = new LKBlockPrideBrickVariant(idPrideBrickMossy).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:pridestoneBrickMossy");
 		oreSilver = new LKBlockOre(idOreSilver).setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:oreSilver");
-		outsand = new LKBlockOutsand(idOutsand).setHardness(0.7F).setStepSound(Block.soundSandFootstep).setUnlocalizedName("lionking:outsand");  
+		outsand = new LKBlockOutsand(idOutsand).setHardness(0.7F).setStepSound(Block.soundSandFootstep).setUnlocalizedName("lionking:outsand");
 		outglass = new LKBlockGlass(idOutglass, Material.glass, false).setHardness(0.4F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lionking:outglass");
 		outglassPane = new LKBlockPane(idOutglassPane, "lionking:outglass", "lionking:outsand", Material.glass, true).setHardness(0.4F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lionking:outglassPane");
-		starAltar = new LKBlockStarAltar(idStarAltar).setHardness(2.0F).setResistance(15.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:altar"); 
+		starAltar = new LKBlockStarAltar(idStarAltar).setHardness(2.0F).setResistance(15.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:altar");
 		slabSingle = new LKBlockSlab(idSlabSingle, false).setHardness(2.0F).setResistance(8.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:slab");
 		slabDouble = new LKBlockSlab(idSlabDouble, true).setHardness(2.0F).setResistance(8.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("lionking:slabDouble").setCreativeTab(null);
 		log = new LKBlockLog(idLog).setHardness(2.0F).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("lionking:log");
@@ -634,20 +639,20 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		rafikiStick = new LKItemRafikiStick(idRafikiStick - 256).setUnlocalizedName("lionking:rafikiStick");
 		purpleFlower = new LKItemTallFlower(idPurpleFlower - 256, 0).setUnlocalizedName("lionking:purpleFlower");
 		mango = new LKItemFood(idMango - 256, 3, 0.3F, false).setUnlocalizedName("lionking:mango");
-		featherBlue = new LKItem(idFeatherBlue - 256).setUnlocalizedName("lionking:featherBlue").setCreativeTab(LKCreativeTabs.tabMaterials); 
-		featherYellow = new LKItem(idFeatherYellow - 256).setUnlocalizedName("lionking:featherYellow").setCreativeTab(LKCreativeTabs.tabMaterials); 
-		featherRed = new LKItem(idFeatherRed - 256).setUnlocalizedName("lionking:featherRed").setCreativeTab(LKCreativeTabs.tabMaterials); 
-		dartBlue = new LKItem(idDartBlue - 256).setUnlocalizedName("lionking:dartBlue").setCreativeTab(LKCreativeTabs.tabCombat); 
-		dartYellow = new LKItem(idDartYellow - 256).setUnlocalizedName("lionking:dartYellow").setCreativeTab(LKCreativeTabs.tabCombat); 
-		dartRed = new LKItem(idDartRed - 256).setUnlocalizedName("lionking:dartRed").setCreativeTab(LKCreativeTabs.tabCombat); 
-		dartShooter = new LKItemDartShooter(idDartShooter - 256, false).setUnlocalizedName("lionking:dartShooter"); 
+		featherBlue = new LKItem(idFeatherBlue - 256).setUnlocalizedName("lionking:featherBlue").setCreativeTab(LKCreativeTabs.tabMaterials);
+		featherYellow = new LKItem(idFeatherYellow - 256).setUnlocalizedName("lionking:featherYellow").setCreativeTab(LKCreativeTabs.tabMaterials);
+		featherRed = new LKItem(idFeatherRed - 256).setUnlocalizedName("lionking:featherRed").setCreativeTab(LKCreativeTabs.tabMaterials);
+		dartBlue = new LKItem(idDartBlue - 256).setUnlocalizedName("lionking:dartBlue").setCreativeTab(LKCreativeTabs.tabCombat);
+		dartYellow = new LKItem(idDartYellow - 256).setUnlocalizedName("lionking:dartYellow").setCreativeTab(LKCreativeTabs.tabCombat);
+		dartRed = new LKItem(idDartRed - 256).setUnlocalizedName("lionking:dartRed").setCreativeTab(LKCreativeTabs.tabCombat);
+		dartShooter = new LKItemDartShooter(idDartShooter - 256, false).setUnlocalizedName("lionking:dartShooter");
 		hyenaBoneShard = new LKItem(idHyenaBoneShard - 256).setUnlocalizedName("lionking:hyenaBoneShard").setCreativeTab(LKCreativeTabs.tabMaterials);
 		zebraBoots = new LKItemSpecialArmor(idZebraBoots - 256, armorGemsbok, 3, 2000).setUnlocalizedName("lionking:zebraBoots").setCreativeTab(LKCreativeTabs.tabMisc);
 		zebraHide = new LKItem(idZebraHide - 256).setUnlocalizedName("lionking:zebraHide").setCreativeTab(LKCreativeTabs.tabMaterials);
 		itemGrindingBowl = new LKItemBlockPlacer(idItemGrindingBowl - 256, grindBowl).setUnlocalizedName("lionking:grindingBowl");
 		mangoDust = new LKItem(idMangoDust - 256).setUnlocalizedName("lionking:mangoGround").setCreativeTab(LKCreativeTabs.tabMaterials);
 		dartBlack = new LKItem(idDartBlack - 256).setUnlocalizedName("lionking:dartOutlandish").setCreativeTab(LKCreativeTabs.tabCombat);
-		featherBlack = new LKItem(idFeatherBlack - 256).setUnlocalizedName("lionking:featherVulture").setCreativeTab(LKCreativeTabs.tabMaterials); 
+		featherBlack = new LKItem(idFeatherBlack - 256).setUnlocalizedName("lionking:featherVulture").setCreativeTab(LKCreativeTabs.tabMaterials);
 		shovel = new LKItemShovel(idShovel - 256, toolPridestone).setUnlocalizedName("lionking:shovelPridestone");
 		pickaxe = new LKItemPickaxe(idPickaxe - 256, toolPridestone).setUnlocalizedName("lionking:pickaxePridestone");
 		axe = new LKItemAxe(idAxe - 256, toolPridestone).setUnlocalizedName("lionking:axePridestone");
@@ -658,17 +663,18 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		jar = new LKItemJar(idJar - 256, 0).setUnlocalizedName("lionking:jar");
 		jarWater = new LKItemJar(idJarWater - 256, Block.waterMoving.blockID).setUnlocalizedName("lionking:jarWater");
 		silver = new LKItem(idSilver - 256).setUnlocalizedName("lionking:silver").setCreativeTab(LKCreativeTabs.tabMaterials);
-		silverDartShooter = new LKItemDartShooter(idSilverDartShooter - 256, true).setUnlocalizedName("lionking:dartShooterSilver"); 
+		silverDartShooter = new LKItemDartShooter(idSilverDartShooter - 256, true).setUnlocalizedName("lionking:dartShooterSilver");
 		shovelSilver = new LKItemShovel(idShovelSilver - 256, toolSilver).setUnlocalizedName("lionking:shovelSilver");
 		pickaxeSilver = new LKItemPickaxe(idPickaxeSilver - 256, toolSilver).setUnlocalizedName("lionking:pickaxeSilver");
 		axeSilver = new LKItemAxe(idAxeSilver - 256, toolSilver).setUnlocalizedName("lionking:axeSilver");
 		swordSilver = new LKItemSword(idSwordSilver - 256, toolSilver).setUnlocalizedName("lionking:swordSilver");
 		hoeSilver = new LKItemHoe(idHoeSilver - 256, toolSilver).setUnlocalizedName("lionking:hoeSilver");
-		rafikiCoin = new LKItemCoin(idRafikiCoin - 256, (byte)0).setUnlocalizedName("lionking:rafikiCoin");
+		rafikiCoin = new LKItemCoin(idRafikiCoin - 256, (byte) 0).setUnlocalizedName("lionking:rafikiCoin");
 		termiteDust = new LKItem(idTermiteDust - 256).setUnlocalizedName("lionking:termiteGround").setCreativeTab(LKCreativeTabs.tabMaterials);
 		lionDust = new LKItemDust(idLionDust - 256).setUnlocalizedName("lionking:rafikiDust");
 		tunnahDiggah = new LKItemTunnahDiggah(idTunnahDiggah - 256).setUnlocalizedName("lionking:tunnahDiggah");
-		crystal = new LKItem(idCrystal - 256).setUnlocalizedName("lionking:crystal").setMaxStackSize(16).setCreativeTab(LKCreativeTabs.tabQuest);;
+		crystal = new LKItem(idCrystal - 256).setUnlocalizedName("lionking:crystal").setMaxStackSize(16).setCreativeTab(LKCreativeTabs.tabQuest);
+		;
 		bug = new LKItem(idBug - 256).setUnlocalizedName("lionking:bug");
 		chocolateMufasa = new LKItemFood(idChocolateMufasa - 256, 16, 0.8F, false).setUnlocalizedName("lionking:chocolateMufasa");
 		pumbaaBomb = new LKItemPumbaaBomb(idPumbaaBomb - 256).setUnlocalizedName("lionking:pumbaaFlatulence");
@@ -742,7 +748,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		dartQuiver = new LKItemDartQuiver(idDartQuiver - 256).setUnlocalizedName("lionking:quiver");
 		outlandsFeather = new LKItemOutlandsFeather(idOutlandsFeather - 256).setUnlocalizedName("lionking:waywardFeather");
 		ziraRug = new LKItemScarRug(idZiraRug - 256, 1).setUnlocalizedName("lionking:ziraRug");
-		ziraCoin = new LKItemCoin(idZiraCoin - 256, (byte)1).setUnlocalizedName("lionking:ziraCoin");
+		ziraCoin = new LKItemCoin(idZiraCoin - 256, (byte) 1).setUnlocalizedName("lionking:ziraCoin");
 		hyenaHeadItem = new LKItemHyenaHead(idHyenaHeadItem - 256).setUnlocalizedName("lionking:hyenaHead");
 		amulet = new LKItemAmulet(idAmulet - 256).setUnlocalizedName("lionking:amulet");
 		mountedShooterItem = new LKItemMountedShooter(idMountedShooterItem - 256).setUnlocalizedName("lionking:mountedShooter");
@@ -761,56 +767,49 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		hyenaMeal = new LKItemHyenaMeal(idHyenaMeal - 256).setUnlocalizedName("lionking:hyenaMeal");
 		cornKernels = new LKItem(idCornKernels - 256).setUnlocalizedName("lionking:cornKernels").setCreativeTab(LKCreativeTabs.tabMaterials);
 		driedMaize = new LKItem(idDriedMaize - 256).setUnlocalizedName("lionking:driedMaize").setCreativeTab(LKCreativeTabs.tabMaterials);
-		
-		try
-		{
-			for (Field field : mod_LionKing.class.getFields())
-			{
-				if (field.get(null) instanceof Block)
-				{
-					Block block = (Block)field.get(null);
+
+		try {
+			for (Field field : mod_LionKing.class.getFields()) {
+				if (field.get(null) instanceof Block) {
+					Block block = (Block) field.get(null);
 					field.set(null, block.setTextureName(block.getUnlocalizedName().substring(5)));
 				}
-				
-				if (field.get(null) instanceof Item)
-				{
-					Item item = (Item)field.get(null);
+
+				if (field.get(null) instanceof Item) {
+					Item item = (Item) field.get(null);
 					field.set(null, item.setTextureName(item.getUnlocalizedName().substring(5)));
 				}
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		idPrideLands = config.get("dimension", "Pride Lands", -2).getInt();
 		idOutlands = config.get("dimension", "Outlands", -3).getInt();
 		idUpendi = config.get("dimension", "Upendi", -4).getInt();
-		
+
 		idHyenaEnchantment = config.get("enchantment", "Scourge of Hyenas", 194).getInt();
 		idDiggahEnchantment = config.get("enchantment", "Biggah Diggah", 195).getInt();
 		idRafikiStickDamage = config.get("enchantment", "Sharpness", 196).getInt();
 		idRafikiStickDurability = config.get("enchantment", "Sturdy", 197).getInt();
 		idRafikiStickThunder = config.get("enchantment", "Thunder", 198).getInt();
 		idDiggahPrecision = config.get("enchantment", "Precision", 199).getInt();
-		
+
 		hyenaEnchantment = new LKEnchantmentHyena(idHyenaEnchantment, 5);
 		diggahEnchantment = new LKEnchantmentTunnahDiggah(idDiggahEnchantment, 25).setName("big");
 		rafikiStickDamage = new LKEnchantmentRafikiDamage(idRafikiStickDamage, 5);
 		rafikiStickDurability = new LKEnchantmentRafikiDurability(idRafikiStickDurability, 5);
 		rafikiStickThunder = new LKEnchantmentRafikiThunder(idRafikiStickThunder, 3);
 		diggahPrecision = new LKEnchantmentTunnahDiggah(idDiggahPrecision, 10).setName("precision");
-		
+
 		boothLimit = config.get("general", "Minimum distance between ticket booths", 250).getInt();
 		shouldCheckUpdates = config.get("general", "Check for updates", true).getBoolean(true);
 		randomBooths = config.get("general", "Random ticket booths", false).getBoolean(false);
 		lkMusicChance = config.get("general", "Lion King music percentage chance", 40).getInt();
-		
+
 		LKPrideLandsBiome.initBiomes(config);
-		
-		if (config.hasChanged())
-		{
+
+		if (config.hasChanged()) {
 			config.save();
 		}
 
@@ -818,17 +817,16 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LKAchievementList.preInitAchievements();
 		AchievementPage.registerAchievementPage(new LKAchievementList());
 	}
-	
+
 	@Mod.EventHandler
-	public void load(FMLInitializationEvent event)
-	{
+	public void load(FMLInitializationEvent event) {
 		instance = this;
-		
+
 		LKCreativeTabs.setupIcons();
-		
+
 		registerBlock(lionPortalFrame, "Pride Lands Portal Frame");
 		registerBlock(lionPortal, "Pride Lands Portal");
-		Item.itemsList[woodSlabDouble.blockID] = (new ItemSlab(woodSlabDouble.blockID - 256, (BlockHalfSlab)woodSlabSingle, (BlockHalfSlab)woodSlabDouble, true)).setUnlocalizedName("lk.woodSlabDouble");
+		Item.itemsList[woodSlabDouble.blockID] = (new ItemSlab(woodSlabDouble.blockID - 256, (BlockHalfSlab) woodSlabSingle, (BlockHalfSlab) woodSlabDouble, true)).setUnlocalizedName("lk.woodSlabDouble");
 		registerBlock(whiteFlower, "Flower");
 		registerBlock(forestLeaves, LKItemLeaves.class, "Rainforest Leaves");
 		LanguageRegistry.addName(new ItemStack(forestLeaves, 1, 4), "Rainforest Leaves");
@@ -840,14 +838,12 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		registerBlock(mangoSapling, "Mango Sapling");
 		registerBlock(grindBowl);
 		registerBlock(rafikiWood, LKItemMetadata.class, "Rafiki Wood");
-		for (int i = 0; i <= 2; i++)
-		{
+		for (int i = 0; i <= 2; i++) {
 			LanguageRegistry.addName(new ItemStack(rafikiWood, 1, i), "Rafiki Tree Wood");
 		}
 		registerBlock(rafikiLeaves, "Rafiki Leaves");
-		Item.itemsList[woodSlabSingle.blockID] = (new ItemSlab(woodSlabSingle.blockID - 256, (BlockHalfSlab)woodSlabSingle, (BlockHalfSlab)woodSlabDouble, false)).setUnlocalizedName("lk.woodSlabSingle");
-		for (int i = 0; i <= 5; i++)
-		{
+		Item.itemsList[woodSlabSingle.blockID] = (new ItemSlab(woodSlabSingle.blockID - 256, (BlockHalfSlab) woodSlabSingle, (BlockHalfSlab) woodSlabDouble, false)).setUnlocalizedName("lk.woodSlabSingle");
+		for (int i = 0; i <= 5; i++) {
 			LanguageRegistry.addName(new ItemStack(woodSlabSingle, 1, i), LKBlockWoodSlab.getSlabName(i));
 		}
 		registerBlock(outlandsPortalFrame, LKItemMetadata.class, "Outlands Portal Frame");
@@ -866,8 +862,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LanguageRegistry.addName(new ItemStack(prideBrick, 1, 0), "Pridestone Brick");
 		LanguageRegistry.addName(new ItemStack(prideBrick, 1, 1), "Corrupt Pridestone Brick");
 		registerBlock(pridePillar, LKItemMetadata.class, "Pridestone Pillar");
-		for (int i = 0; i <= 7; i++)
-		{
+		for (int i = 0; i <= 7; i++) {
 			LanguageRegistry.addName(new ItemStack(pridePillar, 1, i), i < 4 ? "Pridestone Pillar" : "Corrupt Pridestone Pillar");
 		}
 		registerBlock(sapling, "Acacia Sapling");
@@ -889,12 +884,11 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		registerBlock(outglassPane, "Outglass Pane");
 		registerBlock(starAltar, LKItemQuestBlock.class, "Star Altar");
 		LanguageRegistry.addName(new ItemStack(starAltar, 1, 0), "Star Altar");
-		Item.itemsList[slabSingle.blockID] = (new ItemSlab(slabSingle.blockID - 256, (BlockHalfSlab)slabSingle, (BlockHalfSlab)slabDouble, false)).setUnlocalizedName("lk.slab");
-		for (int i = 0; i <= 5; i++)
-		{
+		Item.itemsList[slabSingle.blockID] = (new ItemSlab(slabSingle.blockID - 256, (BlockHalfSlab) slabSingle, (BlockHalfSlab) slabDouble, false)).setUnlocalizedName("lk.slab");
+		for (int i = 0; i <= 5; i++) {
 			LanguageRegistry.addName(new ItemStack(slabSingle, 1, i), LKBlockSlab.getSlabName(i));
 		}
-		Item.itemsList[slabDouble.blockID] = (new ItemSlab(slabDouble.blockID - 256, (BlockHalfSlab)slabSingle, (BlockHalfSlab)slabDouble, true)).setUnlocalizedName("lk.slabDouble");
+		Item.itemsList[slabDouble.blockID] = (new ItemSlab(slabDouble.blockID - 256, (BlockHalfSlab) slabSingle, (BlockHalfSlab) slabDouble, true)).setUnlocalizedName("lk.slabDouble");
 		registerBlock(log, "Log");
 		registerBlock(prideWood, LKItemMetadata.class, "Wood");
 		LanguageRegistry.addName(new ItemStack(prideWood, 1, 0), "Acacia Wood");
@@ -903,8 +897,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LanguageRegistry.addName(new ItemStack(prideWood, 1, 3), "Passion Wood");
 		registerBlock(blueFlower, "Flower");
 		registerBlock(drum, LKItemMetadata.class, "lk.drum");
-		for (int i = 0; i <= 5; i++)
-		{
+		for (int i = 0; i <= 5; i++) {
 			LanguageRegistry.addName(new ItemStack(drum, 1, i), "Bongo Drum");
 		}
 		registerBlock(flowerVase, "Vase");
@@ -915,17 +908,14 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		registerBlock(blockPeacock, "Block of Peacock");
 		registerBlock(rug, LKItemRug.class, "Rug");
 		LanguageRegistry.addName(new ItemStack(rug, 1, 0), "Fur Rug");
-		for (int i = 1; i <= 15; i++)
-		{
+		for (int i = 1; i <= 15; i++) {
 			String s = LKBlockRug.colourNames[i];
-			if (s != null)
-			{
+			if (s != null) {
 				LanguageRegistry.instance().addNameForObject(new ItemStack(rug, 1, i), "en_GB", s + " " + "Fur Rug");
 				LanguageRegistry.instance().addNameForObject(new ItemStack(rug, 1, i), "en_CA", s + " " + "Fur Rug");
 			}
 			String s1 = LKBlockRug.colourNames_US[i];
-			if (s1 != null)
-			{
+			if (s1 != null) {
 				LanguageRegistry.instance().addNameForObject(new ItemStack(rug, 1, i), "en_US", s1 + " " + "Fur Rug");
 			}
 		}
@@ -985,11 +975,11 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		registerBlock(stairsDeadwood, "Deadwood Stairs");
 		registerBlock(mobSpawner);
 		registerBlock(driedMaizeBlock, "Dried Maize Block");
-		Item.itemsList[driedMaizeSlabSingle.blockID] = (new ItemSlab(driedMaizeSlabSingle.blockID - 256, (BlockHalfSlab)driedMaizeSlabSingle, (BlockHalfSlab)driedMaizeSlabDouble, false)).setUnlocalizedName("lk.driedMaizeSlabSingle");
+		Item.itemsList[driedMaizeSlabSingle.blockID] = (new ItemSlab(driedMaizeSlabSingle.blockID - 256, (BlockHalfSlab) driedMaizeSlabSingle, (BlockHalfSlab) driedMaizeSlabDouble, false)).setUnlocalizedName("lk.driedMaizeSlabSingle");
 		LanguageRegistry.addName(new ItemStack(driedMaizeSlabSingle, 1, 0), "Dried Maize Slab");
-		Item.itemsList[driedMaizeSlabDouble.blockID] = (new ItemSlab(driedMaizeSlabDouble.blockID - 256, (BlockHalfSlab)driedMaizeSlabSingle, (BlockHalfSlab)driedMaizeSlabDouble, true)).setUnlocalizedName("lk.driedMaizeSlabDouble");
+		Item.itemsList[driedMaizeSlabDouble.blockID] = (new ItemSlab(driedMaizeSlabDouble.blockID - 256, (BlockHalfSlab) driedMaizeSlabSingle, (BlockHalfSlab) driedMaizeSlabDouble, true)).setUnlocalizedName("lk.driedMaizeSlabDouble");
 		registerBlock(stairsDriedMaize, "Dried Maize Stairs");
-		
+
 		LanguageRegistry.addName(ticket, "Lion King Ticket");
 		LanguageRegistry.addName(new ItemStack(ticket, 1, 0), "Lion King Ticket");
 		LanguageRegistry.addName(new ItemStack(ticket, 1, 1), "Christmas Cracker");
@@ -1046,10 +1036,10 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LanguageRegistry.addName(helmetSilver, "Silver Helmet");
 		LanguageRegistry.addName(bodySilver, "Silver Chestplate");
 		LanguageRegistry.addName(legsSilver, "Silver Leggings");
-		LanguageRegistry.addName(bootsSilver, "Silver Boots"); 
-		LanguageRegistry.addName(vase, "Vase"); 
+		LanguageRegistry.addName(bootsSilver, "Silver Boots");
+		LanguageRegistry.addName(vase, "Vase");
 		LanguageRegistry.addName(horn, "Rhino Horn");
-		LanguageRegistry.addName(hornGround, "Ground Rhino Horn"); 
+		LanguageRegistry.addName(hornGround, "Ground Rhino Horn");
 		LanguageRegistry.addName(bed, "Bed");
 		LanguageRegistry.addName(gemsbokHide, "Gemsbok Hide");
 		LanguageRegistry.addName(gemsbokHorn, "Gemsbok Horn");
@@ -1072,8 +1062,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LanguageRegistry.addName(bootsPeacock, "Peacock Boots");
 		LanguageRegistry.addName(rugDye, "Rug Dye");
 		LanguageRegistry.addName(new ItemStack(rugDye, 1, 0), "Rug Whitener");
-		for (int i = 1; i <= 10; i++)
-		{
+		for (int i = 1; i <= 10; i++) {
 			LanguageRegistry.addName(new ItemStack(rugDye, 1, i), "Rug Dye");
 		}
 		LanguageRegistry.addName(wings, "Peacock Wings");
@@ -1157,559 +1146,554 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LanguageRegistry.addName(driedMaize, "Dried Maize");
 
 		GameRegistry.addRecipe(new ItemStack(dartBlue, 3), new Object[]{
-			"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherBlue
+				"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherBlue
 		});
 		GameRegistry.addRecipe(new ItemStack(dartYellow, 3), new Object[]{
-			"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherYellow
+				"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherYellow
 		});
 		GameRegistry.addRecipe(new ItemStack(dartRed, 3), new Object[]{
-			"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherRed
+				"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherRed
 		});
 		GameRegistry.addRecipe(new ItemStack(dartBlack, 3), new Object[]{
-			"X", "Y", "Z", 'X', itemTermite, 'Y', Item.stick, 'Z', featherBlack
+				"X", "Y", "Z", 'X', itemTermite, 'Y', Item.stick, 'Z', featherBlack
 		});
 		GameRegistry.addRecipe(new ItemStack(itemGrindingBowl), new Object[]{
-			" A ", "B B", "BBB", 'A', Item.stick, 'B', planks
+				" A ", "B B", "BBB", 'A', Item.stick, 'B', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(zebraBoots), new Object[]{
-			"  X", "XXX", "YYY", 'X', zebraHide, 'Y', hyenaBone
+				"  X", "XXX", "YYY", 'X', zebraHide, 'Y', hyenaBone
 		});
 		GameRegistry.addRecipe(new ItemStack(dartShooter), new Object[]{
-			"XYY", 'X', mangoDust, 'Y', planks
+				"XYY", 'X', mangoDust, 'Y', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(prideBrick, 4, 0), new Object[]{
-			"XX", "XX", 'X', new ItemStack(pridestone, 1, 0)
+				"XX", "XX", 'X', new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(pridePillar, 3, 0), new Object[]{
-			"X", "X", "X", 'X', new ItemStack(pridestone, 1, 0)
+				"X", "X", "X", 'X', new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.furnaceIdle), new Object[]{
-			"XXX", "X X", "XXX", 'X', pridestone
+				"XXX", "X X", "XXX", 'X', pridestone
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(button), new Object[]{
-			new ItemStack(pridestone, 1, 0)
+				new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(lever), new Object[]{
-			"X", "Y", 'X', Item.stick, 'Y', new ItemStack(pridestone, 1, 0)
+				"X", "Y", 'X', Item.stick, 'Y', new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(pressurePlate), new Object[]{
-			"XX", 'X', new ItemStack(pridestone, 1, 0)
+				"XX", 'X', new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(shovel), new Object[]{
-			"X", "Y", "Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
+				"X", "Y", "Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(pickaxe), new Object[]{
-			"XXX", " Y ", " Y ", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
+				"XXX", " Y ", " Y ", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(axe), new Object[]{
-			"XX", "XY", " Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
+				"XX", "XY", " Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(sword), new Object[]{
-			"X", "X", "Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
+				"X", "X", "Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(hoe), new Object[]{
-			"XX", " Y", " Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
+				"XX", " Y", " Y", 'X', new ItemStack(pridestone, 1, 0), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(stoneStairs, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(pridestone, 1, 0)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(brickStairs, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(prideBrick, 1, 0)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(prideBrick, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(jar), new Object[]{
-			"X X", "X X", " X ", 'X', pridestone
+				"X X", "X X", " X ", 'X', pridestone
 		});
 		GameRegistry.addRecipe(new ItemStack(silverDartShooter), new Object[]{
-			"XYY", 'X', mangoDust, 'Y', silver
+				"XYY", 'X', mangoDust, 'Y', silver
 		});
 		GameRegistry.addRecipe(new ItemStack(shovelSilver), new Object[]{
-			"X", "Y", "Y", 'X', silver, 'Y', Item.stick
+				"X", "Y", "Y", 'X', silver, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(pickaxeSilver), new Object[]{
-			"XXX", " Y ", " Y ", 'X', silver, 'Y', Item.stick
+				"XXX", " Y ", " Y ", 'X', silver, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(axeSilver), new Object[]{
-			"XX", "XY", " Y", 'X', silver, 'Y', Item.stick
+				"XX", "XY", " Y", 'X', silver, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(swordSilver), new Object[]{
-			"X", "X", "Y", 'X', silver, 'Y', Item.stick
+				"X", "X", "Y", 'X', silver, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(hoeSilver), new Object[]{
-			"XX", " Y", " Y", 'X', silver, 'Y', Item.stick
+				"XX", " Y", " Y", 'X', silver, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(outglassPane, 16), new Object[]{
-			"XXX", "XXX", 'X', outglass
+				"XXX", "XXX", 'X', outglass
 		});
 		GameRegistry.addRecipe(new ItemStack(slabSingle, 6, 0), new Object[]{
-			"XXX", 'X', new ItemStack(pridestone, 1, 0)
+				"XXX", 'X', new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(slabSingle, 6, 1), new Object[]{
-			"XXX", 'X', new ItemStack(prideBrick, 1, 0)
+				"XXX", 'X', new ItemStack(prideBrick, 1, 0)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(planks, 4, 0), new Object[]{
-			new ItemStack(prideWood, 1, 0)
+				new ItemStack(prideWood, 1, 0)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(planks, 4, 1), new Object[]{
-			new ItemStack(prideWood, 1, 1)
+				new ItemStack(prideWood, 1, 1)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(planks, 4, 2), new Object[]{
-			new ItemStack(prideWood, 1, 2)
+				new ItemStack(prideWood, 1, 2)
 		});
-		for (int i = 0; i < 4; i++)
-		{
+		for (int i = 0; i < 4; i++) {
 			GameRegistry.addRecipe(new ItemStack(drum, 1, i), new Object[]{
-				"XXX", "Y Y", "YYY", 'X', zebraHide, 'Y', new ItemStack(prideWood, 1, i)
+					"XXX", "Y Y", "YYY", 'X', zebraHide, 'Y', new ItemStack(prideWood, 1, i)
 			});
 		}
 		GameRegistry.addRecipe(new ItemStack(Block.dispenser), new Object[]{
-			"XXX", "XYX", "XXX", 'X', pridestone, 'Y', dartShooter
+				"XXX", "XYX", "XXX", 'X', pridestone, 'Y', dartShooter
 		});
 		GameRegistry.addRecipe(new ItemStack(slabSingle, 6, 2), new Object[]{
-			"XXX", 'X', new ItemStack(pridePillar, 1, 0)
+				"XXX", 'X', new ItemStack(pridePillar, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(helmetSilver), new Object[]{
-			"XXX", "X X", 'X', silver
+				"XXX", "X X", 'X', silver
 		});
 		GameRegistry.addRecipe(new ItemStack(bodySilver), new Object[]{
-			"X X", "XXX", "XXX", 'X', silver
+				"X X", "XXX", "XXX", 'X', silver
 		});
 		GameRegistry.addRecipe(new ItemStack(legsSilver), new Object[]{
-			"XXX", "X X", "X X", 'X', silver
+				"XXX", "X X", "X X", 'X', silver
 		});
 		GameRegistry.addRecipe(new ItemStack(bootsSilver), new Object[]{
-			"X X", "X X", 'X', silver
+				"X X", "X X", 'X', silver
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 0), new Object[]{
-			"X", "Y", 'X', whiteFlower, 'Y', jarWater
+				"X", "Y", 'X', whiteFlower, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 1), new Object[]{
-			"X", "Y", 'X', blueFlower, 'Y', jarWater
+				"X", "Y", 'X', blueFlower, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 2), new Object[]{
-			"X", "Y", 'X', purpleFlower, 'Y', jarWater
+				"X", "Y", 'X', purpleFlower, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(gemsbokSpear), new Object[]{
-			"  Y", " Y ", "X  ", 'X', Item.stick, 'Y', gemsbokHorn
+				"  Y", " Y ", "X  ", 'X', Item.stick, 'Y', gemsbokHorn
 		});
-		GameRegistry.addShapelessRecipe(new ItemStack(juice), new Object[] {
-            new ItemStack(mango), new ItemStack(mango), new ItemStack(jarWater)
-        });
+		GameRegistry.addShapelessRecipe(new ItemStack(juice), new Object[]{
+				new ItemStack(mango), new ItemStack(mango), new ItemStack(jarWater)
+		});
 		GameRegistry.addRecipe(new ItemStack(helmetGemsbok), new Object[]{
-			"XXX", "X X", 'X', gemsbokHide
+				"XXX", "X X", 'X', gemsbokHide
 		});
 		GameRegistry.addRecipe(new ItemStack(bodyGemsbok), new Object[]{
-			"X X", "XXX", "XXX", 'X', gemsbokHide
+				"X X", "XXX", "XXX", 'X', gemsbokHide
 		});
 		GameRegistry.addRecipe(new ItemStack(legsGemsbok), new Object[]{
-			"XXX", "X X", "X X", 'X', gemsbokHide
+				"XXX", "X X", "X X", 'X', gemsbokHide
 		});
 		GameRegistry.addRecipe(new ItemStack(bootsGemsbok), new Object[]{
-			"X X", "X X", 'X', gemsbokHide
+				"X X", "X X", 'X', gemsbokHide
 		});
 		GameRegistry.addRecipe(new ItemStack(blockSilver, 1, 0), new Object[]{
-			"XXX", "XXX", "XXX", 'X', silver
+				"XXX", "XXX", "XXX", 'X', silver
 		});
 		GameRegistry.addRecipe(new ItemStack(silver, 9), new Object[]{
-			"X", 'X', new ItemStack(blockSilver, 1, 0)
+				"X", 'X', new ItemStack(blockSilver, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(blockPeacock), new Object[]{
-			"XXX", "XXX", "XXX", 'X', peacockGem
+				"XXX", "XXX", "XXX", 'X', peacockGem
 		});
 		GameRegistry.addRecipe(new ItemStack(peacockGem, 9), new Object[]{
-			"X", 'X', blockPeacock
+				"X", 'X', blockPeacock
 		});
 		GameRegistry.addRecipe(new ItemStack(shovelPeacock), new Object[]{
-			"X", "Y", "Y", 'X', peacockGem, 'Y', Item.stick
+				"X", "Y", "Y", 'X', peacockGem, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(pickaxePeacock), new Object[]{
-			"XXX", " Y ", " Y ", 'X', peacockGem, 'Y', Item.stick
+				"XXX", " Y ", " Y ", 'X', peacockGem, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(axePeacock), new Object[]{
-			"XX", "XY", " Y", 'X', peacockGem, 'Y', Item.stick
+				"XX", "XY", " Y", 'X', peacockGem, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(swordPeacock), new Object[]{
-			"X", "X", "Y", 'X', peacockGem, 'Y', Item.stick
+				"X", "X", "Y", 'X', peacockGem, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(hoePeacock), new Object[]{
-			"XX", " Y", " Y", 'X', peacockGem, 'Y', Item.stick
+				"XX", " Y", " Y", 'X', peacockGem, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(helmetPeacock), new Object[]{
-			"XXX", "X X", 'X', peacockGem
+				"XXX", "X X", 'X', peacockGem
 		});
 		GameRegistry.addRecipe(new ItemStack(bodyPeacock), new Object[]{
-			"X X", "XXX", "XXX", 'X', peacockGem
+				"X X", "XXX", "XXX", 'X', peacockGem
 		});
 		GameRegistry.addRecipe(new ItemStack(legsPeacock), new Object[]{
-			"XXX", "X X", "X X", 'X', peacockGem
+				"XXX", "X X", "X X", 'X', peacockGem
 		});
 		GameRegistry.addRecipe(new ItemStack(bootsPeacock), new Object[]{
-			"X X", "X X", 'X', peacockGem
+				"X X", "X X", 'X', peacockGem
 		});
 		GameRegistry.addRecipe(new ItemStack(rug, 4, 0), new Object[]{
-			"XX", "XX", 'X', fur
+				"XX", "XX", 'X', fur
 		});
-		for (int i = 0; i <= 15; i++)
-		{
-			if (i != 1)
-			{
+		for (int i = 0; i <= 15; i++) {
+			if (i != 1) {
 				GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 1), new Object[]{
-					new ItemStack(rug, 1, i), new ItemStack(rugDye, 1, 0)
+						new ItemStack(rug, 1, i), new ItemStack(rugDye, 1, 0)
 				});
 			}
 		}
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 2), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 1)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 1)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 3), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 2)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 2)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 4), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 3)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 3)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 5), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 4)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 4)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 6), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 5)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 5)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 7), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 6)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 6)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 8), new Object[]{
-			new ItemStack(rug, 1, 1), mangoDust
+				new ItemStack(rug, 1, 1), mangoDust
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 9), new Object[]{
-			new ItemStack(rug, 1, 1), hornGround
+				new ItemStack(rug, 1, 1), hornGround
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 10), new Object[]{
-			new ItemStack(rug, 1, 1), termiteDust
+				new ItemStack(rug, 1, 1), termiteDust
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 11), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 7)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 7)
 		});
 		GameRegistry.addRecipe(new ItemStack(rug, 4, 12), new Object[]{
-			"XX", "XX", 'X', outlanderFur
+				"XX", "XX", 'X', outlanderFur
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 13), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 8)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 8)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 14), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 9)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 9)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(rug, 1, 15), new Object[]{
-			new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 10)
+				new ItemStack(rug, 1, 1), new ItemStack(rugDye, 1, 10)
 		});
 		GameRegistry.addRecipe(new ItemStack(wings), new Object[]{
-			"PRP", "YPY", "BPB", 'P', peacockGem, 'R', featherRed, 'Y', featherYellow, 'B', featherBlue
+				"PRP", "YPY", "BPB", 'P', peacockGem, 'R', featherRed, 'Y', featherYellow, 'B', featherBlue
 		});
 		GameRegistry.addRecipe(new ItemStack(bed), new Object[]{
-			"XXX", "YYY", 'X', fur, 'Y', planks
+				"XXX", "YYY", 'X', fur, 'Y', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.paper, 3), new Object[]{
-			"XXX", 'X', cornStalk
+				"XXX", 'X', cornStalk
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 3), new Object[]{
-			"X", "Y", 'X', redFlower, 'Y', jarWater
+				"X", "Y", 'X', redFlower, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(blockSilver, 1, 1), new Object[]{
-			"XXX", "XXX", "XXX", 'X', kivulite
+				"XXX", "XXX", "XXX", 'X', kivulite
 		});
 		GameRegistry.addRecipe(new ItemStack(kivulite, 9), new Object[]{
-			"X", 'X', new ItemStack(blockSilver, 1, 1)
+				"X", 'X', new ItemStack(blockSilver, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(shovelKivulite), new Object[]{
-			"X", "Y", "Y", 'X', kivulite, 'Y', Item.stick
+				"X", "Y", "Y", 'X', kivulite, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(pickaxeKivulite), new Object[]{
-			"XXX", " Y ", " Y ", 'X', kivulite, 'Y', Item.stick
+				"XXX", " Y ", " Y ", 'X', kivulite, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(axeKivulite), new Object[]{
-			"XX", "XY", " Y", 'X', kivulite, 'Y', Item.stick
+				"XX", "XY", " Y", 'X', kivulite, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(swordKivulite), new Object[]{
-			"X", "X", "Y", 'X', kivulite, 'Y', Item.stick
+				"X", "X", "Y", 'X', kivulite, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(bugTrap), new Object[]{
-			"XXX", "YZY", "XBX", 'X', new ItemStack(prideWood, 1, 0), 'Y', silver, 'Z', Item.stick, 'B', bug
+				"XXX", "YZY", "XBX", 'X', new ItemStack(prideWood, 1, 0), 'Y', silver, 'Z', Item.stick, 'B', bug
 		});
 		GameRegistry.addRecipe(new ItemStack(starAltar), new Object[]{
-			"XXX", "YYY", 'X', lionDust, 'Y', silver
+				"XXX", "YYY", 'X', lionDust, 'Y', silver
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(poisonedSpear), new Object[]{
-			gemsbokSpear, poison, poison
+				gemsbokSpear, poison, poison
 		});
 		GameRegistry.addRecipe(new ItemStack(prideBrick, 4, 1), new Object[]{
-			"XX", "XX", 'X', new ItemStack(pridestone, 1, 1)
+				"XX", "XX", 'X', new ItemStack(pridestone, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(pridePillar, 3, 4), new Object[]{
-			"X", "X", "X", 'X', new ItemStack(pridestone, 1, 1)
+				"X", "X", "X", 'X', new ItemStack(pridestone, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(slabSingle, 6, 3), new Object[]{
-			"XXX", 'X', new ItemStack(pridestone, 1, 1)
+				"XXX", 'X', new ItemStack(pridestone, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(slabSingle, 6, 4), new Object[]{
-			"XXX", 'X', new ItemStack(prideBrick, 1, 1)
+				"XXX", 'X', new ItemStack(prideBrick, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(slabSingle, 6, 5), new Object[]{
-			"XXX", 'X', new ItemStack(pridePillar, 1, 4)
+				"XXX", 'X', new ItemStack(pridePillar, 1, 4)
 		});
 		GameRegistry.addRecipe(new ItemStack(shovelCorrupt), new Object[]{
-			"X", "Y", "Y", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
+				"X", "Y", "Y", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(pickaxeCorrupt), new Object[]{
-			"XXX", " Y ", " Y ", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
+				"XXX", " Y ", " Y ", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(axeCorrupt), new Object[]{
-			"XX", "XY", " Y", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
+				"XX", "XY", " Y", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(swordCorrupt), new Object[]{
-			"X", "X", "Y", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
+				"X", "X", "Y", 'X', new ItemStack(pridestone, 1, 1), 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(stoneStairsCorrupt, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(pridestone, 1, 1)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(pridestone, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(brickStairsCorrupt, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(prideBrick, 1, 1)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(prideBrick, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(charm), new Object[]{
-			" X ", "XYX", " X ", 'X', silver, 'Y', lionDust
+				" X ", "XYX", " X ", 'X', silver, 'Y', lionDust
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(kiwanoSeeds), new Object[]{
-			kiwano
+				kiwano
 		});
 		GameRegistry.addRecipe(new ItemStack(kiwanoBlock), new Object[]{
-			"XXX", "XXX", "XXX", 'X', kiwano
+				"XXX", "XXX", "XXX", 'X', kiwano
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(bugStew), new Object[]{
-			Item.bowlEmpty, bug, mango, jarMilk
+				Item.bowlEmpty, bug, mango, jarMilk
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.book), new Object[]{
-			Item.paper, Item.paper, Item.paper, gemsbokHide
+				Item.paper, Item.paper, Item.paper, gemsbokHide
 		});
 		GameRegistry.addRecipe(new ItemStack(termite, 1, 1), new Object[]{
-			" X ", "XYX", " X ", 'X', itemTermite, 'Y', new ItemStack(pridestone, 1, 1)
+				" X ", "XYX", " X ", 'X', itemTermite, 'Y', new ItemStack(pridestone, 1, 1)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.bowlSoup), new Object[]{
-			Item.bowlEmpty, outshroom, outshroom
+				Item.bowlEmpty, outshroom, outshroom
 		});
 		GameRegistry.addRecipe(new ItemStack(outshroomGlowing), new Object[]{
-			"X", "Y", 'X', nukaShard, 'Y', outshroom
+				"X", "Y", 'X', nukaShard, 'Y', outshroom
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 4), new Object[]{
-			"X", "Y", 'X', sapling, 'Y', jarWater
+				"X", "Y", 'X', sapling, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 5), new Object[]{
-			"X", "Y", 'X', forestSapling, 'Y', jarWater
+				"X", "Y", 'X', forestSapling, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 6), new Object[]{
-			"X", "Y", 'X', mangoSapling, 'Y', jarWater
+				"X", "Y", 'X', mangoSapling, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 7), new Object[]{
-			"X", "Y", 'X', outshroom, 'Y', jarWater
+				"X", "Y", 'X', outshroom, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 8), new Object[]{
-			"X", "Y", 'X', outshroomGlowing, 'Y', jarWater
+				"X", "Y", 'X', outshroomGlowing, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(stairsAcacia, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 0)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(stairsRainforest, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 1)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(stairsMango, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 2)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 2)
 		});
 		GameRegistry.addRecipe(new ItemStack(woodSlabSingle, 6, 0), new Object[]{
-			"XXX", 'X', new ItemStack(planks, 1, 0)
+				"XXX", 'X', new ItemStack(planks, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(woodSlabSingle, 6, 1), new Object[]{
-			"XXX", 'X', new ItemStack(planks, 1, 1)
+				"XXX", 'X', new ItemStack(planks, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(woodSlabSingle, 6, 2), new Object[]{
-			"XXX", 'X', new ItemStack(planks, 1, 2)
+				"XXX", 'X', new ItemStack(planks, 1, 2)
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.tnt), new Object[]{
-			"XYX", "YXY", "XYX", 'X', termiteDust, 'Y', Block.sand
+				"XYX", "YXY", "XYX", 'X', termiteDust, 'Y', Block.sand
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.stick, 4), new Object[]{
-			"X", "X", 'X', planks
+				"X", "X", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.pressurePlatePlanks), new Object[]{
-			"XX", 'X', planks
+				"XX", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.bowlEmpty, 4), new Object[]{
-			"X X", " X ", 'X', planks
+				"X X", " X ", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.workbench), new Object[]{
-			"XX", "XX", 'X', planks
+				"XX", "XX", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.boat), new Object[]{
-			"X X", "XXX", 'X', planks
+				"X X", "XXX", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.doorWood), new Object[]{
-			"XX", "XX", "XX", 'X', planks
+				"XX", "XX", "XX", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.trapdoor, 2), new Object[]{
-			"XXX", "XXX", 'X', planks
+				"XXX", "XXX", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.chest), new Object[]{
-			"XXX", "X X", "XXX", 'X', planks
+				"XXX", "X X", "XXX", 'X', planks
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.shovelWood), new Object[]{
-			"X", "Y", "Y", 'X', planks, 'Y', Item.stick
+				"X", "Y", "Y", 'X', planks, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.pickaxeWood), new Object[]{
-			"XXX", " Y ", " Y ", 'X', planks, 'Y', Item.stick
+				"XXX", " Y ", " Y ", 'X', planks, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.axeWood), new Object[]{
-			"XX", "XY", " Y", 'X', planks, 'Y', Item.stick
+				"XX", "XY", " Y", 'X', planks, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.swordWood), new Object[]{
-			"X", "X", "Y", 'X', planks, 'Y', Item.stick
+				"X", "X", "Y", 'X', planks, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.hoeWood), new Object[]{
-			"XX", " Y", " Y", 'X', planks, 'Y', Item.stick
+				"XX", " Y", " Y", 'X', planks, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.fenceGate), new Object[]{
-			"YXY", "YXY", 'X', planks, 'Y', Item.stick
+				"YXY", "YXY", 'X', planks, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(Block.bookShelf), new Object[]{
-			"XXX", "YYY", "XXX", 'X', planks, 'Y', Item.book
+				"XXX", "YYY", "XXX", 'X', planks, 'Y', Item.book
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.sign, 3), new Object[]{
-			"XXX", "XXX", " Y ", 'X', planks, 'Y', Item.stick
+				"XXX", "XXX", " Y ", 'X', planks, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(mountedShooterItem, 1, 0), new Object[]{
-			" X ", "Y Y", 'X', dartShooter, 'Y', Item.stick
+				" X ", "Y Y", 'X', dartShooter, 'Y', Item.stick
 		});
 		GameRegistry.addRecipe(new ItemStack(mountedShooterItem, 1, 1), new Object[]{
-			" X ", "Y Y", 'X', silverDartShooter, 'Y', Item.stick
+				" X ", "Y Y", 'X', silverDartShooter, 'Y', Item.stick
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(planks, 4, 3), new Object[]{
-			new ItemStack(prideWood, 1, 3)
+				new ItemStack(prideWood, 1, 3)
 		});
 		GameRegistry.addRecipe(new ItemStack(woodSlabSingle, 6, 3), new Object[]{
-			"XXX", 'X', new ItemStack(planks, 1, 3)
+				"XXX", 'X', new ItemStack(planks, 1, 3)
 		});
 		GameRegistry.addRecipe(new ItemStack(stairsPassion, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 3)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 3)
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 9), new Object[]{
-			"X", "Y", 'X', passionSapling, 'Y', jarWater
+				"X", "Y", 'X', passionSapling, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(hyenaTorch, 4), new Object[]{
-			"X", "Y", 'X', Item.coal, 'Y', hyenaBone
+				"X", "Y", 'X', Item.coal, 'Y', hyenaBone
 		});
 		GameRegistry.addRecipe(new ItemStack(hyenaTorch, 4), new Object[]{
-			"X", "Y", 'X', new ItemStack(Item.coal, 1, 1), 'Y', hyenaBone
+				"X", "Y", 'X', new ItemStack(Item.coal, 1, 1), 'Y', hyenaBone
 		});
 		GameRegistry.addRecipe(new ItemStack(staff), new Object[]{
-			"X", "Y", "Y", 'X', peacockGem, 'Y', gemsbokHorn
+				"X", "Y", "Y", 'X', peacockGem, 'Y', gemsbokHorn
 		});
 		GameRegistry.addRecipe(new ItemStack(giraffeSaddle), new Object[]{
-			"XXX", "Y Y", 'X', gemsbokHide, 'Y', silver
+				"XXX", "Y Y", 'X', gemsbokHide, 'Y', silver
 		});
 		GameRegistry.addRecipe(new ItemStack(Item.itemFrame), new Object[]{
-			"XXX", "XYX", "XXX", 'X', Item.stick, 'Y', zebraHide
+				"XXX", "XYX", "XXX", 'X', Item.stick, 'Y', zebraHide
 		});
 		GameRegistry.addRecipe(new ItemStack(wall, 1, 0), new Object[]{
-			"XXX", "XXX", 'X', new ItemStack(pridestone, 1, 0)
+				"XXX", "XXX", 'X', new ItemStack(pridestone, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(wall, 1, 1), new Object[]{
-			"XXX", "XXX", 'X', new ItemStack(prideBrick, 1, 0)
+				"XXX", "XXX", 'X', new ItemStack(prideBrick, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(wall, 1, 2), new Object[]{
-			"XXX", "XXX", 'X', new ItemStack(prideBrickMossy, 1, 0)
+				"XXX", "XXX", 'X', new ItemStack(prideBrickMossy, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(wall, 1, 3), new Object[]{
-			"XXX", "XXX", 'X', new ItemStack(pridestone, 1, 1)
+				"XXX", "XXX", 'X', new ItemStack(pridestone, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(wall, 1, 4), new Object[]{
-			"XXX", "XXX", 'X', new ItemStack(prideBrick, 1, 1)
+				"XXX", "XXX", 'X', new ItemStack(prideBrick, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(tie, 1, 0), new Object[]{
-			"X", "X", "X", 'X', fur
+				"X", "X", "X", 'X', fur
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(tie, 1, 2), new Object[]{
-			new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 1)
+				new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 1)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(tie, 1, 3), new Object[]{
-			new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 2)
+				new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 2)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(tie, 1, 4), new Object[]{
-			new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 3)
+				new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 3)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(tie, 1, 5), new Object[]{
-			new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 4)
+				new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 4)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(tie, 1, 6), new Object[]{
-			new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 6)
+				new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 6)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(tie, 1, 7), new Object[]{
-			new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 7)
+				new ItemStack(tie, 1, 1), new ItemStack(rugDye, 1, 7)
 		});
-		for (int i = 0; i <= 7; i++)
-		{
-			if (i != 1)
-			{
+		for (int i = 0; i <= 7; i++) {
+			if (i != 1) {
 				GameRegistry.addShapelessRecipe(new ItemStack(tie, 1, 1), new Object[]{
-					new ItemStack(tie, 1, i), new ItemStack(rugDye, 1, 0)
+						new ItemStack(tie, 1, i), new ItemStack(rugDye, 1, 0)
 				});
 			}
 		}
 		GameRegistry.addShapelessRecipe(new ItemStack(planks, 4, 4), new Object[]{
-			new ItemStack(prideWood2, 1, 0)
+				new ItemStack(prideWood2, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(drum, 1, 4), new Object[]{
-			"XXX", "Y Y", "YYY", 'X', zebraHide, 'Y', new ItemStack(prideWood2, 1, 0)
+				"XXX", "Y Y", "YYY", 'X', zebraHide, 'Y', new ItemStack(prideWood2, 1, 0)
 		});
 		GameRegistry.addRecipe(new ItemStack(woodSlabSingle, 6, 4), new Object[]{
-			"XXX", 'X', new ItemStack(planks, 1, 4)
+				"XXX", 'X', new ItemStack(planks, 1, 4)
 		});
 		GameRegistry.addRecipe(new ItemStack(stairsBanana, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 4)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 4)
 		});
 		GameRegistry.addRecipe(new ItemStack(vase, 1, 10), new Object[]{
-			"X", "Y", 'X', bananaSapling, 'Y', jarWater
+				"X", "Y", 'X', bananaSapling, 'Y', jarWater
 		});
 		GameRegistry.addRecipe(new ItemStack(bananaCake), new Object[]{
-			"AAA", "BCB", "DDD", 'A', jarMilk, 'B', banana, 'C', zazuEgg, 'D', Item.wheat
+				"AAA", "BCB", "DDD", 'A', jarMilk, 'B', banana, 'C', zazuEgg, 'D', Item.wheat
 		});
 		GameRegistry.addRecipe(new ItemStack(dartPink, 3), new Object[]{
-			"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherPink
+				"X", "Y", "Z", 'X', hyenaBoneShard, 'Y', Item.stick, 'Z', featherPink
 		});
 		GameRegistry.addRecipe(new ItemStack(bananaBread), new Object[]{
-			"XYX", 'X', Item.wheat, 'Y', banana
+				"XYX", 'X', Item.wheat, 'Y', banana
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(planks, 4, 5), new Object[]{
-			new ItemStack(prideWood2, 1, 1)
+				new ItemStack(prideWood2, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(drum, 1, 5), new Object[]{
-			"XXX", "Y Y", "YYY", 'X', zebraHide, 'Y', new ItemStack(prideWood2, 1, 1)
+				"XXX", "Y Y", "YYY", 'X', zebraHide, 'Y', new ItemStack(prideWood2, 1, 1)
 		});
 		GameRegistry.addRecipe(new ItemStack(woodSlabSingle, 6, 5), new Object[]{
-			"XXX", 'X', new ItemStack(planks, 1, 5)
+				"XXX", 'X', new ItemStack(planks, 1, 5)
 		});
 		GameRegistry.addRecipe(new ItemStack(stairsDeadwood, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 5)
+				"X  ", "XX ", "XXX", 'X', new ItemStack(planks, 1, 5)
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(Block.woodenButton), new Object[]{
-			planks
+				planks
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(hyenaMeal, 3), new Object[]{
-			hyenaBone
+				hyenaBone
 		});
 		GameRegistry.addShapelessRecipe(new ItemStack(cornKernels, 2), new Object[]{
-			corn
+				corn
 		});
 		GameRegistry.addRecipe(new ItemStack(driedMaizeBlock), new Object[]{
-			"XX", "XX", 'X', driedMaize
+				"XX", "XX", 'X', driedMaize
 		});
 		GameRegistry.addRecipe(new ItemStack(driedMaizeSlabSingle, 6, 0), new Object[]{
-			"XXX", 'X', driedMaizeBlock
+				"XXX", 'X', driedMaizeBlock
 		});
 		GameRegistry.addRecipe(new ItemStack(stairsDriedMaize, 4), new Object[]{
-			"X  ", "XX ", "XXX", 'X', driedMaizeBlock
+				"X  ", "XX ", "XXX", 'X', driedMaizeBlock
 		});
 
 		FurnaceRecipes.smelting().addSmelting(lionRaw.itemID, new ItemStack(lionCooked), 0.35F);
@@ -1718,7 +1702,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		FurnaceRecipes.smelting().addSmelting(corn.itemID, new ItemStack(popcorn), 0.35F);
 		FurnaceRecipes.smelting().addSmelting(yam.itemID, new ItemStack(roastYam), 0.35F);
 		FurnaceRecipes.smelting().addSmelting(outlanderMeat.itemID, new ItemStack(lionCooked), 0.2F);
-		
+
 		FurnaceRecipes.smelting().addSmelting(prideWood.blockID, new ItemStack(Item.coal, 1, 1), 0.15F);
 		FurnaceRecipes.smelting().addSmelting(prideWood2.blockID, new ItemStack(Item.coal, 1, 1), 0.15F);
 		FurnaceRecipes.smelting().addSmelting(log.blockID, new ItemStack(Item.coal, 1, 1), 0.15F);
@@ -1727,12 +1711,12 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 
 		FurnaceRecipes.smelting().addSmelting(prideCoal.blockID, 0, new ItemStack(Item.coal), 0.1F);
 		FurnaceRecipes.smelting().addSmelting(prideCoal.blockID, 1, new ItemStack(nukaShard), 0.5F);
-		
+
 		FurnaceRecipes.smelting().addSmelting(oreSilver.blockID, 0, new ItemStack(silver), 0.8F);
 		FurnaceRecipes.smelting().addSmelting(oreSilver.blockID, 1, new ItemStack(kivulite), 0.8F);
-		
+
 		FurnaceRecipes.smelting().addSmelting(orePeacock.blockID, new ItemStack(peacockGem), 1.0F);
-		
+
 		LKEntities.registerCreature(LKEntityLion.class, "Lion", 1, 0xE8AB28, 0xA94400);
 		LKEntities.registerCreature(LKEntityLioness.class, "Lioness", 2, 0xDDAA39, 0xD35D1D);
 		LKEntities.registerCreature(LKEntityZebra.class, "Zebra", 3, 0xE2E2E2, 0x161616);
@@ -1759,7 +1743,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LKEntities.registerCreature(LKEntitySkeletalHyenaHead.class, "Skeletal Hyena Head", 24, 0xD0CAAA, 0x767360);
 		LKEntities.registerCreature(LKEntityDikdik.class, "Dik-dik", 25, 0xB7783B, 0x684729);
 		LKEntities.registerCreature(LKEntityFlamingo.class, "Flamingo", 26, 0xF57B9E, 0xF9D9E3);
-		
+
 		LKEntities.registerEntity(LKEntityBlueDart.class, "Blue Dart", 100);
 		LKEntities.registerEntity(LKEntityYellowDart.class, "Yellow Dart", 101);
 		LKEntities.registerEntity(LKEntityRedDart.class, "Red Dart", 102);
@@ -1773,8 +1757,8 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		LKEntities.registerEntity(LKEntityZazuEgg.class, "Zazu Egg", 110);
 		LKEntities.registerEntity(LKEntityScarRug.class, "Scar Rug", 111);
 		LKEntities.registerEntity(LKEntityPinkDart.class, "Flamingo Dart", 112);
-		
- 		GameRegistry.registerTileEntity(LKTileEntityGrindingBowl.class, "Grinding Bowl");
+
+		GameRegistry.registerTileEntity(LKTileEntityGrindingBowl.class, "Grinding Bowl");
 		GameRegistry.registerTileEntity(LKTileEntityBugTrap.class, "LKBugTrap");
 		GameRegistry.registerTileEntity(LKTileEntityDrum.class, "LKBongoDrum");
 		GameRegistry.registerTileEntity(LKTileEntityOutlandsPool.class, "LKOutlandsPool");
@@ -1782,13 +1766,13 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		GameRegistry.registerTileEntity(LKTileEntityMountedShooter.class, "LKMountedShooter");
 		GameRegistry.registerTileEntity(LKTileEntityFurRug.class, "LKRug");
 		GameRegistry.registerTileEntity(LKTileEntityMobSpawner.class, "LKMobSpawner");
-		
+
 		LanguageRegistry.instance().addStringLocalization("enchantment.damage.hyena", "Scourge of Hyenas");
 		LanguageRegistry.instance().addStringLocalization("enchantment.td.big", "Biggah Diggah");
 		LanguageRegistry.instance().addStringLocalization("enchantment.rafiki.durability", "Sturdy");
 		LanguageRegistry.instance().addStringLocalization("enchantment.rafiki.thunder", "Thunder");
 		LanguageRegistry.instance().addStringLocalization("enchantment.td.precision", "Precision");
-		
+
 		Block.setBurnProperties(woodSlabDouble.blockID, 5, 20);
 		Block.setBurnProperties(forestLeaves.blockID, 30, 60);
 		Block.setBurnProperties(mangoLeaves.blockID, 30, 60);
@@ -1814,11 +1798,11 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 
 		Block.useNeighborBrightness[woodSlabSingle.blockID] = true;
 		Block.useNeighborBrightness[pridePillar.blockID] = true;
-        Block.useNeighborBrightness[stoneStairs.blockID] = true;
-        Block.useNeighborBrightness[brickStairs.blockID] = true;
+		Block.useNeighborBrightness[stoneStairs.blockID] = true;
+		Block.useNeighborBrightness[brickStairs.blockID] = true;
 		Block.useNeighborBrightness[slabSingle.blockID] = true;
-        Block.useNeighborBrightness[stoneStairsCorrupt.blockID] = true;
-        Block.useNeighborBrightness[brickStairsCorrupt.blockID] = true;
+		Block.useNeighborBrightness[stoneStairsCorrupt.blockID] = true;
+		Block.useNeighborBrightness[brickStairsCorrupt.blockID] = true;
 		Block.useNeighborBrightness[tilledSand.blockID] = true;
 		Block.useNeighborBrightness[stairsAcacia.blockID] = true;
 		Block.useNeighborBrightness[stairsRainforest.blockID] = true;
@@ -1856,7 +1840,7 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		MinecraftForge.setToolClass(shovelCorrupt, "shovel", 1);
 		MinecraftForge.setToolClass(pickaxeCorrupt, "pickaxe", 1);
 		MinecraftForge.setToolClass(axeCorrupt, "axe", 1);
-		
+
 		GameRegistry.registerCraftingHandler(this);
 		GameRegistry.registerFuelHandler(this);
 		GameRegistry.registerPickupHandler(this);
@@ -1867,9 +1851,9 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		NetworkRegistry.instance().registerChannel(serverHandler, "lk.damageItem", Side.SERVER);
 		NetworkRegistry.instance().registerChannel(serverHandler, "lk.sendQCheck", Side.SERVER);
 		NetworkRegistry.instance().registerGuiHandler(this, proxy);
-		
+
 		MinecraftForge.EVENT_BUS.register(this);
-		
+
 		DimensionManager.registerProviderType(idPrideLands, LKWorldProviderPrideLands.class, true);
 		DimensionManager.registerProviderType(idOutlands, LKWorldProviderOutlands.class, true);
 		DimensionManager.registerProviderType(idUpendi, LKWorldProviderUpendi.class, true);
@@ -1878,152 +1862,114 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 		DimensionManager.registerDimension(idUpendi, idUpendi);
 
 		LKCompatibility.init();
-		
+
 		proxy.onLoad();
 	}
-	
-	public void onCrafting(EntityPlayer entityplayer, ItemStack itemstack, IInventory iinventory)
-    {
-		if (itemstack.itemID == itemGrindingBowl.itemID)
-		{
+
+	public void onCrafting(EntityPlayer entityplayer, ItemStack itemstack, IInventory iinventory) {
+		if (itemstack.itemID == itemGrindingBowl.itemID) {
 			entityplayer.triggerAchievement(LKAchievementList.craftGrindBowl);
 		}
-    }
-	
-    public void onSmelting(EntityPlayer entityplayer, ItemStack itemstack)
-    {
-		if (itemstack.itemID == peacockGem.itemID)
-		{
+	}
+
+	public void onSmelting(EntityPlayer entityplayer, ItemStack itemstack) {
+		if (itemstack.itemID == peacockGem.itemID) {
 			entityplayer.triggerAchievement(LKAchievementList.peacock);
 		}
-    }
+	}
 
-	public int getBurnTime(ItemStack itemstack)
-    {
+	public int getBurnTime(ItemStack itemstack) {
 		int i = itemstack.itemID;
-        if (i < Block.blocksList.length && Block.blocksList[i] != null && Block.blocksList[i] instanceof LKBlockSapling)
-        {                            
-        	return 100;
-        }
-        if (i == jarLava.itemID)
-        {
-            return 20000;
-        }
-        if (i == cornStalk.itemID)
-        {
-            return 100;
-        }
-        if (i == nukaShard.itemID)
-        {
-            return 400;
-        }
+		if (i < Block.blocksList.length && Block.blocksList[i] != null && Block.blocksList[i] instanceof LKBlockSapling) {
+			return 100;
+		}
+		if (i == jarLava.itemID) {
+			return 20000;
+		}
+		if (i == cornStalk.itemID) {
+			return 100;
+		}
+		if (i == nukaShard.itemID) {
+			return 400;
+		}
 		return 0;
-   	}
-	
-	public void notifyPickup(EntityItem item, EntityPlayer entityplayer)
-	{
+	}
+
+	public void notifyPickup(EntityItem item, EntityPlayer entityplayer) {
 		ItemStack itemstack = item.getEntityItem();
-		if (itemstack.itemID == mango.itemID)
-		{
+		if (itemstack.itemID == mango.itemID) {
 			entityplayer.triggerAchievement(LKAchievementList.getMango);
 		}
-		if (itemstack.itemID == banana.itemID)
-		{
+		if (itemstack.itemID == banana.itemID) {
 			entityplayer.triggerAchievement(LKAchievementList.getBanana);
 		}
 	}
 
-   	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
-   	{
-		if (world.provider.dimensionId != 0)
-		{
+	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+		if (world.provider.dimensionId != 0) {
 			return;
 		}
-		for (int i = 0; i < 3; i++)
-		{
+		for (int i = 0; i < 3; i++) {
 			int posX = chunkX * 16 + rand.nextInt(16);
 			int posZ = chunkZ * 16 + rand.nextInt(16);
 			int posY = world.getHeightValue(posX, posZ);
-			if (LKWorldGenTicketBooth.canGenerateAtPosition(posX, posY, posZ))
-			{
-				if ((new LKWorldGenTicketBooth()).generate(world, rand, posX, posY, posZ))
-				{
+			if (LKWorldGenTicketBooth.canGenerateAtPosition(posX, posY, posZ)) {
+				if ((new LKWorldGenTicketBooth()).generate(world, rand, posX, posY, posZ)) {
 					LKLevelData.ticketBoothLocations.add(new ChunkCoordinates(posX, posY, posZ));
 					LKLevelData.needsSave = true;
 				}
 			}
 		}
-   	}
-	
+	}
+
 	@ForgeSubscribe
-    public void onEntityAttack(AttackEntityEvent event)
-	{
-		if (event.target instanceof LKEntityScarRug)
-		{
-			((LKEntityScarRug)event.target).dropAsItem();
+	public void onEntityAttack(AttackEntityEvent event) {
+		if (event.target instanceof LKEntityScarRug) {
+			((LKEntityScarRug) event.target).dropAsItem();
 		}
 	}
-	
+
 	@ForgeSubscribe
-    public void onEntityInteract(EntityInteractEvent event)
-	{
-		if (event.target instanceof LKEntityScarRug && ((LKEntityScarRug)event.target).interact(event.entityPlayer))
-		{
+	public void onEntityInteract(EntityInteractEvent event) {
+		if (event.target instanceof LKEntityScarRug && ((LKEntityScarRug) event.target).interact(event.entityPlayer)) {
 			event.setCanceled(true);
 		}
 	}
 
 	@ForgeSubscribe
-    public void onEntityLivingHurt(LivingHurtEvent event)
-	{
-		if (event.entityLiving instanceof EntityPlayer && event.source.isFireDamage())
-		{
-			EntityPlayer entityplayer = (EntityPlayer)event.entityLiving;
+	public void onEntityLivingHurt(LivingHurtEvent event) {
+		if (event.entityLiving instanceof EntityPlayer && event.source.isFireDamage()) {
+			EntityPlayer entityplayer = (EntityPlayer) event.entityLiving;
 			ItemStack helmet = entityplayer.inventory.armorItemInSlot(3);
-			if (helmet != null && helmet.itemID == outlandsHelm.itemID && entityplayer.dimension == idOutlands && !entityplayer.worldObj.isRemote)
-			{
+			if (helmet != null && helmet.itemID == outlandsHelm.itemID && entityplayer.dimension == idOutlands && !entityplayer.worldObj.isRemote) {
 				entityplayer.extinguish();
 				event.setCanceled(true);
 			}
 		}
 	}
-	
+
 	@ForgeSubscribe
-	public void onEntityLivingDeath(LivingDeathEvent event)
-	{
+	public void onEntityLivingDeath(LivingDeathEvent event) {
 		EntityLivingBase entity = event.entityLiving;
-		if (!entity.worldObj.isRemote && entity.getRNG().nextInt(3) == 0 && !(entity instanceof LKCharacter) && !(entity instanceof EntityPlayer))
-		{
+		if (!entity.worldObj.isRemote && entity.getRNG().nextInt(3) == 0 && !(entity instanceof LKCharacter) && !(entity instanceof EntityPlayer)) {
 			DamageSource source = event.source;
-			if (source.getEntity() != null && source.getEntity() instanceof EntityPlayer)
-			{
-				EntityPlayer entityplayer = (EntityPlayer)source.getEntity();
+			if (source.getEntity() != null && source.getEntity() instanceof EntityPlayer) {
+				EntityPlayer entityplayer = (EntityPlayer) source.getEntity();
 				ItemStack itemstack = entityplayer.inventory.getCurrentItem();
-				if (itemstack != null && itemstack.itemID == staff.itemID)
-				{
+				if (itemstack != null && itemstack.itemID == staff.itemID) {
 					int notes = entity.getRNG().nextInt(3) == 0 ? 2 + entity.getRNG().nextInt(2) : 1;
-					for (int i = 0; i < notes; i++)
-					{
+					for (int i = 0; i < notes; i++) {
 						int damage = 0;
 						float f = entity.getRNG().nextFloat();
-						if (f >= 0.25F && f < 0.5F)
-						{
+						if (f >= 0.25F && f < 0.5F) {
 							damage = 1;
-						}
-						else if (f >= 0.5F && f < 0.75F)
-						{
+						} else if (f >= 0.5F && f < 0.75F) {
 							damage = 2;
-						}
-						else if (f >= 0.75F && f < 0.85F)
-						{
+						} else if (f >= 0.75F && f < 0.85F) {
 							damage = 3;
-						}
-						else if (f >= 0.85F && f < 0.95F)
-						{
+						} else if (f >= 0.85F && f < 0.95F) {
 							damage = 4;
-						}
-						else if (f >= 0.95F && f < 1F)
-						{
+						} else if (f >= 0.95F && f < 1F) {
 							damage = 5;
 						}
 						entity.entityDropItem(new ItemStack(note, 1, damage), 0.5F);
@@ -2032,71 +1978,48 @@ public class mod_LionKing implements ICraftingHandler, IFuelHandler, IPickupNoti
 			}
 		}
 	}
-	
+
 	@ForgeSubscribe
-    public void onUseHoe(UseHoeEvent event)
-	{
+	public void onUseHoe(UseHoeEvent event) {
 		World world = event.world;
 		int i = event.x;
 		int j = event.y;
 		int k = event.z;
-		if (!world.isRemote && world.getBlockId(i, j, k) == Block.sand.blockID && world.isAirBlock(i, j + 1, k) && world.getWorldChunkManager().getBiomeGenAt(i, k) instanceof LKBiomeGenAridSavannah)
-		{
-			world.playSoundEffect((double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), tilledSand.stepSound.getStepSound(), (tilledSand.stepSound.getVolume() + 1.0F) / 2.0F, tilledSand.stepSound.getPitch() * 0.8F);
+		if (!world.isRemote && world.getBlockId(i, j, k) == Block.sand.blockID && world.isAirBlock(i, j + 1, k) && world.getWorldChunkManager().getBiomeGenAt(i, k) instanceof LKBiomeGenAridSavannah) {
+			world.playSoundEffect((double) ((float) i + 0.5F), (double) ((float) j + 0.5F), (double) ((float) k + 0.5F), tilledSand.stepSound.getStepSound(), (tilledSand.stepSound.getVolume() + 1.0F) / 2.0F, tilledSand.stepSound.getPitch() * 0.8F);
 			world.setBlock(i, j, k, tilledSand.blockID, 0, 3);
 			event.setResult(Event.Result.ALLOW);
 		}
 	}
-	
+
 	@ForgeSubscribe
-    public void onUseBonemeal(BonemealEvent event)
-	{
+	public void onUseBonemeal(BonemealEvent event) {
 		int dimension = event.world.provider.dimensionId;
-		if (LKIngame.isLKWorld(dimension))
-		{
+		if (LKIngame.isLKWorld(dimension)) {
 			event.setCanceled(true);
 		}
 	}
-	
-	private void registerBlock(Block block)
-	{
+
+	private void registerBlock(Block block) {
 		GameRegistry.registerBlock(block, block.getUnlocalizedName());
 	}
-	
-	private void registerBlock(Block block, String name)
-	{
+
+	private void registerBlock(Block block, String name) {
 		GameRegistry.registerBlock(block, block.getUnlocalizedName());
 		LanguageRegistry.addName(block, name);
 	}
-	
-	private void registerBlock(Block block, Class itemClass, String name)
-	{
+
+	private void registerBlock(Block block, Class itemClass, String name) {
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName());
 		LanguageRegistry.addName(block, name);
 	}
-	
-	private void registerItem(Item item)
-	{
+
+	private void registerItem(Item item) {
 		GameRegistry.registerItem(item, item.getUnlocalizedName());
 	}
-	
-	private void registerItem(Item item, String name)
-	{
+
+	private void registerItem(Item item, String name) {
 		GameRegistry.registerItem(item, item.getUnlocalizedName());
 		LanguageRegistry.addName(item, name);
 	}
-	
-    public static void dropItemsFromBlock(World par1World, int par2, int par3, int par4, ItemStack par5ItemStack)
-    {
-        if (!par1World.isRemote && par1World.getGameRules().getGameRuleBooleanValue("doTileDrops"))
-        {
-            float var6 = 0.7F;
-            double var7 = (double)(par1World.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
-            double var9 = (double)(par1World.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
-            double var11 = (double)(par1World.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
-            EntityItem var13 = new EntityItem(par1World, (double)par2 + var7, (double)par3 + var9, (double)par4 + var11, par5ItemStack);
-            var13.delayBeforeCanPickup = 10;
-            par1World.spawnEntityInWorld(var13);
-        }
-    }
 }

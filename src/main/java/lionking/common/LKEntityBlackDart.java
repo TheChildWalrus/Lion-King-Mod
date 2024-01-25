@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,60 +32,47 @@ import net.minecraft.world.storage.*;
 
 import lionking.client.*;
 
-public class LKEntityBlackDart extends LKEntityDart
-{
-	public LKEntityBlackDart(World world)
-	{
+public class LKEntityBlackDart extends LKEntityDart {
+	public LKEntityBlackDart(World world) {
 		super(world);
 	}
-	
-	public LKEntityBlackDart(World world, double d, double d1, double d2)
-	{
+
+	public LKEntityBlackDart(World world, double d, double d1, double d2) {
 		super(world, d, d1, d2);
 	}
-	
-    public LKEntityBlackDart(World world, EntityLivingBase entityliving, float f, boolean flag)
-    {
+
+	public LKEntityBlackDart(World world, EntityLivingBase entityliving, float f, boolean flag) {
 		super(world, entityliving, f, flag);
 	}
-	
-	public ItemStack getDartItem()
-	{
+
+	public ItemStack getDartItem() {
 		return new ItemStack(mod_LionKing.dartBlack);
 	}
-	
-	public int getDamage()
-	{
+
+	public int getDamage() {
 		return 7;
 	}
-	
-	public void onHitEntity(Entity hitEntity)
-	{
-		if (hitEntity instanceof LKEntityTermite && shootingEntity != null && shootingEntity instanceof EntityPlayer)
-		{
-			((EntityPlayer)shootingEntity).triggerAchievement(LKAchievementList.termite);
+
+	public void onHitEntity(Entity hitEntity) {
+		if (hitEntity instanceof LKEntityTermite && shootingEntity != null && shootingEntity instanceof EntityPlayer) {
+			((EntityPlayer) shootingEntity).triggerAchievement(LKAchievementList.termite);
 		}
-		if (!worldObj.isRemote)
-		{
+		if (!worldObj.isRemote) {
 			worldObj.createExplosion(null, hitEntity.posX, hitEntity.posY, hitEntity.posZ, silverFired ? 4.0F : 3.0F, true);
 		}
 		setDead();
 	}
-	
-	public void spawnParticles()
-	{
+
+	public void spawnParticles() {
 		mod_LionKing.proxy.spawnParticle("outlandsPortal", posX, posY - 0.8D, posZ, -motionX * 0.1, -motionY * 0.1, -motionZ * 0.1);
 	}
-	
-	public float getSpeedReduction()
-	{
+
+	public float getSpeedReduction() {
 		return 0.02F;
 	}
-	
-	public void inGroundEvent()
-	{
-		if (!worldObj.isRemote)
-		{
+
+	public void inGroundEvent() {
+		if (!worldObj.isRemote) {
 			int i = MathHelper.floor_double(posX);
 			int j = MathHelper.floor_double(posY);
 			int k = MathHelper.floor_double(posZ);

@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,41 +30,34 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEnchantmentRafikiThunder extends Enchantment
-{
-    public LKEnchantmentRafikiThunder(int i, int j)
-    {
-        super(i, j, EnumEnchantmentType.weapon);
+public class LKEnchantmentRafikiThunder extends Enchantment {
+	public LKEnchantmentRafikiThunder(int i, int j) {
+		super(i, j, EnumEnchantmentType.weapon);
 		setName("rafiki.thunder");
-    }
+	}
 
 	@Override
-    public int getMinEnchantability(int i)
-    {
-        return 5 + (i - 1) * 12;
-    }
+	public int getMinEnchantability(int i) {
+		return 5 + (i - 1) * 12;
+	}
 
 	@Override
-    public int getMaxEnchantability(int i)
-    {
-        return super.getMinEnchantability(i) + 50;
-    }
+	public int getMaxEnchantability(int i) {
+		return super.getMinEnchantability(i) + 50;
+	}
 
 	@Override
-    public int getMaxLevel()
-    {
-        return 3;
-    }
-	
+	public int getMaxLevel() {
+		return 3;
+	}
+
 	@Override
-    public boolean canApply(ItemStack item) 
-    {
-        return item.itemID == mod_LionKing.rafikiStick.itemID;
-    }
-	
+	public boolean canApply(ItemStack item) {
+		return item.itemID == mod_LionKing.rafikiStick.itemID;
+	}
+
 	@Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack)
-    {
-        return canApply(stack);
-    }
+	public boolean canApplyAtEnchantingTable(ItemStack stack) {
+		return canApply(stack);
+	}
 }

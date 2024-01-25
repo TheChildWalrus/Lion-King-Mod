@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,39 +30,34 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEntityBlueDart extends LKEntityDart
-{
-	public LKEntityBlueDart(World world)
-	{
+public class LKEntityBlueDart extends LKEntityDart {
+	public LKEntityBlueDart(World world) {
 		super(world);
 	}
-	
-	public LKEntityBlueDart(World world, double d, double d1, double d2)
-	{
+
+	public LKEntityBlueDart(World world, double d, double d1, double d2) {
 		super(world, d, d1, d2);
 	}
-	
-    public LKEntityBlueDart(World world, EntityLivingBase entityliving, float f, boolean flag)
-    {
+
+	public LKEntityBlueDart(World world, EntityLivingBase entityliving, float f, boolean flag) {
 		super(world, entityliving, f, flag);
 	}
-	
-	public ItemStack getDartItem()
-	{
+
+	public ItemStack getDartItem() {
 		return new ItemStack(mod_LionKing.dartBlue);
 	}
-	
-	public int getDamage()
-	{
+
+	public int getDamage() {
 		return 7;
 	}
-	
-	public void onHitEntity(Entity hitEntity) {}
-	
-	public void spawnParticles() {}
-	
-	public float getSpeedReduction()
-	{
+
+	public void onHitEntity(Entity hitEntity) {
+	}
+
+	public void spawnParticles() {
+	}
+
+	public float getSpeedReduction() {
 		return 0.05F;
 	}
 }

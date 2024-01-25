@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,119 +30,99 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEntityScarRug extends Entity
-{
+public class LKEntityScarRug extends Entity {
 	private int talkTick = 40;
-	
-	public LKEntityScarRug(World world)
-	{
+
+	public LKEntityScarRug(World world) {
 		super(world);
 		setSize(1.2F, 0.2F);
 	}
-	
-	public LKEntityScarRug(World world, int i)
-	{
+
+	public LKEntityScarRug(World world, int i) {
 		this(world);
 		setType(i);
 	}
-	
+
 	@Override
-	public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-	
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
 	@Override
-    public void onUpdate()
-    {
-        super.onUpdate();
-		
-		if (talkTick < 40)
-		{
+	public void onUpdate() {
+		super.onUpdate();
+
+		if (talkTick < 40) {
 			talkTick++;
 		}
-		
-        prevPosX = posX;
-        prevPosY = posY;
-        prevPosZ = posZ;
-        motionY -= 0.03999999910593033D;
 
-        pushOutOfBlocks(posX, (boundingBox.minY + boundingBox.maxY) / 2.0D, posZ);
-        moveEntity(motionX, motionY, motionZ);
-        float f = 0.98F;
+		prevPosX = posX;
+		prevPosY = posY;
+		prevPosZ = posZ;
+		motionY -= 0.03999999910593033D;
 
-        if (onGround)
-        {
-            f = 0.58800006F;
-            int i = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(boundingBox.minY) - 1, MathHelper.floor_double(posZ));
+		pushOutOfBlocks(posX, (boundingBox.minY + boundingBox.maxY) / 2.0D, posZ);
+		moveEntity(motionX, motionY, motionZ);
+		float f = 0.98F;
 
-            if (i > 0)
-            {
-                f = Block.blocksList[i].slipperiness * 0.98F;
-            }
-        }
+		if (onGround) {
+			f = 0.58800006F;
+			int i = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(boundingBox.minY) - 1, MathHelper.floor_double(posZ));
 
-        motionX *= (double)f;
-        motionY *= 0.9800000190734863D;
-        motionZ *= (double)f;
+			if (i > 0) {
+				f = Block.blocksList[i].slipperiness * 0.98F;
+			}
+		}
 
-        if (onGround)
-        {
-            motionY *= -0.5D;
-        }
-    }
-	
+		motionX *= (double) f;
+		motionY *= 0.9800000190734863D;
+		motionZ *= (double) f;
+
+		if (onGround) {
+			motionY *= -0.5D;
+		}
+	}
+
 	@Override
-	protected void entityInit()
-	{
+	protected void entityInit() {
 		dataWatcher.addObject(16, Integer.valueOf(0));
 	}
-	
-	public void setType(int i)
-	{
-		dataWatcher.updateObject(16, Integer.valueOf(i));
-	}
-	
-	public int getType()
-	{
+
+	public int getType() {
 		return dataWatcher.getWatchableObjectInt(16);
 	}
-	
+
+	public void setType(int i) {
+		dataWatcher.updateObject(16, Integer.valueOf(i));
+	}
+
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt)
-	{
+	public void writeEntityToNBT(NBTTagCompound nbt) {
 		nbt.setInteger("Type", getType());
 	}
-	
+
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt)
-	{
+	public void readEntityFromNBT(NBTTagCompound nbt) {
 		setType(nbt.getInteger("Type"));
 	}
-	
+
 	@Override
-	public AxisAlignedBB getBoundingBox()
-	{
+	public AxisAlignedBB getBoundingBox() {
 		return boundingBox;
 	}
-	
-	public void dropAsItem()
-	{
+
+	public void dropAsItem() {
 		worldObj.playSoundAtEntity(this, "lionking:lionangry", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
-		if (!worldObj.isRemote)
-		{
+		if (!worldObj.isRemote) {
 			entityDropItem(getRugItem(), 0.0F);
 		}
 		setDead();
 	}
-	
-	public boolean interact(EntityPlayer entityplayer)
-	{
-		if (talkTick == 40)
-		{
+
+	public boolean interact(EntityPlayer entityplayer) {
+		if (talkTick == 40) {
 			worldObj.playSoundAtEntity(this, "lionking:lionroar", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
-			if (!worldObj.isRemote)
-			{
+			if (!worldObj.isRemote) {
 				entityplayer.addChatMessage(LKCharacterSpeech.giveSpeech(getType() == 0 ? LKCharacterSpeech.RUG_SCAR : LKCharacterSpeech.RUG_ZIRA));
 			}
 			talkTick = 0;
@@ -149,21 +130,18 @@ public class LKEntityScarRug extends Entity
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean attackEntityFrom(DamageSource damage, float f)
-	{
+	public boolean attackEntityFrom(DamageSource damage, float f) {
 		return false;
 	}
-	
+
 	@Override
-    public ItemStack getPickedResult(MovingObjectPosition target)
-    {
-        return getRugItem();
-    }
-	
-	private ItemStack getRugItem()
-	{
+	public ItemStack getPickedResult(MovingObjectPosition target) {
+		return getRugItem();
+	}
+
+	private ItemStack getRugItem() {
 		return new ItemStack(getType() == 0 ? mod_LionKing.scarRug : mod_LionKing.ziraRug);
 	}
 }

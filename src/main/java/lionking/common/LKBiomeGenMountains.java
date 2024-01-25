@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,12 +32,10 @@ import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-public class LKBiomeGenMountains extends LKPrideLandsBiome
-{
-    public LKBiomeGenMountains(int i)
-    {
-        super(i);
-        lkDecorator.treesPerChunk = 0;
+public class LKBiomeGenMountains extends LKPrideLandsBiome {
+	public LKBiomeGenMountains(int i) {
+		super(i);
+		lkDecorator.treesPerChunk = 0;
 		lkDecorator.mangoPerChunk = 0;
 		lkDecorator.grassPerChunk = 1;
 		lkDecorator.whiteFlowersPerChunk = 0;
@@ -46,26 +45,22 @@ public class LKBiomeGenMountains extends LKPrideLandsBiome
 		lkDecorator.maizePerChunk = 4;
 		lkDecorator.zazuPerChunk = 80;
 		spawnableCreatureList.add(new SpawnListEntry(LKEntityGiraffe.class, 3, 2, 4));
-    }
-	
-	public void decoratePrideLands(World world, Random random, int i, int j)
-	{
-		if (random.nextInt(6) == 0)
-		{
+	}
+
+	public void decoratePrideLands(World world, Random random, int i, int j) {
+		if (random.nextInt(6) == 0) {
 			lkDecorator.treesPerChunk++;
-			if (random.nextInt(5) == 0)
-			{
+			if (random.nextInt(5) == 0) {
 				lkDecorator.treesPerChunk += random.nextInt(2) + 1;
 			}
 		}
-		
-		if (random.nextInt(70) == 0)
-		{
+
+		if (random.nextInt(70) == 0) {
 			lkDecorator.mangoPerChunk++;
 		}
-		
+
 		super.decoratePrideLands(world, random, i, j);
-		
+
 		lkDecorator.treesPerChunk = 0;
 		lkDecorator.mangoPerChunk = 0;
 	}

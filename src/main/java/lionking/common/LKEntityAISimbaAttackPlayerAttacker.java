@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,53 +30,43 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEntityAISimbaAttackPlayerAttacker extends EntityAITarget
-{
-    private LKEntitySimba theSimba;
-    private EntityLivingBase attackTarget;
+public class LKEntityAISimbaAttackPlayerAttacker extends EntityAITarget {
+	private LKEntitySimba theSimba;
+	private EntityLivingBase attackTarget;
 	private int ownerRevengeTimer;
 
-    public LKEntityAISimbaAttackPlayerAttacker(LKEntitySimba simba)
-    {
-        super(simba, false);
-        theSimba = simba;
-        setMutexBits(1);
-    }
+	public LKEntityAISimbaAttackPlayerAttacker(LKEntitySimba simba) {
+		super(simba, false);
+		theSimba = simba;
+		setMutexBits(1);
+	}
 
 	@Override
-    public boolean shouldExecute()
-    {
-		if (theSimba.isSitting())
-		{
+	public boolean shouldExecute() {
+		if (theSimba.isSitting()) {
 			return false;
 		}
 		EntityPlayer entityplayer = theSimba.getOwner();
-		if (entityplayer == null)
-		{
+		if (entityplayer == null) {
 			return false;
-		}
-		else
-		{
+		} else {
 			attackTarget = entityplayer.getAITarget();
 			int i = entityplayer.func_142015_aE();
 			return i != ownerRevengeTimer && isSuitableTarget(attackTarget, false);
 		}
-    }
+	}
 
-    public void startExecuting()
-    {
-        taskOwner.setAttackTarget(attackTarget);
-        EntityPlayer entityplayer = theSimba.getOwner();
-        if (entityplayer != null)
-        {
-            ownerRevengeTimer = entityplayer.func_142015_aE();
-        }
-        super.startExecuting();
-    }
-	
+	public void startExecuting() {
+		taskOwner.setAttackTarget(attackTarget);
+		EntityPlayer entityplayer = theSimba.getOwner();
+		if (entityplayer != null) {
+			ownerRevengeTimer = entityplayer.func_142015_aE();
+		}
+		super.startExecuting();
+	}
+
 	@Override
-    public boolean continueExecuting()
-    {
-        return theSimba.isSitting() ? false : super.continueExecuting();
-    }
+	public boolean continueExecuting() {
+		return theSimba.isSitting() ? false : super.continueExecuting();
+	}
 }

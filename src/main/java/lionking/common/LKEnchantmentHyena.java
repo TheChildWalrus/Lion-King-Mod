@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,46 +30,38 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEnchantmentHyena extends EnchantmentDamage
-{
-    public LKEnchantmentHyena(int i, int j)
-    {
-        super(i, j, 0);
-    }
+public class LKEnchantmentHyena extends EnchantmentDamage {
+	public LKEnchantmentHyena(int i, int j) {
+		super(i, j, 0);
+	}
 
 	@Override
-    public int getMinEnchantability(int i)
-    {
-        return 5 + (i - 1) * 8;
-    }
-	
-	@Override
-    public int getMaxEnchantability(int i)
-    {
-        return getMinEnchantability(i) + 20;
-    }
+	public int getMinEnchantability(int i) {
+		return 5 + (i - 1) * 8;
+	}
 
 	@Override
-    public int getMaxLevel()
-    {
-        return 5;
-    }
+	public int getMaxEnchantability(int i) {
+		return getMinEnchantability(i) + 20;
+	}
 
 	@Override
-    public float calcModifierLiving(int i, EntityLivingBase entity)
-    {
-        return entity instanceof LKEntityHyena || entity instanceof LKEntitySkeletalHyenaHead ? (float)i * 4F : 0F;
-    }
+	public int getMaxLevel() {
+		return 5;
+	}
 
 	@Override
-    public String getName()
-    {
-        return "enchantment.damage.hyena";
-    }
+	public float calcModifierLiving(int i, EntityLivingBase entity) {
+		return entity instanceof LKEntityHyena || entity instanceof LKEntitySkeletalHyenaHead ? (float) i * 4F : 0F;
+	}
 
 	@Override
-    public boolean canApplyTogether(Enchantment iEnchantment)
-    {
-        return !(iEnchantment instanceof EnchantmentDamage);
-    }
+	public String getName() {
+		return "enchantment.damage.hyena";
+	}
+
+	@Override
+	public boolean canApplyTogether(Enchantment iEnchantment) {
+		return !(iEnchantment instanceof EnchantmentDamage);
+	}
 }

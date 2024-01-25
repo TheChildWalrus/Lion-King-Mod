@@ -9,40 +9,31 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
-public class LKTileEntityHyenaHeadRenderer extends TileEntitySpecialRenderer
-{
-	private ModelBase model = new LKModelHyenaHead(false);
+public class LKTileEntityHyenaHeadRenderer extends TileEntitySpecialRenderer {
 	private static HashMap textures = new HashMap();
-	
+	private ModelBase model = new LKModelHyenaHead(false);
+
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f)
-	{
-		LKTileEntityHyenaHead head = (LKTileEntityHyenaHead)tileentity;
-		renderHead((float)d, (float)d1, (float)d2, head.getBlockMetadata(), head.getRotation() * 360 / 16.0F, head.getHyenaType());
+	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
+		LKTileEntityHyenaHead head = (LKTileEntityHyenaHead) tileentity;
+		renderHead((float) d, (float) d1, (float) d2, head.getBlockMetadata(), head.getRotation() * 360 / 16.0F, head.getHyenaType());
 	}
 
-	private void renderHead(float f, float f1, float f2, int metadata, float rotation, int hyenaType)
-	{
-		if (hyenaType == 3)
-		{
+	private void renderHead(float f, float f1, float f2, int metadata, float rotation, int hyenaType) {
+		if (hyenaType == 3) {
 			bindTexture(LKRenderHyena.textureHyenaSkeleton);
-		}
-		else
-		{
-			if (textures.get(Integer.valueOf(hyenaType)) == null)
-			{
+		} else {
+			if (textures.get(Integer.valueOf(hyenaType)) == null) {
 				textures.put(Integer.valueOf(hyenaType), new ResourceLocation("lionking:mob/hyena_" + hyenaType + ".png"));
 			}
-			bindTexture((ResourceLocation)textures.get(Integer.valueOf(hyenaType)));
+			bindTexture((ResourceLocation) textures.get(Integer.valueOf(hyenaType)));
 		}
 
 		GL11.glPushMatrix();
 		GL11.glDisable(2884);
 
-		if (metadata != 1)
-		{
-			switch (metadata)
-			{
+		if (metadata != 1) {
+			switch (metadata) {
 				case 2:
 					GL11.glTranslatef(f + 0.5F, f1 + 0.25F, f2 + 0.81F);
 					break;
@@ -60,9 +51,7 @@ public class LKTileEntityHyenaHeadRenderer extends TileEntitySpecialRenderer
 					rotation = 90.0F;
 					break;
 			}
-		}
-		else
-		{
+		} else {
 			GL11.glTranslatef(f + 0.5F, f1, f2 + 0.5F);
 		}
 

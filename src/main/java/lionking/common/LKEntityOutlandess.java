@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,23 +30,17 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEntityOutlandess extends LKEntityOutlander
-{
-    public LKEntityOutlandess(World world)
-    {
-        super(world);
-        setSize(1.2F, 1.3F);
-    }
-	
+public class LKEntityOutlandess extends LKEntityOutlander {
+	public LKEntityOutlandess(World world) {
+		super(world);
+		setSize(1.2F, 1.3F);
+	}
+
 	@Override
-	public boolean isHostile()
-	{
-		if (inMound)
-		{
+	public boolean isHostile() {
+		if (inMound) {
 			return LKLevelData.outlandersHostile == 1 || angerLevel > 0;
-		}
-		else
-		{
+		} else {
 			return true;
 		}
 	}

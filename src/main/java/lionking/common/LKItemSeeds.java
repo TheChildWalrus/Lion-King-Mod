@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,11 +30,9 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKItemSeeds extends ItemSeeds
-{
-    public LKItemSeeds(int i, int j, int k)
-    {
-        super(i, j, k);
+public class LKItemSeeds extends ItemSeeds {
+	public LKItemSeeds(int i, int j, int k) {
+		super(i, j, k);
 		setCreativeTab(LKCreativeTabs.tabMaterials);
-    }
+	}
 }

@@ -6,8 +6,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
-public class LKModelTimon extends ModelBase
-{
+public class LKModelTimon extends ModelBase {
 	private ModelRenderer head;
 	private ModelRenderer hat;
 	private ModelRenderer body;
@@ -18,9 +17,8 @@ public class LKModelTimon extends ModelBase
 	private ModelRenderer tail;
 	private ModelRenderer leftear;
 	private ModelRenderer rightear;
-  
-	public LKModelTimon()
-	{
+
+	public LKModelTimon() {
 		head = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
 		head.addBox(-4F, -8F, -4F, 8, 7, 6);
 		head.setRotationPoint(0F, 1F, 1F);
@@ -64,16 +62,14 @@ public class LKModelTimon extends ModelBase
 		rightear = new ModelRenderer(this, 36, 0).setTextureSize(64, 64);
 		rightear.addBox(4F, -5F, -1.5F, 3, 5, 1);
 		rightear.setRotationPoint(0F, 1F, 1F);
-    }
-  
+	}
+
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		head.render(f5);
-		if (LKIngame.isChristmas())
-		{
+		if (LKIngame.isChristmas()) {
 			hat.render(f5);
 		}
 		body.render(f5);
@@ -85,18 +81,17 @@ public class LKModelTimon extends ModelBase
 		leftear.render(f5);
 		rightear.render(f5);
 	}
-  
+
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-	{
-        head.rotateAngleY = f3 / 57.29578F;
-        head.rotateAngleX = f4 / 57.29578F;
-        hat.rotateAngleY = f3 / 57.29578F;
-        hat.rotateAngleX = f4 / 57.29578F;
-        rightarm.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        leftarm.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
-        rightleg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        leftleg.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+		head.rotateAngleY = f3 / 57.29578F;
+		head.rotateAngleX = f4 / 57.29578F;
+		hat.rotateAngleY = f3 / 57.29578F;
+		hat.rotateAngleX = f4 / 57.29578F;
+		rightarm.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+		leftarm.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+		rightleg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+		leftleg.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
 		tail.rotateAngleX = -0.908F + (f4 / 57.29578F);
 		leftear.rotateAngleZ = 0.38397F;
 		leftear.rotateAngleY = head.rotateAngleY;

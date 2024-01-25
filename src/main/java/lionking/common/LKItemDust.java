@@ -7,61 +7,51 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class LKItemDust extends LKItem
-{
-    public LKItemDust(int i)
-    {
-        super(i);
+public class LKItemDust extends LKItem {
+	public LKItemDust(int i) {
+		super(i);
 		setCreativeTab(LKCreativeTabs.tabQuest);
-    }
+	}
 
 	@Override
-    public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float f, float f1, float f2)
-    {
-		if (LKQuestBase.rafikiQuest.getQuestStage() == 5 && LKQuestBase.rafikiQuest.isDelayed())
-		{
+	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float f, float f1, float f2) {
+		if (LKQuestBase.rafikiQuest.getQuestStage() == 5 && LKQuestBase.rafikiQuest.isDelayed()) {
 			return false;
 		}
-		
-		if (LKLevelData.hasSimba(entityplayer))
-		{
+
+		if (LKLevelData.hasSimba(entityplayer)) {
 			return false;
 		}
-		
-        int i1 = world.getBlockId(i, j, k);
-        if (i1 == mod_LionKing.starAltar.blockID)
-		{
+
+		int i1 = world.getBlockId(i, j, k);
+		if (i1 == mod_LionKing.starAltar.blockID) {
 			itemstack.stackSize--;
-			LKEntityLightning bolt = new LKEntityLightning(entityplayer, world, (double)i, (double)j, (double)k, 0);
-			if (!world.isRemote)
-			{
+			LKEntityLightning bolt = new LKEntityLightning(entityplayer, world, (double) i, (double) j, (double) k, 0);
+			if (!world.isRemote) {
 				world.spawnEntityInWorld(bolt);
 			}
-			world.createExplosion(entityplayer, (double)i, (double)j + 1, (double)k, 0F, false);
+			world.createExplosion(entityplayer, (double) i, (double) j + 1, (double) k, 0F, false);
 			LKEntitySimba simba = new LKEntitySimba(world);
 			simba.setLocationAndAngles(i + 0.5, j + 1, k + 0.5, 0F, 0F);
 			simba.setAge(-36000);
 			simba.setHealth(15);
 			simba.setOwnerName(entityplayer.username);
-			if (!world.isRemote)
-			{
+			if (!world.isRemote) {
 				world.spawnEntityInWorld(simba);
 			}
 			entityplayer.triggerAchievement(LKAchievementList.simba);
-			if (LKQuestBase.rafikiQuest.getQuestStage() == 6)
-			{
+			if (LKQuestBase.rafikiQuest.getQuestStage() == 6) {
 				LKQuestBase.rafikiQuest.progress(7);
 				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fYou see? He lives in you! Ohohoho!");
 			}
 			return true;
 		}
 		return false;
-    }
-	
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack itemstack)
-    {
+	public EnumRarity getRarity(ItemStack itemstack) {
 		return EnumRarity.uncommon;
-    }
+	}
 }

@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,26 +30,21 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKEntityLion extends LKEntityLionBase
-{
-    public LKEntityLion(World world)
-    {
-        super(world);
-        setSize(1.3F, 1.6F);
-    }
-	
-	public LKCharacterSpeech getCharacterSpeech()
-	{
+public class LKEntityLion extends LKEntityLionBase {
+	public LKEntityLion(World world) {
+		super(world);
+		setSize(1.3F, 1.6F);
+	}
+
+	public LKCharacterSpeech getCharacterSpeech() {
 		return LKCharacterSpeech.LION;
 	}
-	
-	public LKCharacterSpeech getChildCharacterSpeech()
-	{
+
+	public LKCharacterSpeech getChildCharacterSpeech() {
 		return LKCharacterSpeech.LION_CUB;
 	}
-	
-	public String getAnimalName()
-	{
+
+	public String getAnimalName() {
 		return "Lion";
 	}
 }

@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,12 +30,10 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKBiomeGenOutlandsMountains extends LKOutlandsBiome
-{
-    public LKBiomeGenOutlandsMountains(int i)
-    {
-        super(i);
+public class LKBiomeGenOutlandsMountains extends LKOutlandsBiome {
+	public LKBiomeGenOutlandsMountains(int i) {
+		super(i);
 		outlandsDecorator.treesPerChunk = 65;
 		outlandsDecorator.deadBushPerChunk = 4;
-    }
+	}
 }

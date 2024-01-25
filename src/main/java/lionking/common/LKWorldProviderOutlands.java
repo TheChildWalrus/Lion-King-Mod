@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -30,72 +31,60 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKWorldProviderOutlands extends WorldProvider 
-{
+public class LKWorldProviderOutlands extends WorldProvider {
 	@Override
-    public void registerWorldChunkManager()
-    {
-        worldChunkMgr = new LKWorldChunkManagerOutlands(worldObj.getSeed(), worldObj.getWorldInfo().getTerrainType());
-        dimensionId = mod_LionKing.idOutlands;
-    }
-    
-	@Override
-    public IChunkProvider createChunkGenerator()
-    {
-        return new LKChunkProviderOutlands(worldObj, worldObj.getSeed());
-    }
+	public void registerWorldChunkManager() {
+		worldChunkMgr = new LKWorldChunkManagerOutlands(worldObj.getSeed(), worldObj.getWorldInfo().getTerrainType());
+		dimensionId = mod_LionKing.idOutlands;
+	}
 
 	@Override
-    public float calculateCelestialAngle(long l, float f)
-    {
-        return 0.5F;
-    }
-	
-	@Override
-    public int getMoonPhase(long l)
-    {
-        return 0;
-    }
+	public IChunkProvider createChunkGenerator() {
+		return new LKChunkProviderOutlands(worldObj, worldObj.getSeed());
+	}
 
 	@Override
-    public boolean canRespawnHere()
-    {
-        return false;
-    }
-	
+	public float calculateCelestialAngle(long l, float f) {
+		return 0.5F;
+	}
+
 	@Override
-    public String getWelcomeMessage()
-	{
+	public int getMoonPhase(long l) {
+		return 0;
+	}
+
+	@Override
+	public boolean canRespawnHere() {
+		return false;
+	}
+
+	@Override
+	public String getWelcomeMessage() {
 		return "Entering the Outlands";
 	}
-	
-	@Override
-    public String getDepartMessage()
-	{
-		return "Leaving the Outlands";
-	}
-	
-	@Override
-    public String getSaveFolder()
-	{
-		return "Outlands";
-	}
-	
-	@Override
-    public String getDimensionName()
-    {
-        return "Outlands";
-    }
-	
-	@Override
-    public boolean shouldMapSpin(String entity, double x, double y, double z)
-    {
-        return false;
-    }
 
 	@Override
-    public int getRespawnDimension(EntityPlayerMP player)
-    {
-        return mod_LionKing.idPrideLands;
-    }
+	public String getDepartMessage() {
+		return "Leaving the Outlands";
+	}
+
+	@Override
+	public String getSaveFolder() {
+		return "Outlands";
+	}
+
+	@Override
+	public String getDimensionName() {
+		return "Outlands";
+	}
+
+	@Override
+	public boolean shouldMapSpin(String entity, double x, double y, double z) {
+		return false;
+	}
+
+	@Override
+	public int getRespawnDimension(EntityPlayerMP player) {
+		return mod_LionKing.idPrideLands;
+	}
 }

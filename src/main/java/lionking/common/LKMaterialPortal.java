@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,30 +30,25 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKMaterialPortal extends Material
-{
+public class LKMaterialPortal extends Material {
 	public static Material material = new LKMaterialPortal().setImmovableMobility();
-	
-    private LKMaterialPortal()
-    {
-        super(MapColor.airColor);
-    }
+
+	private LKMaterialPortal() {
+		super(MapColor.airColor);
+	}
 
 	@Override
-    public boolean isSolid()
-    {
-        return true;
-    }
-	
+	public boolean isSolid() {
+		return true;
+	}
+
 	@Override
-    public boolean getCanBlockGrass()
-    {
-        return false;
-    }
-	
+	public boolean getCanBlockGrass() {
+		return false;
+	}
+
 	@Override
-    public boolean blocksMovement()
-    {
-        return true;
-    }
+	public boolean blocksMovement() {
+		return true;
+	}
 }

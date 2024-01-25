@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,19 +32,17 @@ import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-public class LKWorldGenTimonAndPumbaa extends WorldGenerator
-{
+public class LKWorldGenTimonAndPumbaa extends WorldGenerator {
 	@Override
-	public boolean generate(World world, Random random, int i, int j, int k)
-	{
+	public boolean generate(World world, Random random, int i, int j, int k) {
 		LKEntityPumbaa pumbaa = new LKEntityPumbaa(world);
 		pumbaa.setLocationAndAngles(i, j, k, 0F, 0F);
 		world.spawnEntityInWorld(pumbaa);
-		
+
 		LKEntityTimon timon = new LKEntityTimon(world);
 		timon.setLocationAndAngles(i, j, k, 0F, 0F);
 		world.spawnEntityInWorld(timon);
-		
+
 		return true;
 	}
 }

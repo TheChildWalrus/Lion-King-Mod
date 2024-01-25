@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,29 +32,25 @@ import net.minecraft.world.storage.*;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 
-public class LKItemStaff extends LKItem
-{
-	public LKItemStaff(int i)
-	{
+public class LKItemStaff extends LKItem {
+	public LKItemStaff(int i) {
 		super(i);
 		setCreativeTab(LKCreativeTabs.tabTools);
 		setFull3D();
 		setMaxStackSize(1);
 		setMaxDamage(600);
 	}
-	
+
 	@Override
-    public boolean hitEntity(ItemStack itemstack, EntityLivingBase hitEntity, EntityLivingBase usingEntity)
-    {
-        itemstack.damageItem(1, usingEntity);
-        return true;
-    }
-	
+	public boolean hitEntity(ItemStack itemstack, EntityLivingBase hitEntity, EntityLivingBase usingEntity) {
+		itemstack.damageItem(1, usingEntity);
+		return true;
+	}
+
 	@Override
-    public Multimap getItemAttributeModifiers()
-    {
-        Multimap multimap = super.getItemAttributeModifiers();
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", 5D, 0));
-        return multimap;
-    }
+	public Multimap getItemAttributeModifiers() {
+		Multimap multimap = super.getItemAttributeModifiers();
+		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", 5D, 0));
+		return multimap;
+	}
 }

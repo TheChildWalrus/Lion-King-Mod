@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -31,38 +32,33 @@ import net.minecraft.world.storage.*;
 
 import java.nio.ByteBuffer;
 
-public class LKTileEntityFurRug extends TileEntity
-{
+public class LKTileEntityFurRug extends TileEntity {
 	public byte direction;
-	
+
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
+	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setByte("Direction", (byte)direction);
+		nbt.setByte("Direction", (byte) direction);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
+	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		direction = nbt.getByte("Direction");
 	}
-	
+
 	@Override
-    public Packet getDescriptionPacket()
-    {
+	public Packet getDescriptionPacket() {
 		byte[] posX = ByteBuffer.allocate(4).putInt(xCoord).array();
 		byte[] posY = ByteBuffer.allocate(4).putInt(yCoord).array();
 		byte[] posZ = ByteBuffer.allocate(4).putInt(zCoord).array();
 		byte[] data = new byte[13];
-		for (int i = 0; i < 4; i++)
-		{
+		for (int i = 0; i < 4; i++) {
 			data[i] = posX[i];
 			data[i + 4] = posY[i];
 			data[i + 8] = posZ[i];
 		}
 		data[12] = direction;
 		return new Packet250CustomPayload("lk.tileEntity", data);
-    }
+	}
 }

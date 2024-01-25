@@ -1,4 +1,5 @@
 package lionking.common;
+
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
@@ -29,22 +30,18 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 
-public class LKSlotItemInfo extends Slot
-{
-    public LKSlotItemInfo(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
-	
-	@Override
-    public int getSlotStackLimit()
-    {
-        return 1;
-    }
+public class LKSlotItemInfo extends Slot {
+	public LKSlotItemInfo(IInventory iinventory, int i, int j, int k) {
+		super(iinventory, i, j, k);
+	}
 
 	@Override
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return LKItemInfo.getItemInfo(itemstack) != null;
-    }
+	public int getSlotStackLimit() {
+		return 1;
+	}
+
+	@Override
+	public boolean isItemValid(ItemStack itemstack) {
+		return LKItemInfo.getItemInfo(itemstack) != null;
+	}
 }
