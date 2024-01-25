@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class LKRenderOutsand extends Render {
-	private RenderBlocks renderBlocks = new RenderBlocks();
+	private final RenderBlocks renderBlocks = new RenderBlocks();
 
 	public LKRenderOutsand() {
 		shadowSize = 0.5F;

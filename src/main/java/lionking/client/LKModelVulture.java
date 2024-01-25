@@ -6,51 +6,51 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
 public class LKModelVulture extends ModelBase {
-	ModelRenderer body;
-	ModelRenderer tail;
-	ModelRenderer legLeft;
-	ModelRenderer legRight;
-	ModelRenderer neck;
-	ModelRenderer head;
-	ModelRenderer wingLeft;
-	ModelRenderer wingRight;
+	private final ModelRenderer body;
+	private final ModelRenderer tail;
+	private final ModelRenderer legLeft;
+	private final ModelRenderer legRight;
+	private final ModelRenderer neck;
+	private final ModelRenderer head;
+	private final ModelRenderer wingLeft;
+	private final ModelRenderer wingRight;
 
 	public LKModelVulture() {
 		body = new ModelRenderer(this, 0, 46).setTextureSize(64, 64);
-		body.addBox(0F, 0F, 0F, 8, 10, 8);
-		body.setRotationPoint(-4F, 8F, -4F);
+		body.addBox(0.0F, 0.0F, 0.0F, 8, 10, 8);
+		body.setRotationPoint(-4.0F, 8.0F, -4.0F);
 
 		tail = new ModelRenderer(this, 44, 50).setTextureSize(64, 64);
-		tail.addBox(0F, 0F, 0F, 6, 10, 4);
-		tail.setRotationPoint(-3F, 13F, 4F);
+		tail.addBox(0.0F, 0.0F, 0.0F, 6, 10, 4);
+		tail.setRotationPoint(-3.0F, 13.0F, 4.0F);
 
 		legLeft = new ModelRenderer(this, 40, 0).setTextureSize(64, 64);
-		legLeft.addBox(0F, 0F, 0F, 2, 12, 2);
-		legLeft.setRotationPoint(1F, 12F, 2F);
+		legLeft.addBox(0.0F, 0.0F, 0.0F, 2, 12, 2);
+		legLeft.setRotationPoint(1.0F, 12.0F, 2.0F);
 
 		legRight = new ModelRenderer(this, 40, 0).setTextureSize(64, 64);
-		legRight.addBox(0F, 0F, 0F, 2, 12, 2);
-		legRight.setRotationPoint(-3F, 12F, 2F);
+		legRight.addBox(0.0F, 0.0F, 0.0F, 2, 12, 2);
+		legRight.setRotationPoint(-3.0F, 12.0F, 2.0F);
 		legRight.mirror = true;
 
 		neck = new ModelRenderer(this, 0, 14).setTextureSize(64, 64);
-		neck.addBox(0F, 0F, 0F, 4, 5, 4);
-		neck.setRotationPoint(-2F, 3F, -4F);
+		neck.addBox(0.0F, 0.0F, 0.0F, 4, 5, 4);
+		neck.setRotationPoint(-2.0F, 3.0F, -4.0F);
 
 		head = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
-		head.addBox(-3F, -2F, -3F, 6, 6, 6);
-		head.setRotationPoint(0.5F, 0F, -2.5F);
+		head.addBox(-3.0F, -2.0F, -3.0F, 6, 6, 6);
+		head.setRotationPoint(0.5F, 0.0F, -2.5F);
 
 		head.setTextureOffset(28, 0).addBox(-1.5F, 1.5F, -6.9F, 3, 2, 2);
-		head.setTextureOffset(46, 29).addBox(-2F, 0.5F, -7F, 4, 2, 5);
+		head.setTextureOffset(46, 29).addBox(-2.0F, 0.5F, -7.0F, 4, 2, 5);
 
 		wingLeft = new ModelRenderer(this, 0, 26).setTextureSize(64, 64);
-		wingLeft.addBox(0F, 0F, 0F, 2, 10, 7);
-		wingLeft.setRotationPoint(4F, 5F, -2F);
+		wingLeft.addBox(0.0F, 0.0F, 0.0F, 2, 10, 7);
+		wingLeft.setRotationPoint(4.0F, 5.0F, -2.0F);
 
 		wingRight = new ModelRenderer(this, 0, 26).setTextureSize(64, 64);
-		wingRight.addBox(-2F, 0F, 0F, 2, 10, 7);
-		wingRight.setRotationPoint(-4F, 5F, -2F);
+		wingRight.addBox(-2.0F, 0.0F, 0.0F, 2, 10, 7);
+		wingRight.setRotationPoint(-4.0F, 5.0F, -2.0F);
 		wingRight.mirror = true;
 	}
 

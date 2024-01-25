@@ -2,6 +2,8 @@ package lionking.client;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -30,13 +32,15 @@ public class LKClientProxy extends LKCommonProxy {
 	private int lilyRenderID;
 	private int rugRenderID;
 
-	private LKTickHandlerClient tickHandler = new LKTickHandlerClient();
-	private LKPacketHandlerClient clientHandler = new LKPacketHandlerClient();
+	private final ITickHandler tickHandler = new LKTickHandlerClient();
+	private final IPacketHandler clientHandler = new LKPacketHandlerClient();
 
+	@Override
 	public void onPreload() {
 		MinecraftForge.EVENT_BUS.register(new LKSound());
 	}
 
+	@Override
 	public void onLoad() {
 		TickRegistry.registerTickHandler(tickHandler, Side.CLIENT);
 
@@ -93,7 +97,7 @@ public class LKClientProxy extends LKCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(LKEntityScarRug.class, new LKRenderScarRug());
 		RenderingRegistry.registerEntityRenderingHandler(LKEntityZira.class, new LKRenderZira());
 		RenderingRegistry.registerEntityRenderingHandler(LKEntityTermiteQueen.class, new LKRenderTermiteQueen());
-		RenderingRegistry.registerEntityRenderingHandler(LKEntityGiraffe.class, new LKRenderGiraffe(new LKModelGiraffe(0F), new LKModelGiraffe(0.5F)));
+		RenderingRegistry.registerEntityRenderingHandler(LKEntityGiraffe.class, new LKRenderGiraffe(new LKModelGiraffe(0.0F), new LKModelGiraffe(0.5F)));
 		RenderingRegistry.registerEntityRenderingHandler(LKEntitySkeletalHyenaHead.class, new LKRenderSkeletalHyenaHead());
 		RenderingRegistry.registerEntityRenderingHandler(LKEntityCustomFX.class, new LKRenderCustomFX());
 		RenderingRegistry.registerEntityRenderingHandler(LKEntityDikdik.class, new LKRenderDikdik());
@@ -133,46 +137,57 @@ public class LKClientProxy extends LKCommonProxy {
 		MinecraftForgeClient.registerItemRenderer(mod_LionKing.tunnahDiggah.itemID, new LKRenderLargeItem());
 	}
 
+	@Override
 	public int getGrindingBowlRenderID() {
 		return grindingBowlRenderID;
 	}
 
+	@Override
 	public int getPillarRenderID() {
 		return pillarRenderID;
 	}
 
+	@Override
 	public int getStarAltarRenderID() {
 		return starAltarRenderID;
 	}
 
+	@Override
 	public int getVaseRenderID() {
 		return vaseRenderID;
 	}
 
+	@Override
 	public int getBugTrapRenderID() {
 		return bugTrapRenderID;
 	}
 
+	@Override
 	public int getAridGrassRenderID() {
 		return aridGrassRenderID;
 	}
 
+	@Override
 	public int getKiwanoBlockRenderID() {
 		return kiwanoBlockRenderID;
 	}
 
+	@Override
 	public int getKiwanoStemRenderID() {
 		return kiwanoStemRenderID;
 	}
 
+	@Override
 	public int getLeverRenderID() {
 		return leverRenderID;
 	}
 
+	@Override
 	public int getLilyRenderID() {
 		return lilyRenderID;
 	}
 
+	@Override
 	public int getRugRenderID() {
 		return rugRenderID;
 	}
@@ -180,22 +195,22 @@ public class LKClientProxy extends LKCommonProxy {
 	@Override
 	public void setInPrideLandsPortal(EntityPlayer entityplayer) {
 		if (!LKTickHandlerClient.playersInPortals.containsKey(entityplayer)) {
-			LKTickHandlerClient.playersInPortals.put(entityplayer, Integer.valueOf(0));
+			LKTickHandlerClient.playersInPortals.put(entityplayer, 0);
 		}
 
 		if (Minecraft.getMinecraft().isSingleplayer() && !LKTickHandlerServer.playersInPortals.containsKey(entityplayer)) {
-			LKTickHandlerServer.playersInPortals.put(entityplayer, Integer.valueOf(0));
+			LKTickHandlerServer.playersInPortals.put(entityplayer, 0);
 		}
 	}
 
 	@Override
 	public void setInOutlandsPortal(EntityPlayer entityplayer) {
 		if (!LKTickHandlerClient.playersInOutPortals.containsKey(entityplayer)) {
-			LKTickHandlerClient.playersInOutPortals.put(entityplayer, Integer.valueOf(0));
+			LKTickHandlerClient.playersInOutPortals.put(entityplayer, 0);
 		}
 
 		if (Minecraft.getMinecraft().isSingleplayer() && !LKTickHandlerServer.playersInOutPortals.containsKey(entityplayer)) {
-			LKTickHandlerServer.playersInOutPortals.put(entityplayer, Integer.valueOf(0));
+			LKTickHandlerServer.playersInOutPortals.put(entityplayer, 0);
 		}
 	}
 
@@ -219,15 +234,15 @@ public class LKClientProxy extends LKCommonProxy {
 				return;
 			}
 
-			if (type.equals("outlandsPortal")) {
+			if ("outlandsPortal".equals(type)) {
 				mc.effectRenderer.addEffect(new LKEntityPortalFX(world, d, d1, d2, d3, d4, d5, false));
 			}
 
-			if (type.equals("passion")) {
+			if ("passion".equals(type)) {
 				mc.effectRenderer.addEffect(new LKEntityPassionFX(world, d, d1, d2, d3, d4, d5));
 			}
 
-			if (type.equals("prideLandsPortal")) {
+			if ("prideLandsPortal".equals(type)) {
 				mc.effectRenderer.addEffect(new LKEntityPortalFX(world, d, d1, d2, d3, d4, d5, true));
 			}
 		}

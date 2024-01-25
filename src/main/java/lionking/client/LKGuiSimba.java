@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 
 public class LKGuiSimba extends GuiContainer {
 	private static final ResourceLocation texture = new ResourceLocation("lionking:gui/simba.png");
-	private LKEntitySimba theSimba;
+	private final LKEntitySimba theSimba;
 
 	public LKGuiSimba(EntityPlayer entityplayer, LKEntitySimba simba) {
 		super(new LKContainerSimba(entityplayer, simba));
@@ -32,9 +32,7 @@ public class LKGuiSimba extends GuiContainer {
 		if (button.id == 0) {
 			byte[] data = new byte[5];
 			byte[] id = ByteBuffer.allocate(4).putInt(theSimba.entityId).array();
-			for (int i = 0; i < 4; i++) {
-				data[i] = id[i];
-			}
+			System.arraycopy(id, 0, data, 0, 4);
 			data[4] = (byte) mc.thePlayer.dimension;
 			Packet250CustomPayload packet = new Packet250CustomPayload("lk.simbaSit", data);
 			PacketDispatcher.sendPacketToServer(packet);
@@ -45,7 +43,7 @@ public class LKGuiSimba extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		int textcolour = 0x7A2804;
 		fontRenderer.drawString("Simba", 74, 13, textcolour);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, textcolour);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, textcolour);
 	}
 
 	@Override

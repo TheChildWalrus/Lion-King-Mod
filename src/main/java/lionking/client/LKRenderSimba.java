@@ -23,12 +23,14 @@ public class LKRenderSimba extends RenderLiving {
 		return texture;
 	}
 
+	@Override
 	public void doRenderLiving(EntityLiving entity, double d, double d1, double d2, float f, float f1) {
+		double d11 = d1;
 		LKEntitySimba simba = (LKEntitySimba) entity;
-		super.doRenderLiving(simba, d, d1, d2, f, f1);
-		d1 += 0.25D;
-		renderLivingLabel(simba, "Simba", d, d1, d2, 64);
-		renderHealthBar(simba, d, d1, d2, 64);
+		super.doRenderLiving(simba, d, d11, d2, f, f1);
+		d11 += 0.25D;
+		renderLivingLabel(simba, "Simba", d, d11, d2, 64);
+		renderHealthBar(simba, d, d11, d2, 64);
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class LKRenderSimba extends RenderLiving {
 	private void renderHealthBar(LKEntitySimba simba, double d, double d1, double d2, int i) {
 		float f = simba.getDistanceToEntity(renderManager.livingPlayer);
 
-		if (f <= (float) i) {
+		if (f <= i) {
 			float f1 = 1.6F;
 			float f2 = 0.016666668F * f1;
 			GL11.glPushMatrix();
@@ -62,23 +64,23 @@ public class LKRenderSimba extends RenderLiving {
 
 			tessellator.startDrawingQuads();
 			tessellator.setColorRGBA_F(1.0F, 0.0F, 0.0F, 1.0F);
-			tessellator.addVertex(-19D, 16D, 0.0D);
-			tessellator.addVertex(-19D, 21D, 0.0D);
-			tessellator.addVertex(19D, 21D, 0.0D);
-			tessellator.addVertex(19D, 16D, 0.0D);
+			tessellator.addVertex(-19.0D, 16.0D, 0.0D);
+			tessellator.addVertex(-19.0D, 21.0D, 0.0D);
+			tessellator.addVertex(19.0D, 21.0D, 0.0D);
+			tessellator.addVertex(19.0D, 16.0D, 0.0D);
 			tessellator.draw();
 
-			double healthRemaining = (double) simba.getHealth() / (double) simba.getMaxHealth();
+			double healthRemaining = (double) simba.getHealth() / simba.getMaxHealth();
 			if (healthRemaining < 0.0D) {
 				healthRemaining = 0.0D;
 			}
 
 			tessellator.startDrawingQuads();
 			tessellator.setColorRGBA_F(0.0F, 1.0F, 0.0F, 1.0F);
-			tessellator.addVertex(-19D, 16D, 0.0D);
-			tessellator.addVertex(-19D, 21D, 0.0D);
-			tessellator.addVertex(-19D + (38D * healthRemaining), 21D, 0.0D);
-			tessellator.addVertex(-19D + (38D * healthRemaining), 16D, 0.0D);
+			tessellator.addVertex(-19.0D, 16.0D, 0.0D);
+			tessellator.addVertex(-19.0D, 21.0D, 0.0D);
+			tessellator.addVertex(-19.0D + 38.0D * healthRemaining, 21.0D, 0.0D);
+			tessellator.addVertex(-19.0D + 38.0D * healthRemaining, 16.0D, 0.0D);
 			tessellator.draw();
 
 			GL11.glEnable(GL11.GL_TEXTURE_2D);

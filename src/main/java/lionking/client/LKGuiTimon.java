@@ -21,12 +21,12 @@ public class LKGuiTimon extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		int textcolour = 0x7F472F;
 		fontRenderer.drawString("Timon & Pumbaa", 51, 13, textcolour);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, textcolour);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, textcolour);
 
 		for (int k = 0; k < 5; k++) {
 			String s = Integer.valueOf(((LKSlotTimon) inventorySlots.inventorySlots.get(k)).cost).toString();
-			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.getTextureManager(), new ItemStack(mod_LionKing.bug), s.length() == 1 ? 18 + 33 * k : 23 + 33 * k, 51);
-			fontRenderer.drawString(s, s.length() == 1 ? 11 + 33 * k : 10 + 33 * k, 55, textcolour);
+			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.getTextureManager(), new ItemStack(mod_LionKing.bug), (s.length() == 1 ? 18 : 23) + 33 * k, 51);
+			fontRenderer.drawString(s, (s.length() == 1 ? 11 : 10) + 33 * k, 55, textcolour);
 		}
 	}
 

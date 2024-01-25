@@ -31,28 +31,27 @@ public class LKGuiAchievements extends GuiScreen {
 	private static final int guiMapLeft = LKAchievementList.minDisplayRow * 24 - 112;
 	private static final int guiMapBottom = LKAchievementList.maxDisplayColumn * 24 - 77;
 	private static final int guiMapRight = LKAchievementList.maxDisplayRow * 24 - 77;
-	public int currentPage = -1;
-	protected int achievementsPaneWidth = 256;
-	protected int achievementsPaneHeight = 202;
-	protected int mouseX = 0;
-	protected int mouseY = 0;
-	protected double field_27116_m;
-	protected double field_27115_n;
-	protected double guiMapX;
-	protected double guiMapY;
-	protected double field_27112_q;
-	protected double field_27111_r;
-	private int isMouseButtonDown = 0;
-	private StatFileWriter statFileWriter;
+	private int currentPage;
+	private static final int achievementsPaneWidth = 256;
+	private static final int achievementsPaneHeight = 202;
+	private int mouseX;
+	private int mouseY;
+	private double field_27116_m;
+	private double field_27115_n;
+	private double guiMapX;
+	private double guiMapY;
+	private double field_27112_q;
+	private double field_27111_r;
+	private int isMouseButtonDown;
+	private final StatFileWriter statFileWriter;
 	private GuiSmallButton button;
-	private LinkedList<Achievement> minecraftAchievements = new LinkedList<Achievement>();
+	private final LinkedList<Achievement> minecraftAchievements = new LinkedList<Achievement>();
 
 	public LKGuiAchievements(StatFileWriter par1StatFileWriter, int page) {
 		statFileWriter = par1StatFileWriter;
 		currentPage = page;
-		field_27116_m = guiMapX = field_27112_q = LKAchievementList.enterPrideLands.displayColumn * 24 - 141 / 2 - 12;
-		field_27115_n = guiMapY = field_27111_r = LKAchievementList.enterPrideLands.displayRow * 24 - 141 / 2;
-		minecraftAchievements.clear();
+		field_27116_m = guiMapX = field_27112_q = LKAchievementList.enterPrideLands.displayColumn * 24 - (double) 141 / 2 - 12;
+		field_27115_n = guiMapY = field_27111_r = LKAchievementList.enterPrideLands.displayRow * 24 - (double) 141 / 2;
 		for (Object achievement : AchievementList.achievementList) {
 			if (!AchievementPage.isAchievementInPages((Achievement) achievement)) {
 				minecraftAchievements.add((Achievement) achievement);
@@ -71,7 +70,7 @@ public class LKGuiAchievements extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 1) {
-			mc.displayGuiScreen((GuiScreen) null);
+			mc.displayGuiScreen(null);
 			mc.setIngameFocus();
 		}
 
@@ -89,7 +88,7 @@ public class LKGuiAchievements extends GuiScreen {
 	@Override
 	protected void keyTyped(char par1, int par2) {
 		if (par2 == mc.gameSettings.keyBindInventory.keyCode) {
-			mc.displayGuiScreen((GuiScreen) null);
+			mc.displayGuiScreen(null);
 			mc.setIngameFocus();
 		} else {
 			super.keyTyped(par1, par2);
@@ -108,8 +107,8 @@ public class LKGuiAchievements extends GuiScreen {
 				if (isMouseButtonDown == 0) {
 					isMouseButtonDown = 1;
 				} else {
-					guiMapX -= (double) (par1 - mouseX);
-					guiMapY -= (double) (par2 - mouseY);
+					guiMapX -= par1 - mouseX;
+					guiMapY -= par2 - mouseY;
 					field_27112_q = field_27116_m = guiMapX;
 					field_27111_r = field_27115_n = guiMapY;
 				}
@@ -118,20 +117,20 @@ public class LKGuiAchievements extends GuiScreen {
 				mouseY = par2;
 			}
 
-			if (field_27112_q < (double) guiMapTop) {
-				field_27112_q = (double) guiMapTop;
+			if (field_27112_q < guiMapTop) {
+				field_27112_q = guiMapTop;
 			}
 
-			if (field_27111_r < (double) guiMapLeft) {
-				field_27111_r = (double) guiMapLeft;
+			if (field_27111_r < guiMapLeft) {
+				field_27111_r = guiMapLeft;
 			}
 
-			if (field_27112_q >= (double) guiMapBottom) {
-				field_27112_q = (double) (guiMapBottom - 1);
+			if (field_27112_q >= guiMapBottom) {
+				field_27112_q = guiMapBottom - 1;
 			}
 
-			if (field_27111_r >= (double) guiMapRight) {
-				field_27111_r = (double) (guiMapRight - 1);
+			if (field_27111_r >= guiMapRight) {
+				field_27111_r = guiMapRight - 1;
 			}
 		} else {
 			isMouseButtonDown = 0;
@@ -162,15 +161,15 @@ public class LKGuiAchievements extends GuiScreen {
 		}
 	}
 
-	protected void func_27110_k() {
+	private void func_27110_k() {
 		int var1 = (width - achievementsPaneWidth) / 2;
 		int var2 = (height - achievementsPaneHeight) / 2;
 		fontRenderer.drawString("Achievements", var1 + 15, var2 + 5, 0);
 	}
 
-	protected void genAchievementBackground(int par1, int par2, float par3) {
-		int var4 = MathHelper.floor_double(field_27116_m + (guiMapX - field_27116_m) * (double) par3);
-		int var5 = MathHelper.floor_double(field_27115_n + (guiMapY - field_27115_n) * (double) par3);
+	private void genAchievementBackground(int par1, int par2, float par3) {
+		int var4 = MathHelper.floor_double(field_27116_m + (guiMapX - field_27116_m) * par3);
+		int var5 = MathHelper.floor_double(field_27115_n + (guiMapY - field_27115_n) * par3);
 
 		if (var4 < guiMapTop) {
 			var4 = guiMapTop;
@@ -211,11 +210,11 @@ public class LKGuiAchievements extends GuiScreen {
 		int var26;
 
 		for (var22 = 0; var22 * 16 - var15 < 155; ++var22) {
-			float var23 = 0.6F - (float) (var13 + var22) / 26.0F * 0.3F;
+			float var23 = 0.6F - (var13 + var22) / 26.0F * 0.3F;
 			GL11.glColor4f(var23, var23, var23, 1.0F);
 
 			for (var24 = 0; var24 * 16 - var14 < 224; ++var24) {
-				var21.setSeed((long) (1234 + var12 + var24));
+				var21.setSeed(1234 + var12 + var24);
 				var21.nextInt();
 				var25 = var21.nextInt(1 + var13 + var22) + (var13 + var22) / 2;
 				Icon icon = mod_LionKing.pridestone.getIcon(2, 0);
@@ -230,7 +229,7 @@ public class LKGuiAchievements extends GuiScreen {
 					}
 				}
 
-				if ((var13 + var22 == 31 && (var12 + var24 < 10 || var12 + var24 > 27)) || (var13 + var22 == 32 && (var12 + var24 < 15 || var12 + var24 > 22)) || (var13 + var22 > 32)) {
+				if (var13 + var22 == 31 && (var12 + var24 < 10 || var12 + var24 > 27) || var13 + var22 == 32 && (var12 + var24 < 15 || var12 + var24 > 22) || var13 + var22 > 32) {
 					icon = mod_LionKing.pridestone.getIcon(2, 1);
 					if (var25 == 30) {
 						icon = mod_LionKing.prideCoal.getIcon(2, 1);
@@ -250,7 +249,7 @@ public class LKGuiAchievements extends GuiScreen {
 		int var27;
 		int var30;
 
-		List<Achievement> achievementList = (currentPage == -1 ? minecraftAchievements : AchievementPage.getAchievementPage(currentPage).getAchievements());
+		List<Achievement> achievementList = currentPage == -1 ? minecraftAchievements : AchievementPage.getAchievementPage(currentPage).getAchievements();
 		for (var22 = 0; var22 < achievementList.size(); ++var22) {
 			Achievement var33 = achievementList.get(var22);
 
@@ -261,7 +260,7 @@ public class LKGuiAchievements extends GuiScreen {
 				var27 = var33.parentAchievement.displayRow * 24 - var5 + 11 + var11;
 				boolean var28 = statFileWriter.hasAchievementUnlocked(var33);
 				boolean var29 = statFileWriter.canUnlockAchievement(var33);
-				var30 = Math.sin((double) (System.currentTimeMillis() % 600L) / 600.0D * Math.PI * 2.0D) > 0.6D ? 255 : 130;
+				var30 = Math.sin((System.currentTimeMillis() % 600L) / 600.0D * Math.PI * 2.0D) > 0.6D ? 255 : 130;
 				int var31 = -16777216;
 
 				if (var28) {
@@ -296,7 +295,7 @@ public class LKGuiAchievements extends GuiScreen {
 					var38 = 1.0F;
 					GL11.glColor4f(var38, var38, var38, 1.0F);
 				} else if (statFileWriter.canUnlockAchievement(var35)) {
-					var38 = Math.sin((double) (System.currentTimeMillis() % 600L) / 600.0D * Math.PI * 2.0D) < 0.6D ? 0.6F : 0.8F;
+					var38 = Math.sin((System.currentTimeMillis() % 600L) / 600.0D * Math.PI * 2.0D) < 0.6D ? 0.6F : 0.8F;
 					GL11.glColor4f(var38, var38, var38, 1.0F);
 				} else {
 					var38 = 0.3F;
@@ -370,13 +369,13 @@ public class LKGuiAchievements extends GuiScreen {
 				}
 			} else {
 				var42 = Math.max(fontRenderer.getStringWidth(var34), 120);
-				String var39 = StatCollector.translateToLocalFormatted("achievement.requires", new Object[]{StatCollector.translateToLocal(var32.parentAchievement.getName())});
+				String var39 = StatCollector.translateToLocalFormatted("achievement.requires", StatCollector.translateToLocal(var32.parentAchievement.getName()));
 				var30 = fontRenderer.splitStringWidth(var39, var42);
 				drawGradientRect(var26 - 3, var27 - 3, var26 + var42 + 3, var27 + var30 + 12 + 3, -1073741824, -1073741824);
 				fontRenderer.drawSplitString(var39, var26, var27 + 12, var42, -9416624);
 			}
 
-			fontRenderer.drawStringWithShadow(var34, var26, var27, statFileWriter.canUnlockAchievement(var32) ? (var32.getSpecial() ? -128 : -1) : (var32.getSpecial() ? -8355776 : -8355712));
+			fontRenderer.drawStringWithShadow(var34, var26, var27, statFileWriter.canUnlockAchievement(var32) ? var32.getSpecial() ? -128 : -1 : var32.getSpecial() ? -8355776 : -8355712);
 		}
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);

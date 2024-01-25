@@ -1,11 +1,11 @@
 package lionking.client;
 
-import lionking.common.LKTileEntityBugTrap;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -15,15 +15,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class LKTileEntityBugTrapRenderer extends TileEntitySpecialRenderer {
-	private RenderBlocks renderblocks = new RenderBlocks();
+	private final RenderBlocks renderblocks = new RenderBlocks();
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-		LKTileEntityBugTrap bugTrap = (LKTileEntityBugTrap) tileentity;
+		IInventory bugTrap = (IInventory) tileentity;
 
 		for (int l = 0; l < 4; l++) {
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float) d + 0.5F + (l == 2 ? 0.035F : (l == 1 ? -0.035F : 0.0F)), (float) d1 + 0.4F, (float) d2 + 0.5F + (l == 3 ? 0.035F : (l == 0 ? -0.035F : 0.0F)));
+			GL11.glTranslatef((float) d + 0.5F + (l == 2 ? 0.035F : l == 1 ? -0.035F : 0.0F), (float) d1 + 0.4F, (float) d2 + 0.5F + (l == 3 ? 0.035F : l == 0 ? -0.035F : 0.0F));
 
 			switch (l) {
 				case 0:
@@ -73,9 +73,9 @@ public class LKTileEntityBugTrapRenderer extends TileEntitySpecialRenderer {
 
 						for (int index = 0; index < item.getRenderPasses(itemstack.getItemDamage()); index++) {
 							int color = itemstack.getItem().getColorFromItemStack(itemstack, index);
-							float f2 = (float) (color >> 16 & 255) / 255.0F;
-							float f3 = (float) (color >> 8 & 255) / 255.0F;
-							float f4 = (float) (color & 255) / 255.0F;
+							float f2 = (color >> 16 & 255) / 255.0F;
+							float f3 = (color >> 8 & 255) / 255.0F;
+							float f4 = (color & 255) / 255.0F;
 							GL11.glColor4f(f2, f3, f4, 1.0F);
 							drawItemSprite(itemstack.getItem().getIconFromDamageForRenderPass(itemstack.getItemDamage(), index));
 						}
@@ -87,9 +87,9 @@ public class LKTileEntityBugTrapRenderer extends TileEntitySpecialRenderer {
 						}
 
 						int color = Item.itemsList[itemstack.itemID].getColorFromItemStack(itemstack, 0);
-						float f1 = (float) (color >> 16 & 255) / 255.0F;
-						float f2 = (float) (color >> 8 & 255) / 255.0F;
-						float f3 = (float) (color & 255) / 255.0F;
+						float f1 = (color >> 16 & 255) / 255.0F;
+						float f2 = (color >> 8 & 255) / 255.0F;
+						float f3 = (color & 255) / 255.0F;
 						GL11.glColor4f(f1, f2, f3, 1.0F);
 						drawItemSprite(itemstack.getIconIndex());
 					}
@@ -111,14 +111,14 @@ public class LKTileEntityBugTrapRenderer extends TileEntitySpecialRenderer {
 		float f3 = icon.getMaxV();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		tessellator.addVertexWithUV(-0.5D, -0.25D, 0.0D, (double) f, (double) f3);
-		tessellator.addVertexWithUV(0.5D, -0.25D, 0.0D, (double) f1, (double) f3);
-		tessellator.addVertexWithUV(0.5D, 0.75D, 0.0D, (double) f1, (double) f2);
-		tessellator.addVertexWithUV(-0.5D, 0.75D, 0.0D, (double) f, (double) f2);
-		tessellator.addVertexWithUV(-0.5D, 0.75D, 0.0D, (double) f, (double) f2);
-		tessellator.addVertexWithUV(0.5D, 0.75D, 0.0D, (double) f1, (double) f2);
-		tessellator.addVertexWithUV(0.5D, -0.25D, 0.0D, (double) f1, (double) f3);
-		tessellator.addVertexWithUV(-0.5D, -0.25D, 0.0D, (double) f, (double) f3);
+		tessellator.addVertexWithUV(-0.5D, -0.25D, 0.0D, f, f3);
+		tessellator.addVertexWithUV(0.5D, -0.25D, 0.0D, f1, f3);
+		tessellator.addVertexWithUV(0.5D, 0.75D, 0.0D, f1, f2);
+		tessellator.addVertexWithUV(-0.5D, 0.75D, 0.0D, f, f2);
+		tessellator.addVertexWithUV(-0.5D, 0.75D, 0.0D, f, f2);
+		tessellator.addVertexWithUV(0.5D, 0.75D, 0.0D, f1, f2);
+		tessellator.addVertexWithUV(0.5D, -0.25D, 0.0D, f1, f3);
+		tessellator.addVertexWithUV(-0.5D, -0.25D, 0.0D, f, f3);
 		tessellator.draw();
 	}
 }

@@ -13,7 +13,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import java.util.Random;
 
 public class LKSound {
-	private Random rand = new Random();
+	private final Random rand = new Random();
 	private SoundPool music;
 
 	@ForgeSubscribe

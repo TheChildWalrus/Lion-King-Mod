@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class LKRenderZira extends RenderLiving {
-	private static ResourceLocation texture = new ResourceLocation("lionking:mob/zira.png");
+	private static final ResourceLocation texture = new ResourceLocation("lionking:mob/zira.png");
 
 	public LKRenderZira() {
 		super(new LKModelLion(true), 0.5F);
@@ -36,13 +36,6 @@ public class LKRenderZira extends RenderLiving {
 
 	private boolean renderName() {
 		EntityLivingBase player = renderManager.livingPlayer;
-		if (player != null && player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode) {
-			return true;
-		} else if (LKQuestBase.outlandsQuest.getQuestStage() > 1) {
-			return true;
-		} else if (LKQuestBase.outlandsQuest.getQuestStage() == 1 && !LKQuestBase.outlandsQuest.isDelayed()) {
-			return true;
-		}
-		return false;
+		return player instanceof EntityPlayer && ((EntityPlayer) player).capabilities.isCreativeMode || LKQuestBase.outlandsQuest.getQuestStage() > 1 || LKQuestBase.outlandsQuest.getQuestStage() == 1 && !LKQuestBase.outlandsQuest.isDelayed();
 	}
 }

@@ -18,7 +18,7 @@ public class LKGuiGrindingBowl extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		int textcolour = 0x140C02;
 		fontRenderer.drawString("Grinding Bowl", 49, 6, textcolour);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96) + 2, textcolour);
+		fontRenderer.drawString("Inventory", 8, ySize - 96 + 2, textcolour);
 	}
 
 	@Override

@@ -30,9 +30,9 @@ public class LKRenderCustomFX extends Render {
 		float f2 = ActiveRenderInfo.rotationYZ;
 		float f3 = ActiveRenderInfo.rotationXY;
 		float f4 = ActiveRenderInfo.rotationXZ;
-		EntityFX.interpPosX = entityplayer.lastTickPosX + (entityplayer.posX - entityplayer.lastTickPosX) * (double) ticks;
-		EntityFX.interpPosY = entityplayer.lastTickPosY + (entityplayer.posY - entityplayer.lastTickPosY) * (double) ticks;
-		EntityFX.interpPosZ = entityplayer.lastTickPosZ + (entityplayer.posZ - entityplayer.lastTickPosZ) * (double) ticks;
+		EntityFX.interpPosX = entityplayer.lastTickPosX + (entityplayer.posX - entityplayer.lastTickPosX) * ticks;
+		EntityFX.interpPosY = entityplayer.lastTickPosY + (entityplayer.posY - entityplayer.lastTickPosY) * ticks;
+		EntityFX.interpPosZ = entityplayer.lastTickPosZ + (entityplayer.posZ - entityplayer.lastTickPosZ) * ticks;
 
 		bindEntityTexture(entity);
 		Tessellator tessellator = Tessellator.instance;

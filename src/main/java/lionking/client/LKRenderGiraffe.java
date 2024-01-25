@@ -10,11 +10,11 @@ import net.minecraft.util.ResourceLocation;
 import java.util.HashMap;
 
 public class LKRenderGiraffe extends RenderLiving {
-	private static ResourceLocation texture = new ResourceLocation("lionking:mob/giraffe/giraffe.png");
+	private static final ResourceLocation texture = new ResourceLocation("lionking:mob/giraffe/giraffe.png");
 
-	private static ResourceLocation saddleTexture = new ResourceLocation("lionking:mob/giraffe/saddle.png");
-	private static String[] tieNames = {"tie", "tie_white", "tie_blue", "tie_yellow", "tie_red", "tie_purple", "tie_green", "tie_black"};
-	private static HashMap tieTextures = new HashMap();
+	private static final ResourceLocation saddleTexture = new ResourceLocation("lionking:mob/giraffe/saddle.png");
+	private static final String[] tieNames = new String[]{"tie", "tie_white", "tie_blue", "tie_yellow", "tie_red", "tie_purple", "tie_green", "tie_black"};
+	private static final HashMap tieTextures = new HashMap();
 
 	public LKRenderGiraffe(ModelBase model, ModelBase model1) {
 		super(model, 0.5F);
@@ -31,7 +31,8 @@ public class LKRenderGiraffe extends RenderLiving {
 		if (i == 0 && ((LKEntityGiraffe) entity).getSaddled()) {
 			bindTexture(saddleTexture);
 			return 1;
-		} else if (i == 1 && ((LKEntityGiraffe) entity).getTie() > -1) {
+		}
+		if (i == 1 && ((LKEntityGiraffe) entity).getTie() > -1) {
 			String s = tieNames[((LKEntityGiraffe) entity).getTie()];
 			if (tieTextures.get(s) == null) {
 				tieTextures.put(s, new ResourceLocation("lionking:mob/giraffe/" + s + ".png"));

@@ -9,12 +9,12 @@ import org.lwjgl.opengl.GL11;
 
 public class LKRenderGrindingStick extends TileEntitySpecialRenderer {
 	private static final ResourceLocation texture = new ResourceLocation("lionking:item/stick.png");
-	private ModelBase model = new LKModelGrindingStick();
+	private final ModelBase model = new LKModelGrindingStick();
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
 		LKTileEntityGrindingBowl bowl = (LKTileEntityGrindingBowl) tileentity;
-		renderStick((float) d, (float) d1, (float) d2, bowl.stickRotation + (f * 8F));
+		renderStick((float) d, (float) d1, (float) d2, bowl.stickRotation + f * 8.0F);
 	}
 
 	private void renderStick(float f, float f1, float f2, float rotation) {

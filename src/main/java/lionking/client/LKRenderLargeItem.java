@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.HashMap;
 
 public class LKRenderLargeItem implements IItemRenderer {
-	private static HashMap largeItemTextures = new HashMap();
+	private static final HashMap largeItemTextures = new HashMap();
 
 	@Override
 	public boolean handleRenderType(ItemStack itemstack, ItemRenderType type) {
@@ -28,10 +28,10 @@ public class LKRenderLargeItem implements IItemRenderer {
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack itemstack, Object... data) {
 		GL11.glPushMatrix();
-		GL11.glTranslatef(-0.5F, -0.5F, 0F);
-		GL11.glScalef(2F, 2F, 1F);
+		GL11.glTranslatef(-0.5F, -0.5F, 0.0F);
+		GL11.glScalef(2.0F, 2.0F, 1.0F);
 		TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
-		ResourceLocation texture = null;
+		ResourceLocation texture;
 		String itemName = Item.itemsList[itemstack.itemID].getUnlocalizedName();
 
 		if (largeItemTextures.get(itemName) != null) {
@@ -43,11 +43,11 @@ public class LKRenderLargeItem implements IItemRenderer {
 		}
 
 		textureManager.bindTexture(texture);
-		GL11.glColor4f(1F, 1F, 1F, 1F);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Tessellator tessellator = Tessellator.instance;
-		ItemRenderer.renderItemIn2D(tessellator, 1F, 0F, 0F, 1F, 32, 32, 0.0625F);
+		ItemRenderer.renderItemIn2D(tessellator, 1.0F, 0.0F, 0.0F, 1.0F, 32, 32, 0.0625F);
 
-		if (itemstack != null && itemstack.hasEffect(0)) {
+		if (itemstack.hasEffect(0)) {
 			GL11.glDepthFunc(GL11.GL_EQUAL);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			textureManager.bindTexture(LKClientProxy.itemGlintTexture);
@@ -59,14 +59,14 @@ public class LKRenderLargeItem implements IItemRenderer {
 			GL11.glPushMatrix();
 			float f1 = 0.125F;
 			GL11.glScalef(f1, f1, f1);
-			float f2 = (float) (System.currentTimeMillis() % 3000L) / 3000.0F * 8.0F;
+			float f2 = (System.currentTimeMillis() % 3000L) / 3000.0F * 8.0F;
 			GL11.glTranslatef(f2, 0.0F, 0.0F);
 			GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
 			ItemRenderer.renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
 			GL11.glPopMatrix();
 			GL11.glPushMatrix();
 			GL11.glScalef(f1, f1, f1);
-			f2 = (float) (System.currentTimeMillis() % 4873L) / 4873.0F * 8.0F;
+			f2 = (System.currentTimeMillis() % 4873L) / 4873.0F * 8.0F;
 			GL11.glTranslatef(-f2, 0.0F, 0.0F);
 			GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
 			ItemRenderer.renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);

@@ -6,6 +6,7 @@ import lionking.common.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
@@ -16,35 +17,36 @@ import net.minecraft.world.World;
 import java.nio.ByteBuffer;
 
 public class LKPacketHandlerClient implements IPacketHandler {
+	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 		byte[] data = packet.data;
-		if (packet.channel.equals("lk.tileEntity")) {
+		if ("lk.tileEntity".equals(packet.channel)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data);
 			int i = buffer.getInt(0);
 			int j = buffer.getInt(4);
 			int k = buffer.getInt(8);
 			TileEntity tileentity = Minecraft.getMinecraft().theWorld.getBlockTileEntity(i, j, k);
 
-			if (tileentity != null && tileentity instanceof LKTileEntityBugTrap) {
+			if (tileentity instanceof LKTileEntityBugTrap) {
 				for (int l = 0; l < 4; l++) {
 					int id = buffer.getInt(12 + l * 8);
 					int damage = buffer.getInt(16 + l * 8);
 					if (Item.itemsList[id] != null) {
-						((LKTileEntityBugTrap) tileentity).setInventorySlotContents(l, new ItemStack(id, 1, damage));
+						((IInventory) tileentity).setInventorySlotContents(l, new ItemStack(id, 1, damage));
 					}
 				}
-			} else if (tileentity != null && tileentity instanceof LKTileEntityHyenaHead) {
+			} else if (tileentity instanceof LKTileEntityHyenaHead) {
 				((LKTileEntityHyenaHead) tileentity).setHyenaType(data[12]);
 				((LKTileEntityHyenaHead) tileentity).setRotation(data[13]);
-			} else if (tileentity != null && tileentity instanceof LKTileEntityMountedShooter) {
+			} else if (tileentity instanceof LKTileEntityMountedShooter) {
 				if (data[12] == (byte) -1) {
 					((LKTileEntityMountedShooter) tileentity).fireCounter = 20;
 				} else {
 					((LKTileEntityMountedShooter) tileentity).setShooterType(data[12]);
 				}
-			} else if (tileentity != null && tileentity instanceof LKTileEntityFurRug) {
+			} else if (tileentity instanceof LKTileEntityFurRug) {
 				((LKTileEntityFurRug) tileentity).direction = data[12];
-			} else if (tileentity != null && tileentity instanceof LKTileEntityMobSpawner) {
+			} else if (tileentity instanceof LKTileEntityMobSpawner) {
 				double yaw = buffer.getDouble(12);
 				double yaw2 = buffer.getDouble(20);
 				int mobID = buffer.getInt(28);
@@ -52,7 +54,7 @@ public class LKPacketHandlerClient implements IPacketHandler {
 				((LKTileEntityMobSpawner) tileentity).yaw2 = yaw2;
 				((LKTileEntityMobSpawner) tileentity).setMobID(mobID);
 			}
-		} else if (packet.channel.equals("lk.particles")) {
+		} else if ("lk.particles".equals(packet.channel)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data);
 			double posX = buffer.getDouble(3);
 			double posY = buffer.getDouble(11);
@@ -64,9 +66,9 @@ public class LKPacketHandlerClient implements IPacketHandler {
 			if (world != null) {
 				world.spawnEntityInWorld(new LKEntityCustomFX(world, data[0], data[1], data[2] == (byte) 1, posX, posY, posZ, velX, velY, velZ));
 			}
-		} else if (packet.channel.equals("lk.breakItem")) {
+		} else if ("lk.breakItem".equals(packet.channel)) {
 			Entity entity = mod_LionKing.proxy.getEntityFromID(ByteBuffer.wrap(data).getInt(0), Minecraft.getMinecraft().theWorld);
-			if (entity != null && entity instanceof EntityPlayer) {
+			if (entity instanceof EntityPlayer) {
 				EntityPlayer entityplayer = (EntityPlayer) entity;
 				int type = data[5];
 				if (type == (byte) 0) {
@@ -75,42 +77,42 @@ public class LKPacketHandlerClient implements IPacketHandler {
 					entityplayer.renderBrokenItemStack(new ItemStack(mod_LionKing.wings));
 				}
 			}
-		} else if (packet.channel.equals("lk.homePortal")) {
+		} else if ("lk.homePortal".equals(packet.channel)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data);
 			LKLevelData.homePortalX = buffer.getInt(0);
 			LKLevelData.homePortalY = buffer.getInt(4);
 			LKLevelData.homePortalZ = buffer.getInt(8);
-		} else if (packet.channel.equals("lk.scar")) {
+		} else if ("lk.scar".equals(packet.channel)) {
 			LKLevelData.defeatedScar = data[0];
-		} else if (packet.channel.equals("lk.mound")) {
+		} else if ("lk.mound".equals(packet.channel)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data);
 			LKLevelData.moundX = buffer.getInt(0);
 			LKLevelData.moundY = buffer.getInt(4);
 			LKLevelData.moundZ = buffer.getInt(8);
-		} else if (packet.channel.equals("lk.outlanders")) {
+		} else if ("lk.outlanders".equals(packet.channel)) {
 			LKLevelData.outlandersHostile = data[0];
-		} else if (packet.channel.equals("lk.zira")) {
+		} else if ("lk.zira".equals(packet.channel)) {
 			LKLevelData.ziraStage = data[0];
-		} else if (packet.channel.equals("lk.pumbaa")) {
+		} else if ("lk.pumbaa".equals(packet.channel)) {
 			LKLevelData.pumbaaStage = data[0];
-		} else if (packet.channel.equals("lotr.hasSimba")) {
+		} else if ("lotr.hasSimba".equals(packet.channel)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data);
 			LKLevelData.setHasSimba(Minecraft.getMinecraft().thePlayer, data[0] == 1);
-		} else if (packet.channel.equals("lk.questDoStage")) {
+		} else if ("lk.questDoStage".equals(packet.channel)) {
 			LKQuestBase quest = LKQuestBase.allQuests[data[0]];
 			quest.stagesCompleted[data[1]] = 1;
-		} else if (packet.channel.equals("lk.questDelay")) {
+		} else if ("lk.questDelay".equals(packet.channel)) {
 			LKQuestBase quest = LKQuestBase.allQuests[data[0]];
 			quest.stagesDelayed = data[1];
-		} else if (packet.channel.equals("lk.questCheck")) {
+		} else if ("lk.questCheck".equals(packet.channel)) {
 			LKQuestBase quest = LKQuestBase.allQuests[data[0]];
 			quest.checked = data[1];
-		} else if (packet.channel.equals("lk.questStage")) {
+		} else if ("lk.questStage".equals(packet.channel)) {
 			LKQuestBase quest = LKQuestBase.allQuests[data[0]];
 			quest.currentStage = data[1];
-		} else if (packet.channel.equals("lk.flatulence")) {
+		} else if ("lk.flatulence".equals(packet.channel)) {
 			LKLevelData.flatulenceSoundsRemaining = data[0];
-		} else if (packet.channel.equals("lk.login")) {
+		} else if ("lk.login".equals(packet.channel)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data);
 
 			LKLevelData.homePortalX = buffer.getInt(0);
@@ -132,7 +134,6 @@ public class LKPacketHandlerClient implements IPacketHandler {
 					continue;
 				}
 
-				quest.stagesDelayed = data[29 + i * 19 + 0];
 				quest.currentStage = data[29 + i * 19 + 1];
 				quest.stagesDelayed = data[29 + i * 19 + 2];
 
@@ -143,7 +144,7 @@ public class LKPacketHandlerClient implements IPacketHandler {
 					quest.stagesCompleted[j] = data[29 + i * 19 + 3 + j];
 				}
 			}
-		} else if (packet.channel.equals("lk.message")) {
+		} else if ("lk.message".equals(packet.channel)) {
 			String message = new String(data);
 			EntityPlayer entityplayer = Minecraft.getMinecraft().thePlayer;
 			if (entityplayer != null) {

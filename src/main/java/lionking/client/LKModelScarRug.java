@@ -7,14 +7,14 @@ import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
 public class LKModelScarRug extends ModelBase {
-	private ModelRenderer body;
-	private ModelRenderer mane;
-	private ModelRenderer head;
-	private ModelRenderer leg1;
-	private ModelRenderer leg2;
-	private ModelRenderer leg3;
-	private ModelRenderer leg4;
-	private ModelRenderer tail;
+	private final ModelRenderer body;
+	private final ModelRenderer mane;
+	private final ModelRenderer head;
+	private final ModelRenderer leg1;
+	private final ModelRenderer leg2;
+	private final ModelRenderer leg3;
+	private final ModelRenderer leg4;
+	private final ModelRenderer tail;
 
 	public LKModelScarRug() {
 		body = new ModelRenderer(this, 20, 0).setTextureSize(64, 64);
@@ -69,8 +69,8 @@ public class LKModelScarRug extends ModelBase {
 		tail.render(f5);
 	}
 
-	public void setRotationAngles() {
-		float f = ((float) Math.PI) / 180.0F;
+	private void setRotationAngles() {
+		float f = (float) Math.PI / 180.0F;
 
 		body.rotateAngleX = f * 90.0F;
 

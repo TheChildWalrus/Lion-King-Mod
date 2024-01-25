@@ -18,7 +18,7 @@ public class LKGuiBugTrap extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		int textcolour = 0xFFFFFF;
 		fontRenderer.drawString("Bug Trap", 49, 6, textcolour);
-		fontRenderer.drawString("Inventory", 8, (ySize - 96), textcolour);
+		fontRenderer.drawString("Inventory", 8, ySize - 96, textcolour);
 	}
 
 	@Override

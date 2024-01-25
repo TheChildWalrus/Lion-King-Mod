@@ -7,9 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class LKRenderScarRug extends Render {
-	private static ResourceLocation textureScar = new ResourceLocation("lionking:item/rug_scar.png");
-	private static ResourceLocation textureZira = new ResourceLocation("lionking:item/rug_zira.png");
-	private LKModelScarRug model = new LKModelScarRug();
+	private static final ResourceLocation textureScar = new ResourceLocation("lionking:item/rug_scar.png");
+	private static final ResourceLocation textureZira = new ResourceLocation("lionking:item/rug_zira.png");
+	private final LKModelScarRug model = new LKModelScarRug();
 
 	@Override
 	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {

@@ -14,6 +14,9 @@ import org.lwjgl.opengl.GL11;
 public class LKGuiIngame {
 	private static final ResourceLocation flatulenceTexture = new ResourceLocation("lionking:gui/flatulence.png");
 
+	private LKGuiIngame() {
+	}
+
 	public static void drawBossHealth(Minecraft mc, EntityLivingBase boss) {
 		if (boss == null || !boss.isEntityAlive()) {
 			return;
@@ -24,7 +27,7 @@ public class LKGuiIngame {
 		ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 		int i = scaledresolution.getScaledWidth();
 		int j = i / 2 - 91;
-		int k = (int) (boss.getHealth() / boss.getMaxHealth() * (float) 183);
+		int k = (int) (boss.getHealth() / boss.getMaxHealth() * 183);
 
 		drawTexturedModalRect(j, 12, 0, isZira ? 16 : 0, 182, 5);
 
@@ -38,6 +41,7 @@ public class LKGuiIngame {
 	}
 
 	public static void renderPortalOverlay(float f, Minecraft mc, boolean isPrideLands) {
+		float f5 = f;
 		if (mc.currentScreen != null) {
 			return;
 		}
@@ -45,10 +49,10 @@ public class LKGuiIngame {
 			return;
 		}
 
-		if (f < 1.0F) {
-			f *= f;
-			f *= f;
-			f = f * 0.8F + 0.2F;
+		if (f5 < 1.0F) {
+			f5 *= f5;
+			f5 *= f5;
+			f5 = f5 * 0.8F + 0.2F;
 		}
 
 		ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
@@ -58,19 +62,19 @@ public class LKGuiIngame {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, f5);
 		mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-		Icon texture = isPrideLands ? mod_LionKing.lionPortal.getBlockTextureFromSide(0) : mod_LionKing.outlandsPortal.getBlockTextureFromSide(0);
+		Icon texture = (isPrideLands ? mod_LionKing.lionPortal : mod_LionKing.outlandsPortal).getBlockTextureFromSide(0);
 		float f1 = texture.getMinU();
 		float f2 = texture.getMinV();
 		float f3 = texture.getMaxU();
 		float f4 = texture.getMaxV();
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(0.0D, (double) j, -90.0D, (double) f1, (double) f4);
-		tessellator.addVertexWithUV((double) i, (double) j, -90.0D, (double) f3, (double) f4);
-		tessellator.addVertexWithUV((double) i, 0.0D, -90.0D, (double) f3, (double) f2);
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90.0D, (double) f1, (double) f2);
+		tessellator.addVertexWithUV(0.0D, j, -90.0D, f1, f4);
+		tessellator.addVertexWithUV(i, j, -90.0D, f3, f4);
+		tessellator.addVertexWithUV(i, 0.0D, -90.0D, f3, f2);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90.0D, f1, f2);
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -97,10 +101,10 @@ public class LKGuiIngame {
 		mc.getTextureManager().bindTexture(flatulenceTexture);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(0.0D, (double) j, -90.0D, (double) 0.0F, (double) 256.0F);
-		tessellator.addVertexWithUV((double) i, (double) j, -90.0D, (double) 0.0F, (double) 256.0F);
-		tessellator.addVertexWithUV((double) i, 0.0D, -90.0D, (double) 0.0F, (double) 256.0F);
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90.0D, (double) 0.0F, (double) 256.0F);
+		tessellator.addVertexWithUV(0.0D, j, -90.0D, 0.0F, 256.0F);
+		tessellator.addVertexWithUV(i, j, -90.0D, 0.0F, 256.0F);
+		tessellator.addVertexWithUV(i, 0.0D, -90.0D, 0.0F, 256.0F);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0F, 256.0F);
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -113,10 +117,10 @@ public class LKGuiIngame {
 		float f1 = 0.00390625F;
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV((double) (x + 0), (double) (y + height), (double) 0.0F, (double) ((float) (u + 0) * f), (double) ((float) (v + height) * f1));
-		tessellator.addVertexWithUV((double) (x + width), (double) (y + height), (double) 0.0F, (double) ((float) (u + width) * f), (double) ((float) (v + height) * f1));
-		tessellator.addVertexWithUV((double) (x + width), (double) (y + 0), (double) 0.0F, (double) ((float) (u + width) * f), (double) ((float) (v + 0) * f1));
-		tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) 0.0F, (double) ((float) (u + 0) * f), (double) ((float) (v + 0) * f1));
+		tessellator.addVertexWithUV(x, y + height, 0.0F, u * f, (v + height) * f1);
+		tessellator.addVertexWithUV(x + width, y + height, 0.0F, (u + width) * f, (v + height) * f1);
+		tessellator.addVertexWithUV(x + width, y, 0.0F, (u + width) * f, v * f1);
+		tessellator.addVertexWithUV(x, y, 0.0F, u * f, v * f1);
 		tessellator.draw();
 	}
 }

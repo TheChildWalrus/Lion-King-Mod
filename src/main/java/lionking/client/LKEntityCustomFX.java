@@ -7,13 +7,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class LKEntityCustomFX extends Entity {
-	private int particleTextureIndex;
-	private boolean glow;
-	private int particleAge = 0;
-	private int particleMaxAge = 0;
+	private final int particleTextureIndex;
+	private final boolean glow;
+	private int particleAge;
+	private final int particleMaxAge;
 	private float particleScale;
 	private float particleGravity;
-	private float particleScaleOverTime;
+	private final float particleScaleOverTime;
 
 	public LKEntityCustomFX(World world, int texture, int age, boolean flag, double d, double d1, double d2, double d3, double d4, double d5) {
 		super(world);
@@ -70,7 +70,7 @@ public class LKEntityCustomFX extends Entity {
 	@Override
 	public int getBrightnessForRender(float f) {
 		if (glow) {
-			float f1 = ((float) particleAge + f) / (float) particleMaxAge;
+			float f1 = (particleAge + f) / particleMaxAge;
 
 			if (f1 < 0.0F) {
 				f1 = 0.0F;
@@ -90,15 +90,14 @@ public class LKEntityCustomFX extends Entity {
 			}
 
 			return j | k << 16;
-		} else {
-			return super.getBrightnessForRender(f);
 		}
+		return super.getBrightnessForRender(f);
 	}
 
 	@Override
 	public float getBrightness(float f) {
 		if (glow) {
-			float f1 = ((float) particleAge + f) / (float) particleMaxAge;
+			float f1 = (particleAge + f) / particleMaxAge;
 
 			if (f1 < 0.0F) {
 				f1 = 0.0F;
@@ -110,13 +109,12 @@ public class LKEntityCustomFX extends Entity {
 
 			float f2 = super.getBrightness(f);
 			return f2 * f1 + (1.0F - f1);
-		} else {
-			return super.getBrightness(f);
 		}
+		return super.getBrightness(f);
 	}
 
 	public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5) {
-		float f6 = ((float) particleAge + f) / (float) particleMaxAge * 32.0F;
+		float f6 = (particleAge + f) / particleMaxAge * 32.0F;
 
 		if (f6 < 0.0F) {
 			f6 = 0.0F;
@@ -128,19 +126,19 @@ public class LKEntityCustomFX extends Entity {
 
 		particleScale = particleScaleOverTime * f6;
 
-		float f7 = (float) (particleTextureIndex % 16) / 16.0F;
+		float f7 = (particleTextureIndex % 16) / 16.0F;
 		float f8 = f7 + 0.0624375F;
-		float f9 = (float) (particleTextureIndex / 16) / 16.0F;
+		float f9 = (float) particleTextureIndex / 16 / 16.0F;
 		float f10 = f9 + 0.0624375F;
 		float f11 = 0.1F * particleScale;
-		float f12 = (float) (prevPosX + (posX - prevPosX) * (double) f - EntityFX.interpPosX);
-		float f13 = (float) (prevPosY + (posY - prevPosY) * (double) f - EntityFX.interpPosY);
-		float f14 = (float) (prevPosZ + (posZ - prevPosZ) * (double) f - EntityFX.interpPosZ);
+		float f12 = (float) (prevPosX + (posX - prevPosX) * f - EntityFX.interpPosX);
+		float f13 = (float) (prevPosY + (posY - prevPosY) * f - EntityFX.interpPosY);
+		float f14 = (float) (prevPosZ + (posZ - prevPosZ) * f - EntityFX.interpPosZ);
 		tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-		tessellator.addVertexWithUV((double) (f12 - f1 * f11 - f4 * f11), (double) (f13 - f2 * f11), (double) (f14 - f3 * f11 - f5 * f11), (double) f8, (double) f10);
-		tessellator.addVertexWithUV((double) (f12 - f1 * f11 + f4 * f11), (double) (f13 + f2 * f11), (double) (f14 - f3 * f11 + f5 * f11), (double) f8, (double) f9);
-		tessellator.addVertexWithUV((double) (f12 + f1 * f11 + f4 * f11), (double) (f13 + f2 * f11), (double) (f14 + f3 * f11 + f5 * f11), (double) f7, (double) f9);
-		tessellator.addVertexWithUV((double) (f12 + f1 * f11 - f4 * f11), (double) (f13 - f2 * f11), (double) (f14 + f3 * f11 - f5 * f11), (double) f7, (double) f10);
+		tessellator.addVertexWithUV(f12 - f1 * f11 - f4 * f11, f13 - f2 * f11, f14 - f3 * f11 - f5 * f11, f8, f10);
+		tessellator.addVertexWithUV(f12 - f1 * f11 + f4 * f11, f13 + f2 * f11, f14 - f3 * f11 + f5 * f11, f8, f9);
+		tessellator.addVertexWithUV(f12 + f1 * f11 + f4 * f11, f13 + f2 * f11, f14 + f3 * f11 + f5 * f11, f7, f9);
+		tessellator.addVertexWithUV(f12 + f1 * f11 - f4 * f11, f13 - f2 * f11, f14 + f3 * f11 - f5 * f11, f7, f10);
 	}
 
 	@Override

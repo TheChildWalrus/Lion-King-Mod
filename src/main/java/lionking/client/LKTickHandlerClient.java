@@ -37,18 +37,18 @@ public class LKTickHandlerClient implements ITickHandler {
 	private static void sendDamageItemPacket(EntityPlayer entityplayer, int type) {
 		byte[] data = new byte[6];
 		byte[] id = ByteBuffer.allocate(4).putInt(entityplayer.entityId).array();
-		for (int i = 0; i < 4; i++) {
-			data[i] = id[i];
-		}
+		System.arraycopy(id, 0, data, 0, 4);
 		data[4] = (byte) entityplayer.dimension;
 		data[5] = (byte) type;
 		Packet250CustomPayload packet = new Packet250CustomPayload("lk.damageItem", data);
 		PacketDispatcher.sendPacketToServer(packet);
 	}
 
+	@Override
 	public void tickStart(EnumSet type, Object... tickData) {
 	}
 
+	@Override
 	public void tickEnd(EnumSet type, Object... tickData) {
 		Minecraft minecraft = Minecraft.getMinecraft();
 
@@ -88,7 +88,7 @@ public class LKTickHandlerClient implements ITickHandler {
 					}
 
 					if (version != null && updateVersion != null && !updateVersion.equals(version)) {
-						minecraft.thePlayer.addChatMessage("\u00a7eThe Lion King Mod: \u00a7fUpdate available! (" + updateVersion + ")");
+						minecraft.thePlayer.addChatMessage("§eThe Lion King Mod: §fUpdate available! (" + updateVersion + ')');
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -102,9 +102,9 @@ public class LKTickHandlerClient implements ITickHandler {
 					if (LKIngame.isPlayerInLionPortal(entityplayer, true)) {
 						int i = (Integer) playersInPortals.get(entityplayer);
 						i++;
-						playersInPortals.put(entityplayer, Integer.valueOf(i));
+						playersInPortals.put(entityplayer, i);
 						if (i >= 100) {
-							Minecraft.getMinecraft().sndManager.playSoundFX("portal.travel", 1F, minecraft.theWorld.rand.nextFloat() * 0.4F + 0.8F);
+							Minecraft.getMinecraft().sndManager.playSoundFX("portal.travel", 1.0F, minecraft.theWorld.rand.nextFloat() * 0.4F + 0.8F);
 							playersInPortals.remove(entityplayer);
 						}
 					} else {
@@ -115,9 +115,9 @@ public class LKTickHandlerClient implements ITickHandler {
 					if (LKIngame.isPlayerInLionPortal(entityplayer, false)) {
 						int i = (Integer) playersInOutPortals.get(entityplayer);
 						i++;
-						playersInOutPortals.put(entityplayer, Integer.valueOf(i));
+						playersInOutPortals.put(entityplayer, i);
 						if (i >= 100) {
-							Minecraft.getMinecraft().sndManager.playSoundFX("portal.travel", 1F, minecraft.theWorld.rand.nextFloat() * 0.4F + 0.8F);
+							Minecraft.getMinecraft().sndManager.playSoundFX("portal.travel", 1.0F, minecraft.theWorld.rand.nextFloat() * 0.4F + 0.8F);
 							playersInOutPortals.remove(entityplayer);
 						}
 					} else {
@@ -172,20 +172,20 @@ public class LKTickHandlerClient implements ITickHandler {
 			if (playersInPortals.containsKey(minecraft.thePlayer)) {
 				int i = (Integer) playersInPortals.get(minecraft.thePlayer);
 				if (i > 0) {
-					LKGuiIngame.renderPortalOverlay(0.1F + ((float) i / 100F) * 0.6F, minecraft, true);
+					LKGuiIngame.renderPortalOverlay(0.1F + i / 100.0F * 0.6F, minecraft, true);
 				}
 			}
 
 			if (playersInOutPortals.containsKey(minecraft.thePlayer)) {
 				int i = (Integer) playersInOutPortals.get(minecraft.thePlayer);
 				if (i > 0) {
-					LKGuiIngame.renderPortalOverlay(0.1F + ((float) i / 100F) * 0.6F, minecraft, false);
+					LKGuiIngame.renderPortalOverlay(0.1F + i / 100.0F * 0.6F, minecraft, false);
 				}
 			}
 		}
 
 		if (LKIngame.flatulenceSoundTick > 0) {
-			LKGuiIngame.renderFlatulenceOverlay(0.1F + ((float) LKIngame.flatulenceSoundTick / 25.0F) * 0.7F, minecraft);
+			LKGuiIngame.renderFlatulenceOverlay(0.1F + LKIngame.flatulenceSoundTick / 25.0F * 0.7F, minecraft);
 		}
 
 		if (LKIngame.loadRenderers) {
@@ -223,7 +223,7 @@ public class LKTickHandlerClient implements ITickHandler {
 					double d = random.nextGaussian() * 0.02D;
 					double d1 = random.nextGaussian() * 0.02D;
 					double d2 = random.nextGaussian() * 0.02D;
-					world.spawnEntityInWorld(new LKEntityCustomFX(world, 48, 32, false, (entityplayer.posX + (((double) (random.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width) * 0.75F), entityplayer.posY - 1.0F + (double) (random.nextFloat() * entityplayer.height), (entityplayer.posZ + (((double) (random.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width) * 0.75F), d, d1, d2));
+					world.spawnEntityInWorld(new LKEntityCustomFX(world, 48, 32, false, entityplayer.posX + ((double) (random.nextFloat() * entityplayer.width * 2.0F) - entityplayer.width) * 0.75F, entityplayer.posY - 1.0F + random.nextFloat() * entityplayer.height, entityplayer.posZ + ((double) (random.nextFloat() * entityplayer.width * 2.0F) - entityplayer.width) * 0.75F, d, d1, d2));
 				}
 			}
 
@@ -231,17 +231,17 @@ public class LKTickHandlerClient implements ITickHandler {
 				double d = random.nextGaussian() * 0.01D;
 				double d1 = random.nextGaussian() * 0.02D;
 				if (d1 < 0.0D) {
-					d1 *= -1D;
+					d1 *= -1.0D;
 				}
 				double d2 = random.nextGaussian() * 0.01D;
-				world.spawnParticle("flame", entityplayer.posX + ((((double) (random.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width) * 0.25F), entityplayer.boundingBox.maxY + 0.3F + (double) (random.nextFloat() * 0.25F), (entityplayer.posZ + (((double) (random.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width) * 0.25F), d, d1, d2);
+				world.spawnParticle("flame", entityplayer.posX + ((double) (random.nextFloat() * entityplayer.width * 2.0F) - entityplayer.width) * 0.25F, entityplayer.boundingBox.maxY + 0.3F + random.nextFloat() * 0.25F, entityplayer.posZ + ((double) (random.nextFloat() * entityplayer.width * 2.0F) - entityplayer.width) * 0.25F, d, d1, d2);
 			}
 		}
 	}
 
 	private void damageZebraBoots(EntityPlayerSP entityplayer, ItemStack itemstack) {
-		if (!entityplayer.worldObj.isAnyLiquid(entityplayer.boundingBox) && entityplayer.movementInput.moveForward > 0.0F && !(itemstack.getItemDamage() == itemstack.getMaxDamage()) && !wingFlight) {
-			entityplayer.moveEntityWithHeading(entityplayer.movementInput.moveForward, 30F);
+		if (!entityplayer.worldObj.isAnyLiquid(entityplayer.boundingBox) && entityplayer.movementInput.moveForward > 0.0F && itemstack.getItemDamage() != itemstack.getMaxDamage() && !wingFlight) {
+			entityplayer.moveEntityWithHeading(entityplayer.movementInput.moveForward, 30.0F);
 			sendDamageItemPacket(entityplayer, 0);
 		}
 	}
@@ -250,7 +250,7 @@ public class LKTickHandlerClient implements ITickHandler {
 		if (entityplayer.onGround) {
 			wingFlight = false;
 		}
-		if (entityplayer.posY < 0D) {
+		if (entityplayer.posY < 0.0D) {
 			wingFlight = false;
 			wingTicks = 0;
 		}
@@ -259,16 +259,16 @@ public class LKTickHandlerClient implements ITickHandler {
 			if (entityplayer.movementInput.sneak) {
 				entityplayer.motionY = -0.22D;
 			} else {
-				entityplayer.motionY = ((double) (wingTicks / 12)) * 0.05D;
+				entityplayer.motionY = (double) wingTicks / 12 * 0.05D;
 			}
 		}
-		if (!(itemstack.getItemDamage() == itemstack.getMaxDamage())) {
-			if (entityplayer.motionY < 0D && !entityplayer.movementInput.sneak && wingFlight) {
+		if (itemstack.getItemDamage() != itemstack.getMaxDamage()) {
+			if (entityplayer.motionY < 0.0D && !entityplayer.movementInput.sneak && wingFlight) {
 				entityplayer.motionY = -0.22D;
 			}
-			if (entityplayer.movementInput.jump && wingTicks == 0 && entityplayer.posY < 240D && entityplayer.posY > 0D && !entityplayer.movementInput.sneak) {
+			if (entityplayer.movementInput.jump && wingTicks == 0 && entityplayer.posY < 240.0D && entityplayer.posY > 0.0D && !entityplayer.movementInput.sneak) {
 				wingTicks = 50;
-				entityplayer.motionY = 1D;
+				entityplayer.motionY = 1.0D;
 				sendDamageItemPacket(entityplayer, 1);
 				wingFlight = false;
 			}
@@ -279,10 +279,12 @@ public class LKTickHandlerClient implements ITickHandler {
 		}
 	}
 
+	@Override
 	public EnumSet ticks() {
 		return EnumSet.of(TickType.RENDER, TickType.CLIENT);
 	}
 
+	@Override
 	public String getLabel() {
 		return "The Lion King Mod";
 	}

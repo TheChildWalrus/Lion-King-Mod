@@ -1,9 +1,6 @@
 package lionking.client;
 
-import lionking.common.LKEntityLionBase;
-import lionking.common.LKEntityQuestAnimal;
-import lionking.common.LKEntityScar;
-import lionking.common.LKIngame;
+import lionking.common.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
@@ -16,23 +13,23 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 public abstract class LKRenderLiving extends RenderLiving {
-	private static RenderItem itemRenderer = new RenderItem();
-	private float scale;
-	private String name;
+	private static final RenderItem itemRenderer = new RenderItem();
+	private final float scale;
+	private final String name;
 
-	public LKRenderLiving(ModelBase model) {
-		this(model, 1F, null);
+	protected LKRenderLiving(ModelBase model) {
+		this(model, 1.0F, null);
 	}
 
-	public LKRenderLiving(ModelBase model, float f) {
+	protected LKRenderLiving(ModelBase model, float f) {
 		this(model, f, null);
 	}
 
-	public LKRenderLiving(ModelBase model, String s) {
-		this(model, 1F, s);
+	protected LKRenderLiving(ModelBase model, String s) {
+		this(model, 1.0F, s);
 	}
 
-	public LKRenderLiving(ModelBase model, float f, String s) {
+	protected LKRenderLiving(ModelBase model, float f, String s) {
 		super(model, 0.5F * f);
 		scale = f;
 		name = s;
@@ -49,7 +46,7 @@ public abstract class LKRenderLiving extends RenderLiving {
 		if (entity instanceof LKEntityQuestAnimal) {
 			LKEntityQuestAnimal animal = (LKEntityQuestAnimal) entity;
 			EntityLivingBase player = renderManager.livingPlayer;
-			if (animal instanceof LKEntityLionBase && ((LKEntityLionBase) animal).isHostile()) {
+			if (animal instanceof LKEntityLionBase && ((LKAngerable) animal).isHostile()) {
 				return;
 			}
 			if (animal.quest.hasQuest() && animal.getHealth() > 0 && player instanceof EntityPlayer && LKIngame.hasAmulet((EntityPlayer) player)) {
@@ -71,7 +68,7 @@ public abstract class LKRenderLiving extends RenderLiving {
 	}
 
 	private void renderQuestItem(EntityLivingBase entityliving, double d, double d1, double d2, int i, ItemStack itemstack) {
-		if (entityliving.getDistanceSqToEntity(renderManager.livingPlayer) <= (double) (i * i)) {
+		if (entityliving.getDistanceSqToEntity(renderManager.livingPlayer) <= i * i) {
 			String s = "x" + itemstack.stackSize;
 			FontRenderer fontrenderer = getFontRendererFromRenderManager();
 			float f = 1.6F;

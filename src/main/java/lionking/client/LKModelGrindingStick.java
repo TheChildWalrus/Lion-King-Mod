@@ -5,13 +5,13 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class LKModelGrindingStick extends ModelBase {
-	private ModelRenderer stick;
+	private final ModelRenderer stick;
 
 	public LKModelGrindingStick() {
 		stick = new ModelRenderer(this, 0, 0);
-		stick.addBox(-0.5F, -11F, -0.5F, 1, 12, 1);
-		stick.setRotationPoint(0F, 18F, 0F);
-		stick.rotateAngleX = (float) Math.PI / 180F * -35F;
+		stick.addBox(-0.5F, -11.0F, -0.5F, 1, 12, 1);
+		stick.setRotationPoint(0.0F, 18.0F, 0.0F);
+		stick.rotateAngleX = (float) Math.PI / 180.0F * -35.0F;
 	}
 
 	@Override

@@ -61,17 +61,13 @@ public class LKGuiDrum extends GuiContainer {
 
 				int level = ((LKContainerDrum) inventorySlots).enchantLevels[i1];
 
-				if (level == 0) {
+				if (level == 0 || mc.thePlayer.experienceLevel < level && !mc.thePlayer.capabilities.isCreativeMode) {
 					drawTexturedModalRect(l + 72, k + 25 + i1 * 18, 183, 0, 73, 17);
 				} else {
-					if (mc.thePlayer.experienceLevel < level && !mc.thePlayer.capabilities.isCreativeMode) {
-						drawTexturedModalRect(l + 72, k + 25 + i1 * 18, 183, 0, 73, 17);
+					if (i >= l + 72 && i < l + 145 && j >= k + 25 + i1 * 18 && j < k + 42 + i1 * 18) {
+						drawTexturedModalRect(l + 72, k + 25 + i1 * 18, 183, 36, 73, 17);
 					} else {
-						if (i >= l + 72 && i < l + 145 && j >= k + 25 + i1 * 18 && j < k + 42 + i1 * 18) {
-							drawTexturedModalRect(l + 72, k + 25 + i1 * 18, 183, 36, 73, 17);
-						} else {
-							drawTexturedModalRect(l + 72, k + 25 + i1 * 18, 183, 18, 73, 17);
-						}
+						drawTexturedModalRect(l + 72, k + 25 + i1 * 18, 183, 18, 73, 17);
 					}
 				}
 			}

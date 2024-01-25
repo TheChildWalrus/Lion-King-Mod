@@ -36,17 +36,17 @@ public class LKGuiQuests extends GuiScreen {
 	public static int flashTimer;
 	private static int page = -1;
 	private static LKQuestBase selectedQuest;
-	private RenderItem itemRenderer = new RenderItem();
-	private int xSize;
-	private int ySize;
-	private Container inventorySlots;
+	private final RenderItem itemRenderer = new RenderItem();
+	private final int xSize;
+	private final int ySize;
+	private final Container inventorySlots;
 	private int guiLeft;
 	private int guiTop;
 	private List matchedRecipes;
 	private boolean craftGuiOpen;
 	private int recipeIndex;
 	private ItemStack prevLoreStack;
-	private EntityPlayer thePlayer;
+	private final EntityPlayer thePlayer;
 
 	public LKGuiQuests(EntityPlayer entityplayer) {
 		inventorySlots = new LKContainerItemInfo(entityplayer);
@@ -66,7 +66,7 @@ public class LKGuiQuests extends GuiScreen {
 		for (int i = 0; i < LKQuestBase.orderedQuests.size(); i++) {
 			LKQuestBase quest = (LKQuestBase) LKQuestBase.orderedQuests.get(i);
 			if (quest != null) {
-				buttonList.add(new LKGuiQuestsButton(i, guiLeft - 20, guiTop + 8 + ((i + 1) * 28), quest));
+				buttonList.add(new LKGuiQuestsButton(i, guiLeft - 20, guiTop + 8 + (i + 1) * 28, quest));
 			}
 		}
 	}
@@ -74,7 +74,7 @@ public class LKGuiQuests extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (page == -1) {
-			if (inventorySlots != null && !thePlayer.worldObj.isRemote) {
+			if (!thePlayer.worldObj.isRemote) {
 				ItemStack itemstack = inventorySlots.getSlot(0).getStack();
 				if (itemstack != null) {
 					if (!thePlayer.inventory.addItemStackToInventory(itemstack)) {
@@ -119,17 +119,15 @@ public class LKGuiQuests extends GuiScreen {
 			drawTexturedModalRect(l + 178, i1 + 115, 80, 92, 24, 24);
 			drawTexturedModalRect(l + 174, i1 + 146, 80, 0, 176, 90);
 
-			if (inventorySlots != null) {
-				ItemStack itemstack = inventorySlots.getSlot(0).getStack();
-				if (itemstack != null) {
-					List recipes = getMatchingRecipes(itemstack);
-					if (!recipes.isEmpty()) {
-						matchedRecipes = recipes;
-					} else {
-						matchedRecipes = null;
-						craftGuiOpen = false;
-						recipeIndex = 0;
-					}
+			ItemStack itemstack = inventorySlots.getSlot(0).getStack();
+			if (itemstack != null) {
+				List recipes = getMatchingRecipes(itemstack);
+				if (recipes.isEmpty()) {
+					matchedRecipes = null;
+					craftGuiOpen = false;
+					recipeIndex = 0;
+				} else {
+					matchedRecipes = recipes;
 				}
 			}
 
@@ -183,13 +181,13 @@ public class LKGuiQuests extends GuiScreen {
 			drawCenteredString(mc.fontRenderer, s1, 352, 63, 0x4B3A21);
 			drawCenteredString(mc.fontRenderer, s2, 352, 73, 0x4B3A21);
 
-			ItemStack itemstack = ((Slot) inventorySlots.getSlot(0)).getStack();
+			ItemStack itemstack = inventorySlots.getSlot(0).getStack();
 			if (itemstack != null) {
 				mc.fontRenderer.drawString(itemstack.getItem().getItemDisplayName(itemstack), 208, 108, 0x120C01);
 
 				String[] info = LKItemInfo.getItemInfo(itemstack);
 				for (int i = 0; i < info.length; i++) {
-					drawCenteredString(mc.fontRenderer, translate(info[i]), 443, 116 + (i * 10), 0x120C01);
+					drawCenteredString(mc.fontRenderer, translate(info[i]), 443, 116 + i * 10, 0x120C01);
 				}
 			}
 		}
@@ -211,7 +209,7 @@ public class LKGuiQuests extends GuiScreen {
 
 		String title = "";
 		ItemStack itemstack = inventorySlots.getSlot(0).getStack();
-		Object obj = (Object) matchedRecipes.get(recipeIndex);
+		Object obj = matchedRecipes.get(recipeIndex);
 		if (obj instanceof ShapedRecipes) {
 			title = "Crafting";
 			ShapedRecipes shapedRecipe = (ShapedRecipes) obj;
@@ -222,15 +220,15 @@ public class LKGuiQuests extends GuiScreen {
 				if (ingredient == null) {
 					continue;
 				}
-				int xPos = l + 299 + ((k % width) * 18);
-				int yPos = i1 + 129 + (MathHelper.floor_double(k / width) * 18);
+				int xPos = l + 299 + k % width * 18;
+				int yPos = i1 + 129 + MathHelper.floor_double((double) k / width) * 18;
 				if (ingredient.itemID == itemstack.itemID && (ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE || ingredient.getItemDamage() == itemstack.getItemDamage())) {
 					mc.getTextureManager().bindTexture(texturePageMenu);
 					drawTexturedModalRect(xPos, yPos, 80, 158, 16, 16);
 				}
 				setupItemRendering();
-				itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : ingredient.getItemDamage()), xPos, yPos);
-				itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : ingredient.getItemDamage()), xPos, yPos);
+				itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : ingredient.getItemDamage()), xPos, yPos);
+				itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : ingredient.getItemDamage()), xPos, yPos);
 				finishItemRendering();
 			}
 			ItemStack result = shapedRecipe.getRecipeOutput();
@@ -241,8 +239,8 @@ public class LKGuiQuests extends GuiScreen {
 				drawTexturedModalRect(xPos - 1, yPos - 1, 80, 158, 18, 18);
 			}
 			setupItemRendering();
-			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : result.getItemDamage()), xPos, yPos);
-			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : result.getItemDamage()), xPos, yPos);
+			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : result.getItemDamage()), xPos, yPos);
+			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : result.getItemDamage()), xPos, yPos);
 			finishItemRendering();
 		} else if (obj instanceof ShapelessRecipes) {
 			title = "Crafting";
@@ -250,15 +248,15 @@ public class LKGuiQuests extends GuiScreen {
 			List ingredients = shapelessRecipe.recipeItems;
 			for (int k = 0; k < shapelessRecipe.getRecipeSize(); k++) {
 				ItemStack ingredient = (ItemStack) ingredients.get(k);
-				int xPos = l + 299 + ((k % 3) * 18);
-				int yPos = i1 + 129 + (MathHelper.floor_double(k / 3) * 18);
+				int xPos = l + 299 + k % 3 * 18;
+				int yPos = i1 + 129 + MathHelper.floor_double((double) k / 3) * 18;
 				if (ingredient.itemID == itemstack.itemID && (ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE || ingredient.getItemDamage() == itemstack.getItemDamage())) {
 					mc.getTextureManager().bindTexture(texturePageMenu);
 					drawTexturedModalRect(xPos, yPos, 80, 158, 16, 16);
 				}
 				setupItemRendering();
-				itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : ingredient.getItemDamage()), xPos, yPos);
-				itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : ingredient.getItemDamage()), xPos, yPos);
+				itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : ingredient.getItemDamage()), xPos, yPos);
+				itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ingredient.itemID, 1, ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE ? ingredient.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : ingredient.getItemDamage()), xPos, yPos);
 				finishItemRendering();
 			}
 			ItemStack result = shapelessRecipe.getRecipeOutput();
@@ -269,8 +267,8 @@ public class LKGuiQuests extends GuiScreen {
 				drawTexturedModalRect(xPos - 1, yPos - 1, 80, 158, 18, 18);
 			}
 			setupItemRendering();
-			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : result.getItemDamage()), xPos, yPos);
-			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? (result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0) : result.getItemDamage()), xPos, yPos);
+			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : result.getItemDamage()), xPos, yPos);
+			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(result.itemID, result.stackSize, result.getItemDamage() == OreDictionary.WILDCARD_VALUE ? result.itemID == itemstack.itemID ? itemstack.getItemDamage() : 0 : result.getItemDamage()), xPos, yPos);
 			finishItemRendering();
 		}
 
@@ -292,9 +290,8 @@ public class LKGuiQuests extends GuiScreen {
 	private ItemStack getPageIcon() {
 		if (selectedQuest != null) {
 			return selectedQuest.getIcon();
-		} else {
-			return new ItemStack(mod_LionKing.questBook, 1, 1);
 		}
+		return new ItemStack(mod_LionKing.questBook, 1, 1);
 	}
 
 	@Override
@@ -306,13 +303,13 @@ public class LKGuiQuests extends GuiScreen {
 		super.drawScreen(par1, par2, par3);
 		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) var4, (float) var5, 0.0F);
+		GL11.glTranslatef(var4, var5, 0.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		Slot var6 = null;
 		short var7 = 240;
 		short var8 = 240;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var7 / 1.0F, (float) var8 / 1.0F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var7, var8);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int var10;
 
@@ -358,7 +355,7 @@ public class LKGuiQuests extends GuiScreen {
 				ItemStack var22 = var6.getStack();
 				List var24 = var22.getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
 
-				if (var24.size() > 0) {
+				if (!var24.isEmpty()) {
 					var10 = 0;
 					int var11;
 					int var12;
@@ -398,9 +395,9 @@ public class LKGuiQuests extends GuiScreen {
 						String var19 = (String) var24.get(var18);
 
 						if (var18 == 0) {
-							var19 = "\u00a7" + Integer.toHexString(var22.getRarity().rarityColor) + var19;
+							var19 = '§' + Integer.toHexString(var22.getRarity().rarityColor) + var19;
 						} else {
-							var19 = "\u00a77" + var19;
+							var19 = "§7" + var19;
 						}
 
 						fontRenderer.drawStringWithShadow(var19, var11, var12, -1);
@@ -419,7 +416,7 @@ public class LKGuiQuests extends GuiScreen {
 
 			if (craftGuiOpen) {
 				try {
-					GL11.glTranslatef((float) -var4, (float) -var5, 0.0F);
+					GL11.glTranslatef(-var4, -var5, 0.0F);
 					drawDefaultBackground();
 					drawCraftGui(par1, par2);
 				} catch (Exception e) {
@@ -538,23 +535,26 @@ public class LKGuiQuests extends GuiScreen {
 	}
 
 	private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3) {
+		int par21 = par2;
+		int par31 = par3;
 		if (page > -1) {
 			return false;
 		}
 		int var4 = guiLeft;
 		int var5 = guiTop;
-		par2 -= var4;
-		par3 -= var5;
-		return par2 >= par1Slot.xDisplayPosition - 1 && par2 < par1Slot.xDisplayPosition + 16 + 1 && par3 >= par1Slot.yDisplayPosition - 1 && par3 < par1Slot.yDisplayPosition + 16 + 1;
+		par21 -= var4;
+		par31 -= var5;
+		return par21 >= par1Slot.xDisplayPosition - 1 && par21 < par1Slot.xDisplayPosition + 16 + 1 && par31 >= par1Slot.yDisplayPosition - 1 && par31 < par1Slot.yDisplayPosition + 16 + 1;
 	}
 
-	protected void handleMouseClick(Slot slot, int i, int j, int k) {
+	private void handleMouseClick(Slot slot, int i, int j, int k) {
+		int i1 = i;
 		if (page == -1) {
 			if (slot != null) {
-				i = slot.slotNumber;
+				i1 = slot.slotNumber;
 			}
 
-			mc.playerController.windowClick(inventorySlots.windowId, i, j, k, mc.thePlayer);
+			mc.playerController.windowClick(inventorySlots.windowId, i1, j, k, mc.thePlayer);
 		}
 	}
 
@@ -600,7 +600,7 @@ public class LKGuiQuests extends GuiScreen {
 		}
 
 		ItemStack itemstack = inventorySlots.getSlot(0).getStack();
-		if (itemstack == null || (prevLoreStack != null && itemstack != prevLoreStack)) {
+		if (itemstack == null || prevLoreStack != null && itemstack != prevLoreStack) {
 			craftGuiOpen = false;
 			recipeIndex = 0;
 			matchedRecipes = null;
@@ -611,27 +611,28 @@ public class LKGuiQuests extends GuiScreen {
 	}
 
 	private String translate(String text) {
-		if (mc.getLanguageManager().getCurrentLanguage().getLanguageCode().equals("en_US")) {
-			text = replace(text, "centre", "center");
-			text = replace(text, "armour", "armor");
-			text = replace(text, "colour", "color");
-			text = replace(text, "honour", "honor");
-			text = replace(text, "favour", "favor");
-			text = replace(text, "neighbour", "neighbor");
-			text = replace(text, "labour", "labor");
-			text = replace(text, "customise", "customize");
-			text = replace(text, "savannah", "savanna");
+		String text1 = text;
+		if ("en_US".equals(mc.getLanguageManager().getCurrentLanguage().getLanguageCode())) {
+			text1 = replace(text1, "centre", "center");
+			text1 = replace(text1, "armour", "armor");
+			text1 = replace(text1, "colour", "color");
+			text1 = replace(text1, "honour", "honor");
+			text1 = replace(text1, "favour", "favor");
+			text1 = replace(text1, "neighbour", "neighbor");
+			text1 = replace(text1, "labour", "labor");
+			text1 = replace(text1, "customise", "customize");
+			return replace(text1, "savannah", "savanna");
 		}
-		return text;
+		return text1;
 	}
 
 	private String replace(String text, String pattern, String replace) {
 		int s = 0;
-		int e = 0;
-		StringBuffer newText = new StringBuffer();
+		int e;
+		StringBuilder newText = new StringBuilder();
 
 		while ((e = text.indexOf(pattern, s)) >= 0) {
-			newText.append(text.substring(s, e));
+			newText.append(text, s, e);
 			newText.append(replace);
 			s = e + pattern.length();
 		}
@@ -645,10 +646,9 @@ public class LKGuiQuests extends GuiScreen {
 		List recipes = CraftingManager.getInstance().getRecipeList();
 		try {
 			recipeLoop:
-			for (int i = 0; i < recipes.size(); i++) {
-				Object obj = (Object) recipes.get(i);
-				if (obj instanceof ShapedRecipes) {
-					ShapedRecipes shapedRecipe = (ShapedRecipes) obj;
+			for (Object recipe : recipes) {
+				if (recipe instanceof ShapedRecipes) {
+					ShapedRecipes shapedRecipe = (ShapedRecipes) recipe;
 					ItemStack[] ingredients = shapedRecipe.recipeItems;
 					for (int j = 0; j < shapedRecipe.getRecipeSize(); j++) {
 						ItemStack ingredient = ingredients[j];
@@ -664,11 +664,11 @@ public class LKGuiQuests extends GuiScreen {
 					if (result.itemID == itemstack.itemID && (result.getItemDamage() == itemstack.getItemDamage() || result.getItem().isItemTool(result))) {
 						matchingRecipes.add(shapedRecipe);
 					}
-				} else if (obj instanceof ShapelessRecipes) {
-					ShapelessRecipes shapelessRecipe = (ShapelessRecipes) obj;
+				} else if (recipe instanceof ShapelessRecipes) {
+					ShapelessRecipes shapelessRecipe = (ShapelessRecipes) recipe;
 					List ingredients = shapelessRecipe.recipeItems;
-					for (int j = 0; j < ingredients.size(); j++) {
-						ItemStack ingredient = (ItemStack) ingredients.get(j);
+					for (Object o : ingredients) {
+						ItemStack ingredient = (ItemStack) o;
 						if (ingredient.itemID == itemstack.itemID && (ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE || ingredient.getItemDamage() == itemstack.getItemDamage())) {
 							matchingRecipes.add(shapelessRecipe);
 							continue recipeLoop;
@@ -692,7 +692,7 @@ public class LKGuiQuests extends GuiScreen {
 		GL11.glPushMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

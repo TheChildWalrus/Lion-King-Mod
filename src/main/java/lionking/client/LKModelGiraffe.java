@@ -9,85 +9,85 @@ import org.lwjgl.opengl.GL11;
 
 public class LKModelGiraffe extends ModelBase {
 	public ModelRenderer tie;
-	private ModelRenderer body;
-	private ModelRenderer neck;
-	private ModelRenderer head;
-	private ModelRenderer tail;
-	private ModelRenderer leg1;
-	private ModelRenderer leg2;
-	private ModelRenderer leg3;
-	private ModelRenderer leg4;
+	private final ModelRenderer body;
+	private final ModelRenderer neck;
+	private final ModelRenderer head;
+	private final ModelRenderer tail;
+	private final ModelRenderer leg1;
+	private final ModelRenderer leg2;
+	private final ModelRenderer leg3;
+	private final ModelRenderer leg4;
 
 	public LKModelGiraffe(float f) {
 		body = new ModelRenderer(this, 0, 0).setTextureSize(128, 64);
-		body.addBox(-6F, -8F, -13F, 12, 16, 26, f);
-		body.setRotationPoint(0F, -11F, 0F);
+		body.addBox(-6.0F, -8.0F, -13.0F, 12, 16, 26, f);
+		body.setRotationPoint(0.0F, -11.0F, 0.0F);
 
 		neck = new ModelRenderer(this, 0, 44).setTextureSize(128, 64);
-		neck.addBox(-4.5F, -13F, -4.5F, 9, 11, 9, f);
-		neck.setTextureOffset(78, 0).addBox(-3F, -37F, -3F, 6, 40, 6, f);
-		neck.setRotationPoint(0F, -14F, -7F);
+		neck.addBox(-4.5F, -13.0F, -4.5F, 9, 11, 9, f);
+		neck.setTextureOffset(78, 0).addBox(-3.0F, -37.0F, -3.0F, 6, 40, 6, f);
+		neck.setRotationPoint(0.0F, -14.0F, -7.0F);
 
 		tie = new ModelRenderer(this, 78, 0).setTextureSize(128, 64);
-		tie.addBox(-3F, -37F, -3F, 6, 40, 6, 0.5F);
-		tie.setRotationPoint(0F, -14F, -7F);
+		tie.addBox(-3.0F, -37.0F, -3.0F, 6, 40, 6, 0.5F);
+		tie.setRotationPoint(0.0F, -14.0F, -7.0F);
 		tie.showModel = false;
 
 		head = new ModelRenderer(this, 96, 48).setTextureSize(128, 64);
-		head.addBox(-3F, -43F, -6F, 6, 6, 10, f);
-		head.setTextureOffset(10, 0).addBox(-4F, -45F, 1.5F, 1, 3, 2, f);
-		head.setTextureOffset(17, 0).addBox(3F, -45F, 1.5F, 1, 3, 2, f);
-		head.setTextureOffset(0, 0).addBox(-2.5F, -47F, 0F, 1, 4, 1, f);
-		head.setTextureOffset(5, 0).addBox(1.5F, -47F, 0F, 1, 4, 1, f);
-		head.setTextureOffset(76, 56).addBox(-2F, -41F, -11F, 4, 3, 5, f);
-		head.setRotationPoint(0F, -14F, -7F);
+		head.addBox(-3.0F, -43.0F, -6.0F, 6, 6, 10, f);
+		head.setTextureOffset(10, 0).addBox(-4.0F, -45.0F, 1.5F, 1, 3, 2, f);
+		head.setTextureOffset(17, 0).addBox(3.0F, -45.0F, 1.5F, 1, 3, 2, f);
+		head.setTextureOffset(0, 0).addBox(-2.5F, -47.0F, 0.0F, 1, 4, 1, f);
+		head.setTextureOffset(5, 0).addBox(1.5F, -47.0F, 0.0F, 1, 4, 1, f);
+		head.setTextureOffset(76, 56).addBox(-2.0F, -41.0F, -11.0F, 4, 3, 5, f);
+		head.setRotationPoint(0.0F, -14.0F, -7.0F);
 
 		tail = new ModelRenderer(this, 104, 0).setTextureSize(128, 64);
-		tail.addBox(-0.5F, 0F, 0F, 1, 24, 1, f);
-		tail.setRotationPoint(0F, -12F, 13F);
+		tail.addBox(-0.5F, 0.0F, 0.0F, 1, 24, 1, f);
+		tail.setRotationPoint(0.0F, -12.0F, 13.0F);
 
 		leg1 = new ModelRenderer(this, 112, 0).setTextureSize(128, 64);
-		leg1.addBox(-2F, 0F, -2F, 4, 27, 4, f);
-		leg1.setRotationPoint(-3.9F, -3F, 8F);
+		leg1.addBox(-2.0F, 0.0F, -2.0F, 4, 27, 4, f);
+		leg1.setRotationPoint(-3.9F, -3.0F, 8.0F);
 
 		leg2 = new ModelRenderer(this, 112, 0).setTextureSize(128, 64);
-		leg2.addBox(-2F, 0F, -2F, 4, 27, 4, f);
-		leg2.setRotationPoint(3.9F, -3F, 8F);
+		leg2.addBox(-2.0F, 0.0F, -2.0F, 4, 27, 4, f);
+		leg2.setRotationPoint(3.9F, -3.0F, 8.0F);
 		leg2.mirror = true;
 
 		leg3 = new ModelRenderer(this, 112, 0).setTextureSize(128, 64);
-		leg3.addBox(-2F, 0F, -2F, 4, 27, 4, f);
-		leg3.setRotationPoint(-3.9F, -3F, -7F);
+		leg3.addBox(-2.0F, 0.0F, -2.0F, 4, 27, 4, f);
+		leg3.setRotationPoint(-3.9F, -3.0F, -7.0F);
 
 		leg4 = new ModelRenderer(this, 112, 0).setTextureSize(128, 64);
-		leg4.addBox(-2F, 0F, -2F, 4, 27, 4, f);
-		leg4.setRotationPoint(3.9F, -3F, -7F);
+		leg4.addBox(-2.0F, 0.0F, -2.0F, 4, 27, 4, f);
+		leg4.setRotationPoint(3.9F, -3.0F, -7.0F);
 		leg4.mirror = true;
 	}
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		if (entity.riddenByEntity != null && entity.riddenByEntity instanceof EntityPlayer) {
+		if (entity.riddenByEntity instanceof EntityPlayer) {
 			neck.rotateAngleX = 0.5F * (float) Math.PI;
-			neck.rotateAngleY = 0F;
+			neck.rotateAngleY = 0.0F;
 			tie.rotateAngleX = 0.5F * (float) Math.PI;
-			tie.rotateAngleY = 0F;
-			head.rotateAngleX = 0F;
-			head.rotateAngleY = 0F;
-			head.setRotationPoint(0F, 25F, -48F);
+			tie.rotateAngleY = 0.0F;
+			head.rotateAngleX = 0.0F;
+			head.rotateAngleY = 0.0F;
+			head.setRotationPoint(0.0F, 25.0F, -48.0F);
 		} else {
 			setHeadAndNeckRotationAngles(f, f1, f2, f3, f4, f5);
-			head.setRotationPoint(0F, -14F, -7F);
+			head.setRotationPoint(0.0F, -14.0F, -7.0F);
 		}
 		if (isChild) {
-			float f6 = 2F;
+			float f6 = 2.0F;
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 8.0F * f5, 4.0F * f5);
 			GL11.glPopMatrix();
 			GL11.glPushMatrix();
 			GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
-			GL11.glTranslatef(0.0F, 24F * f5, 0.0F);
+			GL11.glTranslatef(0.0F, 24.0F * f5, 0.0F);
 			head.render(f5);
 			body.render(f5);
 			neck.render(f5);
@@ -121,9 +121,9 @@ public class LKModelGiraffe extends ModelBase {
 	}
 
 	private void setHeadAndNeckRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-		neck.rotateAngleX = (10F / 180F * (float) Math.PI) + (f4 / 57.29578F);
-		head.rotateAngleX = (10F / 180F * (float) Math.PI) + (f4 / 57.29578F);
-		tie.rotateAngleX = (10F / 180F * (float) Math.PI) + (f4 / 57.29578F);
+		neck.rotateAngleX = 10.0F / 180.0F * (float) Math.PI + f4 / 57.29578F;
+		head.rotateAngleX = 10.0F / 180.0F * (float) Math.PI + f4 / 57.29578F;
+		tie.rotateAngleX = 10.0F / 180.0F * (float) Math.PI + f4 / 57.29578F;
 		neck.rotateAngleY = f3 / 57.29578F;
 		head.rotateAngleY = f3 / 57.29578F;
 		tie.rotateAngleY = f3 / 57.29578F;

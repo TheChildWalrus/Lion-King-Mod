@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
-	private boolean renderInvIn3D;
+	private final boolean renderInvIn3D;
 
 	public LKRenderBlocks(boolean flag) {
 		renderInvIn3D = flag;
@@ -116,7 +116,7 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		if (l > 3 && l < 8) {
 			l -= 4;
 		}
-		float f = 0.125F * (float) l;
+		float f = 0.125F * l;
 		renderblocks.setRenderBounds(0.0F + f, 0.0F, 0.0F + f, 1.0F - f, 1.0F, 1.0F - f);
 		renderblocks.renderStandardBlock(block, i, j, k);
 	}
@@ -126,7 +126,7 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		if (i > 3 && i < 8) {
 			j -= 4;
 		}
-		float f = 0.125F * (float) j;
+		float f = 0.125F * j;
 		renderStandardInvBlock(renderblocks, block, 0.0F + f, 0.0F, 0.0F + f, 1.0F - f, 1.0F, 1.0F - f, i);
 	}
 
@@ -154,24 +154,21 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		renderblocks.clearOverrideBlockTexture();
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.setBrightness(block.getMixedBrightnessForBlock(world, i, j, k));
-		float f1 = (float) (0xffffff >> 16 & 0xff) / 255F;
-		float f2 = (float) (0xffffff >> 8 & 0xff) / 255F;
-		float f3 = (float) (0xffffff & 0xff) / 255F;
+		float f1 = (0xffffff >> 16 & 0xff) / 255.0F;
+		float f2 = (0xffffff >> 8 & 0xff) / 255.0F;
+		float f3 = (0xffffff & 0xff) / 255.0F;
 		if (EntityRenderer.anaglyphEnable) {
-			float f4 = (f1 * 30F + f2 * 59F + f3 * 11F) / 100F;
-			float f5 = (f1 * 30F + f2 * 70F) / 100F;
-			float f6 = (f1 * 30F + f3 * 70F) / 100F;
+			float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
+			float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
+			float f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
 			f1 = f4;
 			f2 = f5;
 			f3 = f6;
 		}
-		tessellator.setColorOpaque_F(1.0F * f1, 1.0F * f2, 1.0F * f3);
-		double d = i;
+		tessellator.setColorOpaque_F(f1, f2, f3);
 		double d1 = j + 0.71875D;
-		double d2 = k;
-		Icon icon = LKBlockVase.getPlantTextureFromMetadata(l);
-		renderblocks.overrideBlockTexture = icon;
-		renderblocks.drawCrossedSquares(block, 0, d, d1, d2, 1F);
+		renderblocks.overrideBlockTexture = LKBlockVase.getPlantTextureFromMetadata(l);
+		renderblocks.drawCrossedSquares(block, 0, i, d1, k, 1.0F);
 		renderblocks.clearOverrideBlockTexture();
 	}
 
@@ -196,7 +193,7 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		renderblocks.clearOverrideBlockTexture();
 
 		renderblocks.overrideBlockTexture = mod_LionKing.blockSilver.getIcon(2, 0);
-		float f = 0.3125F * (((float) world.getBlockMetadata(i, j, k)) / 8);
+		float f = 0.3125F * ((float) world.getBlockMetadata(i, j, k) / 8);
 
 		renderblocks.setRenderBounds(0.125F, 0.0625F, 0.06F, 0.1875F + f, 0.9375F, 0.07F);
 		renderblocks.renderStandardBlock(block, i, j, k);
@@ -258,9 +255,9 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		tessellator.setBrightness(block.getMixedBrightnessForBlock(world, i, j, k));
 		float f = 1.0F;
 		int i1 = block.colorMultiplier(world, i, j, k);
-		float f1 = (float) (i1 >> 16 & 255) / 255.0F;
-		float f2 = (float) (i1 >> 8 & 255) / 255.0F;
-		float f3 = (float) (i1 & 255) / 255.0F;
+		float f1 = (i1 >> 16 & 255) / 255.0F;
+		float f2 = (i1 >> 8 & 255) / 255.0F;
+		float f3 = (i1 & 255) / 255.0F;
 
 		if (EntityRenderer.anaglyphEnable) {
 			float var11 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
@@ -272,17 +269,17 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		}
 
 		tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
-		double d = (double) i;
-		double d1 = (double) j;
-		double d2 = (double) k;
+		double d = i;
+		double d1 = j;
+		double d2 = k;
 
-		long l = (long) (i * 3129871) ^ (long) k * 116129781L ^ (long) j;
+		long l = i * 3129871L ^ k * 116129781L ^ j;
 		l = l * l * 42317861L + l * 11L;
-		d += ((double) ((float) (l >> 16 & 15L) / 15.0F) - 0.5D) * 0.5D;
-		d1 += ((double) ((float) (l >> 20 & 15L) / 15.0F) - 1.0D) * 0.2D;
-		d2 += ((double) ((float) (l >> 24 & 15L) / 15.0F) - 0.5D) * 0.5D;
+		d += ((l >> 16 & 15L) / 15.0F - 0.5D) * 0.5D;
+		d1 += ((l >> 20 & 15L) / 15.0F - 1.0D) * 0.2D;
+		d2 += ((l >> 24 & 15L) / 15.0F - 0.5D) * 0.5D;
 
-		renderblocks.drawCrossedSquares(block, world.getBlockMetadata(i, j, k), d, d1, d2, 1F);
+		renderblocks.drawCrossedSquares(block, world.getBlockMetadata(i, j, k), d, d1, d2, 1.0F);
 	}
 
 	private void renderKiwano(RenderBlocks renderblocks, Block block, int i, int j, int k) {
@@ -310,32 +307,32 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		float f;
 		float f1;
 		for (int l = 0; l < 6; l++) {
-			f = ((float) i1[0][l]) / 16.0F;
-			f1 = ((float) i2[0][l]) / 16.0F;
+			f = i1[0][l] / 16.0F;
+			f1 = i2[0][l] / 16.0F;
 
 			renderblocks.setRenderBounds(f, f1, 0.875F, f + 0.0625F, f1 + 0.0625F, 0.9375F);
 			renderblocks.renderStandardBlock(block, i, j, k);
 
-			f = ((float) i1[1][l]) / 16.0F;
-			f1 = ((float) i2[1][l]) / 16.0F;
+			f = i1[1][l] / 16.0F;
+			f1 = i2[1][l] / 16.0F;
 
 			renderblocks.setRenderBounds(f, f1, 0.0625F, f + 0.0625F, f1 + 0.0625F, 0.125F);
 			renderblocks.renderStandardBlock(block, i, j, k);
 
-			f = ((float) i1[2][l]) / 16.0F;
-			f1 = ((float) i2[2][l]) / 16.0F;
+			f = i1[2][l] / 16.0F;
+			f1 = i2[2][l] / 16.0F;
 
 			renderblocks.setRenderBounds(0.875F, f1, f, 0.9375F, f1 + 0.0625F, f + 0.0625F);
 			renderblocks.renderStandardBlock(block, i, j, k);
 
-			f = ((float) i1[3][l]) / 16.0F;
-			f1 = ((float) i2[3][l]) / 16.0F;
+			f = i1[3][l] / 16.0F;
+			f1 = i2[3][l] / 16.0F;
 
 			renderblocks.setRenderBounds(0.0625F, f1, f, 0.125F, f1 + 0.0625F, f + 0.0625F);
 			renderblocks.renderStandardBlock(block, i, j, k);
 
-			f = ((float) i1[4][l]) / 16.0F;
-			f1 = ((float) i2[4][l]) / 16.0F;
+			f = i1[4][l] / 16.0F;
+			f1 = i2[4][l] / 16.0F;
 
 			renderblocks.setRenderBounds(f, 0.8125F, f1, f + 0.0625F, 0.875F, f1 + 0.0625F);
 			renderblocks.renderStandardBlock(block, i, j, k);
@@ -369,28 +366,28 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		float f;
 		float f1;
 		for (int l = 0; l < 6; l++) {
-			f = ((float) i1[0][l]) / 16.0F;
-			f1 = ((float) i2[0][l]) / 16.0F;
+			f = i1[0][l] / 16.0F;
+			f1 = i2[0][l] / 16.0F;
 
 			renderStandardInvBlock(renderblocks, block, f, f1, 0.875F, f + 0.0625F, f1 + 0.0625F, 0.9375F);
 
-			f = ((float) i1[1][l]) / 16.0F;
-			f1 = ((float) i2[1][l]) / 16.0F;
+			f = i1[1][l] / 16.0F;
+			f1 = i2[1][l] / 16.0F;
 
 			renderStandardInvBlock(renderblocks, block, f, f1, 0.0625F, f + 0.0625F, f1 + 0.0625F, 0.125F);
 
-			f = ((float) i1[2][l]) / 16.0F;
-			f1 = ((float) i2[2][l]) / 16.0F;
+			f = i1[2][l] / 16.0F;
+			f1 = i2[2][l] / 16.0F;
 
 			renderStandardInvBlock(renderblocks, block, 0.875F, f1, f, 0.9375F, f1 + 0.0625F, f + 0.0625F);
 
-			f = ((float) i1[3][l]) / 16.0F;
-			f1 = ((float) i2[3][l]) / 16.0F;
+			f = i1[3][l] / 16.0F;
+			f1 = i2[3][l] / 16.0F;
 
 			renderStandardInvBlock(renderblocks, block, 0.0625F, f1, f, 0.125F, f1 + 0.0625F, f + 0.0625F);
 
-			f = ((float) i1[4][l]) / 16.0F;
-			f1 = ((float) i2[4][l]) / 16.0F;
+			f = i1[4][l] / 16.0F;
+			f1 = i2[4][l] / 16.0F;
 
 			renderStandardInvBlock(renderblocks, block, f, 0.8125F, f1, f + 0.0625F, 0.875F, f1 + 0.0625F);
 		}
@@ -405,9 +402,9 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		tessellator.setBrightness(stem.getMixedBrightnessForBlock(world, i, j, k));
 		float f = 1.0F;
 		int l = stem.colorMultiplier(world, i, j, k);
-		float f1 = (float) (l >> 16 & 255) / 255.0F;
-		float f2 = (float) (l >> 8 & 255) / 255.0F;
-		float f3 = (float) (l & 255) / 255.0F;
+		float f1 = (l >> 16 & 255) / 255.0F;
+		float f2 = (l >> 8 & 255) / 255.0F;
+		float f3 = (l & 255) / 255.0F;
 
 		if (EntityRenderer.anaglyphEnable) {
 			float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
@@ -423,10 +420,10 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		int i1 = stem.getState(world, i, j, k);
 
 		if (i1 < 0) {
-			renderblocks.renderBlockStemSmall((BlockStem) Block.pumpkinStem, world.getBlockMetadata(i, j, k), renderblocks.renderMaxY, (double) i, (double) j, (double) k);
+			renderblocks.renderBlockStemSmall(Block.pumpkinStem, world.getBlockMetadata(i, j, k), renderblocks.renderMaxY, i, j, k);
 		} else {
-			renderblocks.renderBlockStemSmall((BlockStem) Block.pumpkinStem, world.getBlockMetadata(i, j, k), 0.5D, (double) i, (double) j, (double) k);
-			renderblocks.renderBlockStemBig((BlockStem) Block.pumpkinStem, world.getBlockMetadata(i, j, k), i1, renderblocks.renderMaxY, (double) i, (double) j, (double) k);
+			renderblocks.renderBlockStemSmall(Block.pumpkinStem, world.getBlockMetadata(i, j, k), 0.5D, i, j, k);
+			renderblocks.renderBlockStemBig((BlockStem) Block.pumpkinStem, world.getBlockMetadata(i, j, k), i1, renderblocks.renderMaxY, i, j, k);
 		}
 	}
 
@@ -459,7 +456,7 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 			renderblocks.setRenderBounds(0.0F, 0.5F - var10, 0.5F - var11, var12, 0.5F + var10, 0.5F + var11);
 		} else if (i1 == 0) {
 			renderblocks.setRenderBounds(0.5F - var10, 1.0F - var12, 0.5F - var11, 0.5F + var10, 1.0F, 0.5F + var11);
-		} else if (i1 == 7) {
+		} else {
 			renderblocks.setRenderBounds(0.5F - var11, 1.0F - var12, 0.5F - var10, 0.5F + var11, 1.0F, 0.5F + var10);
 		}
 
@@ -483,30 +480,30 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 			icon = renderblocks.overrideBlockTexture;
 		}
 
-		double d0 = (double) icon.getMinU();
-		double d1 = (double) icon.getMaxU();
-		double d2 = (double) icon.getMinV();
-		double d3 = (double) icon.getMaxV();
+		double d0 = icon.getMinU();
+		double d1 = icon.getMaxU();
+		double d2 = icon.getMinV();
+		double d3 = icon.getMaxV();
 		Vec3[] avec3 = new Vec3[8];
 		float f4 = 0.0625F;
 		float f5 = 0.0625F;
 		float f6 = 0.625F;
-		avec3[0] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) (-f4), 0.0D, (double) (-f5));
-		avec3[1] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) f4, 0.0D, (double) (-f5));
-		avec3[2] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) f4, 0.0D, (double) f5);
-		avec3[3] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) (-f4), 0.0D, (double) f5);
-		avec3[4] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) (-f4), (double) f6, (double) (-f5));
-		avec3[5] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) f4, (double) f6, (double) (-f5));
-		avec3[6] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) f4, (double) f6, (double) f5);
-		avec3[7] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool((double) (-f4), (double) f6, (double) f5);
+		avec3[0] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(-f4, 0.0D, -f5);
+		avec3[1] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(f4, 0.0D, -f5);
+		avec3[2] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(f4, 0.0D, f5);
+		avec3[3] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(-f4, 0.0D, f5);
+		avec3[4] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(-f4, f6, -f5);
+		avec3[5] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(f4, f6, -f5);
+		avec3[6] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(f4, f6, f5);
+		avec3[7] = renderblocks.blockAccess.getWorldVec3Pool().getVecFromPool(-f4, f6, f5);
 
 		for (int j1 = 0; j1 < 8; ++j1) {
 			if (flag) {
 				avec3[j1].zCoord -= 0.0625D;
-				avec3[j1].rotateAroundX(((float) Math.PI * 2F / 9F));
+				avec3[j1].rotateAroundX((float) Math.PI * 2.0F / 9.0F);
 			} else {
 				avec3[j1].zCoord += 0.0625D;
-				avec3[j1].rotateAroundX(-((float) Math.PI * 2F / 9F));
+				avec3[j1].rotateAroundX(-((float) Math.PI * 2.0F / 9.0F));
 			}
 
 			if (i1 == 0 || i1 == 7) {
@@ -514,12 +511,12 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 			}
 
 			if (i1 == 6 || i1 == 0) {
-				avec3[j1].rotateAroundY(((float) Math.PI / 2F));
+				avec3[j1].rotateAroundY((float) Math.PI / 2.0F);
 			}
 
 			if (i1 > 0 && i1 < 5) {
 				avec3[j1].yCoord -= 0.375D;
-				avec3[j1].rotateAroundX(((float) Math.PI / 2F));
+				avec3[j1].rotateAroundX((float) Math.PI / 2.0F);
 
 				if (i1 == 4) {
 					avec3[j1].rotateAroundY(0.0F);
@@ -530,43 +527,43 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 				}
 
 				if (i1 == 2) {
-					avec3[j1].rotateAroundY(((float) Math.PI / 2F));
+					avec3[j1].rotateAroundY((float) Math.PI / 2.0F);
 				}
 
 				if (i1 == 1) {
-					avec3[j1].rotateAroundY(-((float) Math.PI / 2F));
+					avec3[j1].rotateAroundY(-((float) Math.PI / 2.0F));
 				}
 
-				avec3[j1].xCoord += (double) i + 0.5D;
-				avec3[j1].yCoord += (double) ((float) j + 0.5F);
-				avec3[j1].zCoord += (double) k + 0.5D;
+				avec3[j1].xCoord += i + 0.5D;
+				avec3[j1].yCoord += j + 0.5F;
+				avec3[j1].zCoord += k + 0.5D;
 			} else if (i1 != 0 && i1 != 7) {
-				avec3[j1].xCoord += (double) i + 0.5D;
-				avec3[j1].yCoord += (double) ((float) j + 0.125F);
-				avec3[j1].zCoord += (double) k + 0.5D;
+				avec3[j1].xCoord += i + 0.5D;
+				avec3[j1].yCoord += j + 0.125F;
+				avec3[j1].zCoord += k + 0.5D;
 			} else {
-				avec3[j1].xCoord += (double) i + 0.5D;
-				avec3[j1].yCoord += (double) ((float) j + 0.875F);
-				avec3[j1].zCoord += (double) k + 0.5D;
+				avec3[j1].xCoord += i + 0.5D;
+				avec3[j1].yCoord += j + 0.875F;
+				avec3[j1].zCoord += k + 0.5D;
 			}
 		}
 
-		Vec3 vec3 = null;
-		Vec3 vec31 = null;
-		Vec3 vec32 = null;
-		Vec3 vec33 = null;
+		Vec3 vec3;
+		Vec3 vec31;
+		Vec3 vec32;
+		Vec3 vec33;
 
 		for (int k1 = 0; k1 < 6; ++k1) {
 			if (k1 == 0) {
-				d0 = (double) icon.getInterpolatedU(7.0D);
-				d1 = (double) icon.getInterpolatedV(6.0D);
-				d2 = (double) icon.getInterpolatedU(9.0D);
-				d3 = (double) icon.getInterpolatedV(8.0D);
+				d0 = icon.getInterpolatedU(7.0D);
+				d1 = icon.getInterpolatedV(6.0D);
+				d2 = icon.getInterpolatedU(9.0D);
+				d3 = icon.getInterpolatedV(8.0D);
 			} else if (k1 == 2) {
-				d0 = (double) icon.getInterpolatedU(7.0D);
-				d1 = (double) icon.getInterpolatedV(6.0D);
-				d2 = (double) icon.getInterpolatedU(9.0D);
-				d3 = (double) icon.getMaxV();
+				d0 = icon.getInterpolatedU(7.0D);
+				d1 = icon.getInterpolatedV(6.0D);
+				d2 = icon.getInterpolatedU(9.0D);
+				d3 = icon.getMaxV();
 			}
 
 			if (k1 == 0) {
@@ -594,7 +591,7 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 				vec31 = avec3[2];
 				vec32 = avec3[6];
 				vec33 = avec3[7];
-			} else if (k1 == 5) {
+			} else {
 				vec3 = avec3[0];
 				vec31 = avec3[3];
 				vec32 = avec3[7];
@@ -627,7 +624,7 @@ public class LKRenderBlocks implements ISimpleBlockRenderingHandler {
 		}
 
 		tessellator.setColorOpaque_F(f1, f2, f3);
-		renderblocks.drawCrossedSquares(mod_LionKing.lily, world.getBlockMetadata(i, j, k), (double) i, (double) j + 0.005D, (double) k, 0.75F);
+		renderblocks.drawCrossedSquares(mod_LionKing.lily, world.getBlockMetadata(i, j, k), i, j + 0.005D, k, 0.75F);
 	}
 
 	private void renderStandardInvBlock(RenderBlocks renderblocks, Block block, float f, float f1, float f2, float f3, float f4, float f5) {

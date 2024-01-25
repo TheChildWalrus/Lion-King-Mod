@@ -8,45 +8,45 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class LKModelHyena extends ModelBase {
-	private ModelRenderer head;
-	private ModelRenderer body;
-	private ModelRenderer leg1;
-	private ModelRenderer leg2;
-	private ModelRenderer leg3;
-	private ModelRenderer leg4;
-	private ModelRenderer tail;
+	private final ModelRenderer head;
+	private final ModelRenderer body;
+	private final ModelRenderer leg1;
+	private final ModelRenderer leg2;
+	private final ModelRenderer leg3;
+	private final ModelRenderer leg4;
+	private final ModelRenderer tail;
 
 	public LKModelHyena() {
 		head = new ModelRenderer(this, 0, 0);
-		head.addBox(-3F, -3F, -2F, 6, 6, 6);
-		head.setTextureOffset(0, 15).addBox(-3F, -5F, 1F, 1, 2, 2);
-		head.setTextureOffset(6, 15).addBox(2F, -5F, 1F, 1, 2, 2);
-		head.setRotationPoint(-1F, 13.5F, -9F);
+		head.addBox(-3.0F, -3.0F, -2.0F, 6, 6, 6);
+		head.setTextureOffset(0, 15).addBox(-3.0F, -5.0F, 1.0F, 1, 2, 2);
+		head.setTextureOffset(6, 15).addBox(2.0F, -5.0F, 1.0F, 1, 2, 2);
+		head.setRotationPoint(-1.0F, 13.5F, -9.0F);
 
 		body = new ModelRenderer(this, 28, 11);
-		body.addBox(-4F, -8F, -3F, 6, 15, 6);
-		body.setTextureOffset(16, 20).addBox(-2F, -8F, 3F, 2, 11, 1);
-		body.setRotationPoint(0.0F, 14F, 2.0F);
+		body.addBox(-4.0F, -8.0F, -3.0F, 6, 15, 6);
+		body.setTextureOffset(16, 20).addBox(-2.0F, -8.0F, 3.0F, 2, 11, 1);
+		body.setRotationPoint(0.0F, 14.0F, 2.0F);
 
 		leg1 = new ModelRenderer(this, 0, 22);
-		leg1.addBox(-1F, 0F, -1F, 2, 8, 2);
-		leg1.setRotationPoint(-2.5F, 16F, 7F);
+		leg1.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2);
+		leg1.setRotationPoint(-2.5F, 16.0F, 7.0F);
 
 		leg2 = new ModelRenderer(this, 0, 22);
-		leg2.addBox(-1F, 0F, -1F, 2, 8, 2);
-		leg2.setRotationPoint(0.5F, 16F, 7F);
+		leg2.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2);
+		leg2.setRotationPoint(0.5F, 16.0F, 7.0F);
 
 		leg3 = new ModelRenderer(this, 0, 22);
-		leg3.addBox(-1F, 0F, -1F, 2, 8, 2);
-		leg3.setRotationPoint(-2.5F, 16F, -4F);
+		leg3.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2);
+		leg3.setRotationPoint(-2.5F, 16.0F, -4.0F);
 
 		leg4 = new ModelRenderer(this, 0, 22);
-		leg4.addBox(-1F, 0F, -1F, 2, 8, 2);
-		leg4.setRotationPoint(0.5F, 16F, -4F);
+		leg4.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2);
+		leg4.setRotationPoint(0.5F, 16.0F, -4.0F);
 
 		tail = new ModelRenderer(this, 16, 20);
-		tail.addBox(-1F, 1.5F, -1F, 2, 9, 1);
-		tail.setRotationPoint(-1F, 12F, 8F);
+		tail.addBox(-1.0F, 1.5F, -1.0F, 2, 9, 1);
+		tail.setRotationPoint(-1.0F, 12.0F, 8.0F);
 	}
 
 	@Override

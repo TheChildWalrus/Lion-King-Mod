@@ -7,12 +7,12 @@ import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
 public class LKModelSimbaCharm extends ModelBase {
-	private ModelRenderer body;
+	private final ModelRenderer body;
 
 	public LKModelSimbaCharm() {
 		body = new ModelRenderer(this, 0, 0).setTextureSize(64, 32);
-		body.addBox(-6F, -20F, -39F, 12, 1, 15, 0.0F);
-		body.setRotationPoint(0.0F, 5F, 2.0F);
+		body.addBox(-6.0F, -20.0F, -39.0F, 12, 1, 15, 0.0F);
+		body.setRotationPoint(0.0F, 5.0F, 2.0F);
 	}
 
 	@Override
@@ -26,8 +26,6 @@ public class LKModelSimbaCharm extends ModelBase {
 			} else {
 				GL11.glTranslatef(0.0F, 1.6F, 0.2F);
 			}
-			body.render(f5);
-			GL11.glPopMatrix();
 		} else {
 			GL11.glPushMatrix();
 			GL11.glScalef(0.4F, 0.4F, 0.4F);
@@ -36,14 +34,14 @@ public class LKModelSimbaCharm extends ModelBase {
 			} else {
 				GL11.glTranslatef(0.0F, -0.2F, -0.2F);
 			}
-			body.render(f5);
-			GL11.glPopMatrix();
 		}
+		body.render(f5);
+		GL11.glPopMatrix();
 	}
 
 	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-		body.rotateAngleX = ((float) Math.PI) / 2.0F;
+		body.rotateAngleX = (float) Math.PI / 2.0F;
 		body.rotationPointY = 5.0F;
 	}
 }

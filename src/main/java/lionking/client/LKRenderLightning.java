@@ -15,14 +15,14 @@ public class LKRenderLightning extends Render {
 		return null;
 	}
 
-	public void doRenderLightning(LKEntityLightning entitySimbaLightning, double d, double d1, double d2, float f, float f1) {
+	private void doRenderLightning(LKEntityLightning entitySimbaLightning, double d, double d1, double d2, float f, float f1) {
 		Tessellator tessellator = Tessellator.instance;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(770, 1);
-		double ad[] = new double[8];
-		double ad1[] = new double[8];
+		double[] ad = new double[8];
+		double[] ad1 = new double[8];
 		double d3 = 0.0D;
 		double d4 = 0.0D;
 		Random random = new Random(entitySimbaLightning.boltVertex);
@@ -58,34 +58,34 @@ public class LKRenderLightning extends Render {
 					}
 					tessellator.startDrawing(5);
 					float f2 = 0.5F;
-					tessellator.setColorRGBA_F(0.9F * f2, 0.9F * f2, 1.0F * f2, 0.3F);
-					double d9 = 0.10000000000000001D + (double) i * 0.20000000000000001D;
+					tessellator.setColorRGBA_F(0.9F * f2, 0.9F * f2, f2, 0.3F);
+					double d9 = 0.10000000000000001D + i * 0.20000000000000001D;
 					if (k == 0) {
-						d9 *= (double) j1 * 0.10000000000000001D + 1.0D;
+						d9 *= j1 * 0.10000000000000001D + 1.0D;
 					}
-					double d10 = 0.10000000000000001D + (double) i * 0.20000000000000001D;
+					double d10 = 0.10000000000000001D + i * 0.20000000000000001D;
 					if (k == 0) {
-						d10 *= (double) (j1 - 1) * 0.10000000000000001D + 1.0D;
+						d10 *= (j1 - 1) * 0.10000000000000001D + 1.0D;
 					}
 					for (int k1 = 0; k1 < 5; k1++) {
-						double d11 = (d + 0.5D) - d9;
-						double d12 = (d2 + 0.5D) - d9;
+						double d11 = d + 0.5D - d9;
+						double d12 = d2 + 0.5D - d9;
 						if (k1 == 1 || k1 == 2) {
-							d11 += d9 * 2D;
+							d11 += d9 * 2.0D;
 						}
 						if (k1 == 2 || k1 == 3) {
-							d12 += d9 * 2D;
+							d12 += d9 * 2.0D;
 						}
-						double d13 = (d + 0.5D) - d10;
-						double d14 = (d2 + 0.5D) - d10;
+						double d13 = d + 0.5D - d10;
+						double d14 = d2 + 0.5D - d10;
 						if (k1 == 1 || k1 == 2) {
-							d13 += d10 * 2D;
+							d13 += d10 * 2.0D;
 						}
 						if (k1 == 2 || k1 == 3) {
-							d14 += d10 * 2D;
+							d14 += d10 * 2.0D;
 						}
-						tessellator.addVertex(d13 + d5, d1 + (double) (j1 * 16), d14 + d6);
-						tessellator.addVertex(d11 + d7, d1 + (double) ((j1 + 1) * 16), d12 + d8);
+						tessellator.addVertex(d13 + d5, d1 + j1 * 16, d14 + d6);
+						tessellator.addVertex(d11 + d7, d1 + (j1 + 1) * 16, d12 + d8);
 					}
 					tessellator.draw();
 				}

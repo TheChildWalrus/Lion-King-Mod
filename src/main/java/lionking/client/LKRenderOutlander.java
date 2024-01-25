@@ -5,8 +5,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 public class LKRenderOutlander extends LKRenderLiving {
-	private ResourceLocation textureLion = new ResourceLocation("lionking:mob/outlander.png");
-	private ResourceLocation textureLioness = new ResourceLocation("lionking:mob/outlandess.png");
+	private final ResourceLocation textureLion = new ResourceLocation("lionking:mob/outlander.png");
+	private final ResourceLocation textureLioness = new ResourceLocation("lionking:mob/outlandess.png");
 
 	public LKRenderOutlander() {
 		super(new LKModelLion(true));

@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 public class LKGuiSimbaButton extends GuiButton {
 	private static final ResourceLocation texture = new ResourceLocation("lionking:gui/simba.png");
-	private LKEntitySimba theSimba;
+	private final LKEntitySimba theSimba;
 
 	public LKGuiSimbaButton(int i, int j, int k, LKEntitySimba simba) {
 		super(i, j, k, 22, 22, "Simba");
