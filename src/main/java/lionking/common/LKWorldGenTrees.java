@@ -1,39 +1,15 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
 public class LKWorldGenTrees extends WorldGenerator {
-	private boolean doBlockNotify;
+	private final boolean doBlockNotify;
 	private boolean isLarge;
 
 	public LKWorldGenTrees(boolean flag) {
@@ -54,7 +30,7 @@ public class LKWorldGenTrees extends WorldGenerator {
 		if (biomegenbase instanceof LKBiomeGenMountains && random.nextInt(3) != 0) {
 			l += random.nextInt(6) + 5;
 		}
-		if (isLarge || (!doBlockNotify && biomegenbase instanceof LKBiomeGenWoodedSavannah && random.nextInt(3) == 0)) {
+		if (isLarge || !doBlockNotify && biomegenbase instanceof LKBiomeGenWoodedSavannah && random.nextInt(3) == 0) {
 			l += random.nextInt(3) + 3;
 			trunkWidth = 2;
 		}
@@ -188,7 +164,7 @@ public class LKWorldGenTrees extends WorldGenerator {
 			tryToBranchAt(world, random, i, j, k, l - 1);
 		}
 		if (random.nextInt(4) != 0) {
-			for (int tries = 0; tries < (random.nextInt(3) == 0 ? 2 : (random.nextInt(5) == 0 ? 3 : 1)); tries++) {
+			for (int tries = 0; tries < (random.nextInt(3) == 0 ? 2 : random.nextInt(5) == 0 ? 3 : 1); tries++) {
 				tryCanopyShift(world, random, i, j + l + 3, k, random.nextInt(3) == 0 ? 1 : 2, random.nextInt(4));
 			}
 		}
@@ -196,110 +172,121 @@ public class LKWorldGenTrees extends WorldGenerator {
 	}
 
 	private void tryCanopyShift(World world, Random random, int i, int j, int k, int length, int direction) {
-		if (direction == 0) {
-			if (world.isAirBlock(i - 4, j, k - 3) && world.isAirBlock(i - 4, j, k - 2) && world.isAirBlock(i - 4, j, k - 1)
-					&& world.isAirBlock(i - 4, j, k)
-					&& world.isAirBlock(i - 4, j, k + 1) && world.isAirBlock(i - 4, j, k + 2) && world.isAirBlock(i - 4, j, k + 3)
-					&& world.isAirBlock(i - 4, j + 1, k - 3) && world.isAirBlock(i - 4, j + 1, k - 2) && world.isAirBlock(i - 4, j + 1, k - 1)
-					&& world.isAirBlock(i - 4, j + 1, k)
-					&& world.isAirBlock(i - 4, j + 1, k + 1) && world.isAirBlock(i - 4, j + 1, k + 2) && world.isAirBlock(i - 4, j + 1, k + 3)
-					&& world.isAirBlock(i - 3, j + 1, k - 3) && world.isAirBlock(i - 3, j + 1, k - 2) && world.isAirBlock(i - 3, j + 1, k - 1)
-					&& world.isAirBlock(i - 3, j + 1, k)
-					&& world.isAirBlock(i - 3, j + 1, k + 1) && world.isAirBlock(i - 3, j + 1, k + 2) && world.isAirBlock(i - 3, j + 1, k + 3)) {
-				setBlockAndMetadata(world, i - 3, j, k - 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i - 3, j, k + 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i - 2, j + 1, k - 2, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i - 2, j + 1, k + 2, mod_LionKing.leaves.blockID, 0);
-				for (int i1 = -2; i1 < 3; i1++) {
-					setBlockAndMetadata(world, i - 4, j, k + i1, mod_LionKing.leaves.blockID, 0);
+		int length2 = length;
+		int k1 = k;
+		while (true) {
+			int length1 = length2;
+			if (direction == 0) {
+				if (world.isAirBlock(i - 4, j, k1 - 3) && world.isAirBlock(i - 4, j, k1 - 2) && world.isAirBlock(i - 4, j, k1 - 1)
+						&& world.isAirBlock(i - 4, j, k1)
+						&& world.isAirBlock(i - 4, j, k1 + 1) && world.isAirBlock(i - 4, j, k1 + 2) && world.isAirBlock(i - 4, j, k1 + 3)
+						&& world.isAirBlock(i - 4, j + 1, k1 - 3) && world.isAirBlock(i - 4, j + 1, k1 - 2) && world.isAirBlock(i - 4, j + 1, k1 - 1)
+						&& world.isAirBlock(i - 4, j + 1, k1)
+						&& world.isAirBlock(i - 4, j + 1, k1 + 1) && world.isAirBlock(i - 4, j + 1, k1 + 2) && world.isAirBlock(i - 4, j + 1, k1 + 3)
+						&& world.isAirBlock(i - 3, j + 1, k1 - 3) && world.isAirBlock(i - 3, j + 1, k1 - 2) && world.isAirBlock(i - 3, j + 1, k1 - 1)
+						&& world.isAirBlock(i - 3, j + 1, k1)
+						&& world.isAirBlock(i - 3, j + 1, k1 + 1) && world.isAirBlock(i - 3, j + 1, k1 + 2) && world.isAirBlock(i - 3, j + 1, k1 + 3)) {
+					setBlockAndMetadata(world, i - 3, j, k1 - 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i - 3, j, k1 + 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i - 2, j + 1, k1 - 2, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i - 2, j + 1, k1 + 2, mod_LionKing.leaves.blockID, 0);
+					for (int i1 = -2; i1 < 3; i1++) {
+						setBlockAndMetadata(world, i - 4, j, k1 + i1, mod_LionKing.leaves.blockID, 0);
+					}
+					for (int i1 = -1; i1 < 2; i1++) {
+						setBlockAndMetadata(world, i - 3, j + 1, k1 + i1, mod_LionKing.leaves.blockID, 0);
+					}
+					setBlockAndMetadata(world, i - 3, j, k1, mod_LionKing.prideWood.blockID, 0);
 				}
-				for (int i1 = -1; i1 < 2; i1++) {
-					setBlockAndMetadata(world, i - 3, j + 1, k + i1, mod_LionKing.leaves.blockID, 0);
-				}
-				setBlockAndMetadata(world, i - 3, j, k, mod_LionKing.prideWood.blockID, 0);
 			}
-		}
-		if (direction == 1) {
-			if (world.isAirBlock(i + 4, j, k - 3) && world.isAirBlock(i + 4, j, k - 2) && world.isAirBlock(i + 4, j, k - 1)
-					&& world.isAirBlock(i + 4, j, k)
-					&& world.isAirBlock(i + 4, j, k + 1) && world.isAirBlock(i + 4, j, k + 2) && world.isAirBlock(i + 4, j, k + 3)
-					&& world.isAirBlock(i + 4, j + 1, k - 3) && world.isAirBlock(i + 4, j + 1, k - 2) && world.isAirBlock(i + 4, j + 1, k - 1)
-					&& world.isAirBlock(i + 4, j + 1, k)
-					&& world.isAirBlock(i + 4, j + 1, k + 1) && world.isAirBlock(i + 4, j + 1, k + 2) && world.isAirBlock(i + 4, j + 1, k + 3)
-					&& world.isAirBlock(i + 3, j + 1, k - 3) && world.isAirBlock(i + 3, j + 1, k - 2) && world.isAirBlock(i + 3, j + 1, k - 1)
-					&& world.isAirBlock(i + 3, j + 1, k)
-					&& world.isAirBlock(i + 3, j + 1, k + 1) && world.isAirBlock(i + 3, j + 1, k + 2) && world.isAirBlock(i + 3, j + 1, k + 3)) {
-				setBlockAndMetadata(world, i + 3, j, k - 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i + 3, j, k + 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i + 2, j + 1, k - 2, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i + 2, j + 1, k + 2, mod_LionKing.leaves.blockID, 0);
-				for (int i1 = -2; i1 < 3; i1++) {
-					setBlockAndMetadata(world, i + 4, j, k + i1, mod_LionKing.leaves.blockID, 0);
+			if (direction == 1) {
+				if (world.isAirBlock(i + 4, j, k1 - 3) && world.isAirBlock(i + 4, j, k1 - 2) && world.isAirBlock(i + 4, j, k1 - 1)
+						&& world.isAirBlock(i + 4, j, k1)
+						&& world.isAirBlock(i + 4, j, k1 + 1) && world.isAirBlock(i + 4, j, k1 + 2) && world.isAirBlock(i + 4, j, k1 + 3)
+						&& world.isAirBlock(i + 4, j + 1, k1 - 3) && world.isAirBlock(i + 4, j + 1, k1 - 2) && world.isAirBlock(i + 4, j + 1, k1 - 1)
+						&& world.isAirBlock(i + 4, j + 1, k1)
+						&& world.isAirBlock(i + 4, j + 1, k1 + 1) && world.isAirBlock(i + 4, j + 1, k1 + 2) && world.isAirBlock(i + 4, j + 1, k1 + 3)
+						&& world.isAirBlock(i + 3, j + 1, k1 - 3) && world.isAirBlock(i + 3, j + 1, k1 - 2) && world.isAirBlock(i + 3, j + 1, k1 - 1)
+						&& world.isAirBlock(i + 3, j + 1, k1)
+						&& world.isAirBlock(i + 3, j + 1, k1 + 1) && world.isAirBlock(i + 3, j + 1, k1 + 2) && world.isAirBlock(i + 3, j + 1, k1 + 3)) {
+					setBlockAndMetadata(world, i + 3, j, k1 - 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i + 3, j, k1 + 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i + 2, j + 1, k1 - 2, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i + 2, j + 1, k1 + 2, mod_LionKing.leaves.blockID, 0);
+					for (int i1 = -2; i1 < 3; i1++) {
+						setBlockAndMetadata(world, i + 4, j, k1 + i1, mod_LionKing.leaves.blockID, 0);
+					}
+					for (int i1 = -1; i1 < 2; i1++) {
+						setBlockAndMetadata(world, i + 3, j + 1, k1 + i1, mod_LionKing.leaves.blockID, 0);
+					}
+					setBlockAndMetadata(world, i + 3, j, k1, mod_LionKing.prideWood.blockID, 0);
 				}
-				for (int i1 = -1; i1 < 2; i1++) {
-					setBlockAndMetadata(world, i + 3, j + 1, k + i1, mod_LionKing.leaves.blockID, 0);
-				}
-				setBlockAndMetadata(world, i + 3, j, k, mod_LionKing.prideWood.blockID, 0);
 			}
-		}
-		if (direction == 2) {
-			if (world.isAirBlock(i - 3, j, k - 4) && world.isAirBlock(i - 2, j, k - 4) && world.isAirBlock(i - 1, j, k - 4)
-					&& world.isAirBlock(i, j, k - 4)
-					&& world.isAirBlock(i + 1, j, k - 4) && world.isAirBlock(i + 2, j, k - 4) && world.isAirBlock(i + 3, j, k - 4)
-					&& world.isAirBlock(i - 3, j + 1, k - 4) && world.isAirBlock(i - 2, j + 1, k - 4) && world.isAirBlock(i - 1, j + 1, k - 4)
-					&& world.isAirBlock(i, j + 1, k - 4)
-					&& world.isAirBlock(i + 1, j + 1, k - 4) && world.isAirBlock(i + 2, j + 1, k - 4) && world.isAirBlock(i + 3, j + 1, k - 4)
-					&& world.isAirBlock(i - 3, j + 1, k - 3) && world.isAirBlock(i - 2, j + 1, k - 3) && world.isAirBlock(i - 1, j + 1, k - 3)
-					&& world.isAirBlock(i, j + 1, k - 3)
-					&& world.isAirBlock(i + 1, j + 1, k - 3) && world.isAirBlock(i + 2, j + 1, k - 3) && world.isAirBlock(i + 3, j + 1, k - 3)) {
-				setBlockAndMetadata(world, i - 3, j, k - 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i + 3, j, k - 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i - 2, j + 1, k - 2, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i + 2, j + 1, k - 2, mod_LionKing.leaves.blockID, 0);
-				for (int i1 = -2; i1 < 3; i1++) {
-					setBlockAndMetadata(world, i + i1, j, k - 4, mod_LionKing.leaves.blockID, 0);
+			if (direction == 2) {
+				if (world.isAirBlock(i - 3, j, k1 - 4) && world.isAirBlock(i - 2, j, k1 - 4) && world.isAirBlock(i - 1, j, k1 - 4)
+						&& world.isAirBlock(i, j, k1 - 4)
+						&& world.isAirBlock(i + 1, j, k1 - 4) && world.isAirBlock(i + 2, j, k1 - 4) && world.isAirBlock(i + 3, j, k1 - 4)
+						&& world.isAirBlock(i - 3, j + 1, k1 - 4) && world.isAirBlock(i - 2, j + 1, k1 - 4) && world.isAirBlock(i - 1, j + 1, k1 - 4)
+						&& world.isAirBlock(i, j + 1, k1 - 4)
+						&& world.isAirBlock(i + 1, j + 1, k1 - 4) && world.isAirBlock(i + 2, j + 1, k1 - 4) && world.isAirBlock(i + 3, j + 1, k1 - 4)
+						&& world.isAirBlock(i - 3, j + 1, k1 - 3) && world.isAirBlock(i - 2, j + 1, k1 - 3) && world.isAirBlock(i - 1, j + 1, k1 - 3)
+						&& world.isAirBlock(i, j + 1, k1 - 3)
+						&& world.isAirBlock(i + 1, j + 1, k1 - 3) && world.isAirBlock(i + 2, j + 1, k1 - 3) && world.isAirBlock(i + 3, j + 1, k1 - 3)) {
+					setBlockAndMetadata(world, i - 3, j, k1 - 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i + 3, j, k1 - 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i - 2, j + 1, k1 - 2, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i + 2, j + 1, k1 - 2, mod_LionKing.leaves.blockID, 0);
+					for (int i1 = -2; i1 < 3; i1++) {
+						setBlockAndMetadata(world, i + i1, j, k1 - 4, mod_LionKing.leaves.blockID, 0);
+					}
+					for (int i1 = -1; i1 < 2; i1++) {
+						setBlockAndMetadata(world, i + i1, j + 1, k1 - 3, mod_LionKing.leaves.blockID, 0);
+					}
+					setBlockAndMetadata(world, i, j, k1 - 3, mod_LionKing.prideWood.blockID, 0);
 				}
-				for (int i1 = -1; i1 < 2; i1++) {
-					setBlockAndMetadata(world, i + i1, j + 1, k - 3, mod_LionKing.leaves.blockID, 0);
-				}
-				setBlockAndMetadata(world, i, j, k - 3, mod_LionKing.prideWood.blockID, 0);
 			}
-		}
-		if (direction == 3) {
-			if (world.isAirBlock(i - 3, j, k + 4) && world.isAirBlock(i - 2, j, k + 4) && world.isAirBlock(i - 1, j, k + 4)
-					&& world.isAirBlock(i, j, k + 4)
-					&& world.isAirBlock(i + 1, j, k + 4) && world.isAirBlock(i + 2, j, k + 4) && world.isAirBlock(i + 3, j, k + 4)
-					&& world.isAirBlock(i - 3, j + 1, k + 4) && world.isAirBlock(i - 2, j + 1, k + 4) && world.isAirBlock(i - 1, j + 1, k + 4)
-					&& world.isAirBlock(i, j + 1, k + 4)
-					&& world.isAirBlock(i + 1, j + 1, k + 4) && world.isAirBlock(i + 2, j + 1, k + 4) && world.isAirBlock(i + 3, j + 1, k + 4)
-					&& world.isAirBlock(i - 3, j + 1, k + 3) && world.isAirBlock(i - 2, j + 1, k + 3) && world.isAirBlock(i - 1, j + 1, k + 3)
-					&& world.isAirBlock(i, j + 1, k + 3)
-					&& world.isAirBlock(i + 1, j + 1, k + 3) && world.isAirBlock(i + 2, j + 1, k + 3) && world.isAirBlock(i + 3, j + 1, k + 3)) {
-				setBlockAndMetadata(world, i - 3, j, k + 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i + 3, j, k + 3, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i - 2, j + 1, k + 2, mod_LionKing.leaves.blockID, 0);
-				setBlockAndMetadata(world, i + 2, j + 1, k + 2, mod_LionKing.leaves.blockID, 0);
-				for (int i1 = -2; i1 < 3; i1++) {
-					setBlockAndMetadata(world, i + i1, j, k + 4, mod_LionKing.leaves.blockID, 0);
+			if (direction == 3) {
+				if (world.isAirBlock(i - 3, j, k1 + 4) && world.isAirBlock(i - 2, j, k1 + 4) && world.isAirBlock(i - 1, j, k1 + 4)
+						&& world.isAirBlock(i, j, k1 + 4)
+						&& world.isAirBlock(i + 1, j, k1 + 4) && world.isAirBlock(i + 2, j, k1 + 4) && world.isAirBlock(i + 3, j, k1 + 4)
+						&& world.isAirBlock(i - 3, j + 1, k1 + 4) && world.isAirBlock(i - 2, j + 1, k1 + 4) && world.isAirBlock(i - 1, j + 1, k1 + 4)
+						&& world.isAirBlock(i, j + 1, k1 + 4)
+						&& world.isAirBlock(i + 1, j + 1, k1 + 4) && world.isAirBlock(i + 2, j + 1, k1 + 4) && world.isAirBlock(i + 3, j + 1, k1 + 4)
+						&& world.isAirBlock(i - 3, j + 1, k1 + 3) && world.isAirBlock(i - 2, j + 1, k1 + 3) && world.isAirBlock(i - 1, j + 1, k1 + 3)
+						&& world.isAirBlock(i, j + 1, k1 + 3)
+						&& world.isAirBlock(i + 1, j + 1, k1 + 3) && world.isAirBlock(i + 2, j + 1, k1 + 3) && world.isAirBlock(i + 3, j + 1, k1 + 3)) {
+					setBlockAndMetadata(world, i - 3, j, k1 + 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i + 3, j, k1 + 3, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i - 2, j + 1, k1 + 2, mod_LionKing.leaves.blockID, 0);
+					setBlockAndMetadata(world, i + 2, j + 1, k1 + 2, mod_LionKing.leaves.blockID, 0);
+					for (int i1 = -2; i1 < 3; i1++) {
+						setBlockAndMetadata(world, i + i1, j, k1 + 4, mod_LionKing.leaves.blockID, 0);
+					}
+					for (int i1 = -1; i1 < 2; i1++) {
+						setBlockAndMetadata(world, i + i1, j + 1, k1 + 3, mod_LionKing.leaves.blockID, 0);
+					}
+					setBlockAndMetadata(world, i, j, k1 + 3, mod_LionKing.prideWood.blockID, 0);
 				}
-				for (int i1 = -1; i1 < 2; i1++) {
-					setBlockAndMetadata(world, i + i1, j + 1, k + 3, mod_LionKing.leaves.blockID, 0);
+			}
+			if (length1 > 1) {
+				length1--;
+				switch (direction) {
+					case 0:
+						tryCanopyShift(world, random, i - 1, j, k1, length1, direction);
+						break;
+					case 1:
+						tryCanopyShift(world, random, i + 1, j, k1, length1, direction);
+						break;
+					case 2:
+						tryCanopyShift(world, random, i, j, k1 - 1, length1, direction);
+						break;
+					case 3:
+						length2 = length1;
+						k1 += 1;
+						continue;
 				}
-				setBlockAndMetadata(world, i, j, k + 3, mod_LionKing.prideWood.blockID, 0);
 			}
-		}
-		if (length > 1) {
-			length--;
-			switch (direction) {
-				case 0:
-					tryCanopyShift(world, random, i - 1, j, k, length, direction);
-				case 1:
-					tryCanopyShift(world, random, i + 1, j, k, length, direction);
-				case 2:
-					tryCanopyShift(world, random, i, j, k - 1, length, direction);
-				case 3:
-					tryCanopyShift(world, random, i, j, k + 1, length, direction);
-			}
+			return;
 		}
 	}
 
@@ -443,7 +430,7 @@ public class LKWorldGenTrees extends WorldGenerator {
 		}
 	}
 
-	private boolean isBlockReplaceable(World world, int i, int j, int k) {
+	private boolean isBlockReplaceable(IBlockAccess world, int i, int j, int k) {
 		return world.isAirBlock(i, j, k) || world.getBlockId(i, j, k) == mod_LionKing.leaves.blockID;
 	}
 }

@@ -1,39 +1,19 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
 public class LKEntityOutlander extends EntityMob implements LKAngerable {
-	public int randomSoundDelay;
+	private int randomSoundDelay;
 	public boolean inMound;
 	protected int angerLevel;
 
@@ -45,7 +25,7 @@ public class LKEntityOutlander extends EntityMob implements LKAngerable {
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new LKEntityAILionAttack(this, EntityPlayer.class, 1.3D, false));
-		tasks.addTask(2, new EntityAIWander(this, 1D));
+		tasks.addTask(2, new EntityAIWander(this, 1.0D));
 		tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(4, new EntityAILookIdle(this));
 		targetTasks.addTask(0, new EntityAIHurtByTarget(this, false));
@@ -55,17 +35,17 @@ public class LKEntityOutlander extends EntityMob implements LKAngerable {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
-		getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(4D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(4.0D);
 	}
 
+	@Override
 	public boolean isHostile() {
 		if (inMound) {
 			return LKLevelData.outlandersHostile == 1 || angerLevel > 0;
-		} else {
-			return angerLevel > 0;
 		}
+		return angerLevel > 0;
 	}
 
 	@Override
@@ -95,7 +75,7 @@ public class LKEntityOutlander extends EntityMob implements LKAngerable {
 
 	@Override
 	public boolean getCanSpawnHere() {
-		return worldObj.difficultySetting > 0 && worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
+		return worldObj.difficultySetting > 0 && worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox);
 	}
 
 	@Override
@@ -115,9 +95,9 @@ public class LKEntityOutlander extends EntityMob implements LKAngerable {
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float f) {
 		if (damagesource.getEntity() instanceof EntityPlayer) {
-			List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(24D, 24D, 24D));
-			for (int j = 0; j < list.size(); j++) {
-				Entity entity = (Entity) list.get(j);
+			List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(24.0D, 24.0D, 24.0D));
+			for (Object o : list) {
+				Entity entity = (Entity) o;
 				if (!inMound && entity instanceof LKEntityOutlander) {
 					LKEntityOutlander outlander = (LKEntityOutlander) entity;
 					if (!outlander.inMound) {
@@ -173,15 +153,15 @@ public class LKEntityOutlander extends EntityMob implements LKAngerable {
 		if (inMound) {
 			if (LKLevelData.ziraStage < 14) {
 				if (worldObj.getBlockId(i, j, k) == mod_LionKing.outlandsPool.blockID) {
-					return -999999F;
-				} else if (worldObj.getBlockId(i, j - 1, k) == mod_LionKing.outlandsPortalFrame.blockID && worldObj.getBlockMetadata(i, j - 1, k) == 1 && worldObj.isAirBlock(i, j, k)) {
-					return 10.0F;
-				} else {
-					return -999999F;
+					return -999999.0F;
 				}
+				if (worldObj.getBlockId(i, j - 1, k) == mod_LionKing.outlandsPortalFrame.blockID && worldObj.getBlockMetadata(i, j - 1, k) == 1 && worldObj.isAirBlock(i, j, k)) {
+					return 10.0F;
+				}
+				return -999999.0F;
 			}
-			if (LKLevelData.ziraStage >= 14 && LKLevelData.ziraStage < 19) {
-				return worldObj.getBlockId(i, j - 1, k) == mod_LionKing.rafikiWood.blockID && worldObj.isAirBlock(i, j, k) ? 10.0F : -999999F;
+			if (LKLevelData.ziraStage < 19) {
+				return worldObj.getBlockId(i, j - 1, k) == mod_LionKing.rafikiWood.blockID && worldObj.isAirBlock(i, j, k) ? 10.0F : -999999.0F;
 			}
 		}
 		return super.getBlockPathWeight(i, j, k);

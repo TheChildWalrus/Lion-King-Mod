@@ -1,44 +1,22 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
 public class LKEntityLightning extends EntityWeatherEffect {
-	public long boltVertex = 0L;
+	public long boltVertex;
 	private int lightningState;
 	private int boltLivingTime;
-	private int power;
-	private EntityPlayer thePlayer;
+	private final int power;
+	private final EntityPlayer thePlayer;
 
 	public LKEntityLightning(EntityPlayer player, World world, double d, double d1, double d2, int level) {
 		super(world);
@@ -93,12 +71,12 @@ public class LKEntityLightning extends EntityWeatherEffect {
 			if (power > 0) {
 				double var6 = 3.0D;
 				List var7 = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().getAABB(posX - var6, posY - var6, posZ - var6, posX + var6, posY + 6.0D + var6, posZ + var6));
-				for (int var4 = 0; var4 < var7.size(); ++var4) {
-					Entity var5 = (Entity) var7.get(var4);
-					if ((thePlayer != null && var5 == thePlayer) || var5 instanceof LKCharacter || var5.isImmuneToFire()) {
+				for (Object o : var7) {
+					Entity var5 = (Entity) o;
+					if (thePlayer != null && var5 == thePlayer || var5 instanceof LKCharacter || var5.isImmuneToFire()) {
 						continue;
 					}
-					var5.attackEntityFrom(thePlayer != null ? DamageSource.causePlayerDamage(thePlayer) : DamageSource.inFire, (power * 3) + (rand.nextInt(3) * 2));
+					var5.attackEntityFrom(thePlayer != null ? DamageSource.causePlayerDamage(thePlayer) : DamageSource.inFire, power * 3 + rand.nextInt(3) * 2);
 					var5.setFire(power + rand.nextInt(4));
 				}
 			}

@@ -1,39 +1,13 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.Random;
 
 public class LKItemTallFlower extends LKItem {
-	private int flowerMetadata;
+	private final int flowerMetadata;
 
 	public LKItemTallFlower(int i, int j) {
 		super(i);
@@ -43,38 +17,42 @@ public class LKItemTallFlower extends LKItem {
 
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float f, float f1, float f2) {
-		int i1 = world.getBlockId(i, j, k);
+		int l1 = l;
+		int j1 = j;
+		int k1 = k;
+		int i2 = i;
+		int i1 = world.getBlockId(i2, j1, k1);
 		if (i1 == Block.snow.blockID) {
-			l = 1;
+			l1 = 1;
 		} else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID) {
-			if (l == 0) {
-				--j;
+			if (l1 == 0) {
+				--j1;
 			}
-			if (l == 1) {
-				++j;
+			if (l1 == 1) {
+				++j1;
 			}
-			if (l == 2) {
-				--k;
+			if (l1 == 2) {
+				--k1;
 			}
-			if (l == 3) {
-				++k;
+			if (l1 == 3) {
+				++k1;
 			}
-			if (l == 4) {
-				--i;
+			if (l1 == 4) {
+				--i2;
 			}
-			if (l == 5) {
-				++i;
+			if (l1 == 5) {
+				++i2;
 			}
 		}
-		if (!entityplayer.canPlayerEdit(i, j, k, l, itemstack)) {
+		if (!entityplayer.canPlayerEdit(i2, j1, k1, l1, itemstack)) {
 			return false;
 		}
 		Block block = mod_LionKing.flowerBase;
-		if (j < 255 && (world.getBlockId(i, j - 1, k) == Block.grass.blockID || world.getBlockId(i, j - 1, k) == Block.dirt.blockID || world.getBlockId(i, j - 1, k) == Block.tilledField.blockID) && isReplaceableBlock(world, i, j, k) && isReplaceableBlock(world, i, j + 1, k)) {
+		if (j1 < 255 && (world.getBlockId(i2, j1 - 1, k1) == Block.grass.blockID || world.getBlockId(i2, j1 - 1, k1) == Block.dirt.blockID || world.getBlockId(i2, j1 - 1, k1) == Block.tilledField.blockID) && isReplaceableBlock(world, i2, j1, k1) && isReplaceableBlock(world, i2, j1 + 1, k1)) {
 			if (!world.isRemote) {
-				world.setBlock(i, j, k, mod_LionKing.flowerBase.blockID, flowerMetadata, 3);
-				world.setBlock(i, j + 1, k, mod_LionKing.flowerTop.blockID, flowerMetadata, 3);
-				world.playSoundEffect((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.setBlock(i2, j1, k1, mod_LionKing.flowerBase.blockID, flowerMetadata, 3);
+				world.setBlock(i2, j1 + 1, k1, mod_LionKing.flowerTop.blockID, flowerMetadata, 3);
+				world.playSoundEffect(i2 + 0.5F, j1 + 0.5F, k1 + 0.5F, block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 				itemstack.stackSize--;
 				return true;
 			}
@@ -82,7 +60,7 @@ public class LKItemTallFlower extends LKItem {
 		return false;
 	}
 
-	private boolean isReplaceableBlock(World world, int i, int j, int k) {
+	private boolean isReplaceableBlock(IBlockAccess world, int i, int j, int k) {
 		int l = world.getBlockId(i, j, k);
 		return l == 0 || Block.blocksList[l].blockMaterial.isReplaceable();
 	}

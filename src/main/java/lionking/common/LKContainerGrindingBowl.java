@@ -1,36 +1,8 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.Iterator;
 
 public class LKContainerGrindingBowl extends Container {
 	public LKTileEntityGrindingBowl grindingBowl;
@@ -64,9 +36,8 @@ public class LKContainerGrindingBowl extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		Iterator iterator = crafters.iterator();
-		while (iterator.hasNext()) {
-			ICrafting slot = (ICrafting) iterator.next();
+		for (Object crafter : crafters) {
+			ICrafting slot = (ICrafting) crafter;
 			if (grindTime != grindingBowl.grindTime) {
 				slot.sendProgressBarUpdate(this, 0, grindingBowl.grindTime);
 			}
@@ -107,11 +78,11 @@ public class LKContainerGrindingBowl extends Container {
 					if (!mergeItemStack(itemstack1, 0, 1, false)) {
 						return null;
 					}
-				} else if (i >= 2 && i < 29) {
+				} else if (i < 29) {
 					if (!mergeItemStack(itemstack1, 29, 38, false)) {
 						return null;
 					}
-				} else if (i >= 29 && i < 38 && !mergeItemStack(itemstack1, 2, 29, false)) {
+				} else if (i < 38 && !mergeItemStack(itemstack1, 2, 29, false)) {
 					return null;
 				}
 			} else if (!mergeItemStack(itemstack1, 2, 38, false)) {
@@ -119,7 +90,7 @@ public class LKContainerGrindingBowl extends Container {
 			}
 
 			if (itemstack1.stackSize == 0) {
-				slot.putStack((ItemStack) null);
+				slot.putStack(null);
 			} else {
 				slot.onSlotChanged();
 			}

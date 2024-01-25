@@ -1,41 +1,21 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
 public abstract class LKEntityDart extends Entity {
-	public boolean doesArrowBelongToPlayer;
+	private boolean doesArrowBelongToPlayer;
 	public int arrowShake;
-	public Entity shootingEntity;
+	protected Entity shootingEntity;
 	public boolean silverFired;
 	private int xTile;
 	private int yTile;
@@ -46,7 +26,7 @@ public abstract class LKEntityDart extends Entity {
 	private int ticksInGround;
 	private int ticksInAir;
 
-	public LKEntityDart(World world) {
+	protected LKEntityDart(World world) {
 		super(world);
 		xTile = -1;
 		yTile = -1;
@@ -60,7 +40,7 @@ public abstract class LKEntityDart extends Entity {
 		setSize(0.5F, 0.5F);
 	}
 
-	public LKEntityDart(World world, double d, double d1, double d2) {
+	protected LKEntityDart(World world, double d, double d1, double d2) {
 		super(world);
 		xTile = -1;
 		yTile = -1;
@@ -76,7 +56,7 @@ public abstract class LKEntityDart extends Entity {
 		yOffset = 0.0F;
 	}
 
-	public LKEntityDart(World world, EntityLivingBase entityliving, float f, boolean flag) {
+	protected LKEntityDart(World world, EntityLivingBase entityliving, float f, boolean flag) {
 		super(world);
 		silverFired = flag;
 		xTile = -1;
@@ -90,15 +70,15 @@ public abstract class LKEntityDart extends Entity {
 		ticksInAir = 0;
 		shootingEntity = entityliving;
 		setSize(0.5F, 0.5F);
-		setLocationAndAngles(entityliving.posX, entityliving.posY + (double) entityliving.getEyeHeight(), entityliving.posZ, entityliving.rotationYaw, entityliving.rotationPitch);
-		posX -= MathHelper.cos((rotationYaw / 180F) * 3.141593F) * 0.16F;
+		setLocationAndAngles(entityliving.posX, entityliving.posY + entityliving.getEyeHeight(), entityliving.posZ, entityliving.rotationYaw, entityliving.rotationPitch);
+		posX -= MathHelper.cos(rotationYaw / 180.0F * 3.141593F) * 0.16F;
 		posY -= 0.10000000149011612D;
-		posZ -= MathHelper.sin((rotationYaw / 180F) * 3.141593F) * 0.16F;
+		posZ -= MathHelper.sin(rotationYaw / 180.0F * 3.141593F) * 0.16F;
 		setPosition(posX, posY, posZ);
 		yOffset = 0.0F;
-		motionX = -MathHelper.sin((rotationYaw / 180F) * 3.141593F) * MathHelper.cos((rotationPitch / 180F) * 3.141593F);
-		motionZ = MathHelper.cos((rotationYaw / 180F) * 3.141593F) * MathHelper.cos((rotationPitch / 180F) * 3.141593F);
-		motionY = -MathHelper.sin((rotationPitch / 180F) * 3.141593F);
+		motionX = -MathHelper.sin(rotationYaw / 180.0F * 3.141593F) * MathHelper.cos(rotationPitch / 180.0F * 3.141593F);
+		motionZ = MathHelper.cos(rotationYaw / 180.0F * 3.141593F) * MathHelper.cos(rotationPitch / 180.0F * 3.141593F);
+		motionY = -MathHelper.sin(rotationPitch / 180.0F * 3.141593F);
 		setDartHeading(motionX, motionY, motionZ, f * 1.5F, 1.0F);
 	}
 
@@ -107,22 +87,25 @@ public abstract class LKEntityDart extends Entity {
 	}
 
 	public void setDartHeading(double d, double d1, double d2, float f, float f1) {
-		float f2 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
-		d /= f2;
-		d1 /= f2;
-		d2 /= f2;
-		d += worldObj.rand.nextGaussian() * 0.0074999998323619366D * (double) f1;
-		d1 += worldObj.rand.nextGaussian() * 0.0074999998323619366D * (double) f1;
-		d2 += worldObj.rand.nextGaussian() * 0.0074999998323619366D * (double) f1;
-		d *= f;
-		d1 *= f;
-		d2 *= f;
-		motionX = d;
-		motionY = d1;
-		motionZ = d2;
-		float f3 = MathHelper.sqrt_double(d * d + d2 * d2);
-		prevRotationYaw = rotationYaw = (float) ((Math.atan2(d, d2) * 180D) / 3.1415927410125732D);
-		prevRotationPitch = rotationPitch = (float) ((Math.atan2(d1, f3) * 180D) / 3.1415927410125732D);
+		double d3 = d;
+		double d11 = d1;
+		double d21 = d2;
+		float f2 = MathHelper.sqrt_double(d3 * d3 + d11 * d11 + d21 * d21);
+		d3 /= f2;
+		d11 /= f2;
+		d21 /= f2;
+		d3 += worldObj.rand.nextGaussian() * 0.0074999998323619366D * f1;
+		d11 += worldObj.rand.nextGaussian() * 0.0074999998323619366D * f1;
+		d21 += worldObj.rand.nextGaussian() * 0.0074999998323619366D * f1;
+		d3 *= f;
+		d11 *= f;
+		d21 *= f;
+		motionX = d3;
+		motionY = d11;
+		motionZ = d21;
+		float f3 = MathHelper.sqrt_double(d3 * d3 + d21 * d21);
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(d3, d21) * 180.0D / 3.1415927410125732D);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(d11, f3) * 180.0D / 3.1415927410125732D);
 		ticksInGround = 0;
 	}
 
@@ -133,8 +116,8 @@ public abstract class LKEntityDart extends Entity {
 		motionZ = d2;
 		if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
 			float f = MathHelper.sqrt_double(d * d + d2 * d2);
-			prevRotationYaw = rotationYaw = (float) ((Math.atan2(d, d2) * 180D) / 3.1415927410125732D);
-			prevRotationPitch = rotationPitch = (float) ((Math.atan2(d1, f) * 180D) / 3.1415927410125732D);
+			rotationYaw = (float) (Math.atan2(d, d2) * 180.0D / 3.1415927410125732D);
+			rotationPitch = (float) (Math.atan2(d1, f) * 180.0D / 3.1415927410125732D);
 			prevRotationPitch = rotationPitch;
 			prevRotationYaw = rotationYaw;
 			setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
@@ -150,8 +133,8 @@ public abstract class LKEntityDart extends Entity {
 		}
 		if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
 			float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-			prevRotationYaw = rotationYaw = (float) ((Math.atan2(motionX, motionZ) * 180D) / 3.1415927410125732D);
-			prevRotationPitch = rotationPitch = (float) ((Math.atan2(motionY, f) * 180D) / 3.1415927410125732D);
+			prevRotationYaw = rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / 3.1415927410125732D);
+			prevRotationPitch = rotationPitch = (float) (Math.atan2(motionY, f) * 180.0D / 3.1415927410125732D);
 		}
 		int i = worldObj.getBlockId(xTile, yTile, zTile);
 		if (i > 0) {
@@ -177,9 +160,9 @@ public abstract class LKEntityDart extends Entity {
 				}
 			} else {
 				inGround = false;
-				motionX *= (double) (worldObj.rand.nextFloat() * 0.2F);
-				motionY *= (double) (worldObj.rand.nextFloat() * 0.2F);
-				motionZ *= (double) (worldObj.rand.nextFloat() * 0.2F);
+				motionX *= worldObj.rand.nextFloat() * 0.2F;
+				motionY *= worldObj.rand.nextFloat() * 0.2F;
+				motionZ *= worldObj.rand.nextFloat() * 0.2F;
 				ticksInGround = 0;
 				ticksInAir = 0;
 			}
@@ -196,8 +179,8 @@ public abstract class LKEntityDart extends Entity {
 			Entity entity = null;
 			List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
 			double d = 0.0D;
-			for (int l = 0; l < list.size(); l++) {
-				Entity entity1 = (Entity) list.get(l);
+			for (Object o : list) {
+				Entity entity1 = (Entity) o;
 				if (!entity1.canBeCollidedWith() || entity1 == shootingEntity && ticksInAir < 5) {
 					continue;
 				}
@@ -224,7 +207,7 @@ public abstract class LKEntityDart extends Entity {
 					if (silverFired) {
 						j1 += worldObj.rand.nextInt(2) + 1;
 					}
-					if (movingobjectposition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, shootingEntity), (float) j1)) {
+					if (movingobjectposition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, shootingEntity), j1)) {
 						if (movingobjectposition.entityHit instanceof EntityLiving) {
 							EntityLivingBase hitEntity = (EntityLivingBase) movingobjectposition.entityHit;
 							onHitEntity(hitEntity);
@@ -235,8 +218,8 @@ public abstract class LKEntityDart extends Entity {
 						motionX *= -0.10000000149011612D;
 						motionY *= -0.10000000149011612D;
 						motionZ *= -0.10000000149011612D;
-						rotationYaw += 180F;
-						prevRotationYaw += 180F;
+						rotationYaw += 180.0F;
+						prevRotationYaw += 180.0F;
 						ticksInAir = 0;
 					}
 				} else {
@@ -249,9 +232,9 @@ public abstract class LKEntityDart extends Entity {
 					motionY = (float) (movingobjectposition.hitVec.yCoord - posY);
 					motionZ = (float) (movingobjectposition.hitVec.zCoord - posZ);
 					float f2 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
-					posX -= (motionX / (double) f2) * 0.05000000074505806D;
-					posY -= (motionY / (double) f2) * 0.05000000074505806D;
-					posZ -= (motionZ / (double) f2) * 0.05000000074505806D;
+					posX -= motionX / f2 * 0.05000000074505806D;
+					posY -= motionY / f2 * 0.05000000074505806D;
+					posZ -= motionZ / f2 * 0.05000000074505806D;
 					worldObj.playSoundAtEntity(this, "random.drr", 1.0F, 1.2F / (worldObj.rand.nextFloat() * 0.2F + 0.9F));
 					inGround = true;
 					arrowShake = 7;
@@ -261,14 +244,14 @@ public abstract class LKEntityDart extends Entity {
 			posY += motionY;
 			posZ += motionZ;
 			float f3 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-			rotationYaw = (float) ((Math.atan2(motionX, motionZ) * 180D) / 3.1415927410125732D);
-			for (rotationPitch = (float) ((Math.atan2(motionY, f3) * 180D) / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) {
+			rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / 3.1415927410125732D);
+			for (rotationPitch = (float) (Math.atan2(motionY, f3) * 180.0D / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F) {
 			}
-			for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
+			for (; rotationPitch - prevRotationPitch >= 180.0F; prevRotationPitch += 360.0F) {
 			}
-			for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
+			for (; rotationYaw - prevRotationYaw < -180.0F; prevRotationYaw -= 360.0F) {
 			}
-			for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) {
+			for (; rotationYaw - prevRotationYaw >= 180.0F; prevRotationYaw += 360.0F) {
 			}
 			rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
 			rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
@@ -280,7 +263,7 @@ public abstract class LKEntityDart extends Entity {
 			if (isInWater()) {
 				for (int k1 = 0; k1 < 4; k1++) {
 					float f7 = 0.25F;
-					worldObj.spawnParticle("bubble", posX - motionX * (double) f7, posY - motionY * (double) f7, posZ - motionZ * (double) f7, motionX, motionY, motionZ);
+					worldObj.spawnParticle("bubble", posX - motionX * f7, posY - motionY * f7, posZ - motionZ * f7, motionX, motionY, motionZ);
 				}
 				f4 = 0.8F;
 			}
@@ -338,16 +321,16 @@ public abstract class LKEntityDart extends Entity {
 		return 0.0F;
 	}
 
-	public abstract ItemStack getDartItem();
+	protected abstract ItemStack getDartItem();
 
-	public abstract int getDamage();
+	protected abstract int getDamage();
 
-	public abstract void onHitEntity(Entity hitEntity);
+	protected abstract void onHitEntity(Entity hitEntity);
 
-	public abstract void spawnParticles();
+	protected abstract void spawnParticles();
 
-	public abstract float getSpeedReduction();
+	protected abstract float getSpeedReduction();
 
-	public void inGroundEvent() {
+	protected void inGroundEvent() {
 	}
 }

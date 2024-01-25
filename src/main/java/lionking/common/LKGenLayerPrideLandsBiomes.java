@@ -4,7 +4,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.*;
 
 public class LKGenLayerPrideLandsBiomes extends GenLayer {
-	private BiomeGenBase[] biomesForGeneration = {LKPrideLandsBiome.savannah, LKPrideLandsBiome.rainforest, LKPrideLandsBiome.mountains, LKPrideLandsBiome.aridSavannah, LKPrideLandsBiome.desert, LKPrideLandsBiome.grasslandSavannah, LKPrideLandsBiome.woodedSavannah, LKPrideLandsBiome.bananaForest};
+	private final BiomeGenBase[] biomesForGeneration = new BiomeGenBase[]{LKPrideLandsBiome.savannah, LKPrideLandsBiome.rainforest, LKPrideLandsBiome.mountains, LKPrideLandsBiome.aridSavannah, LKPrideLandsBiome.desert, LKPrideLandsBiome.grasslandSavannah, LKPrideLandsBiome.woodedSavannah, LKPrideLandsBiome.bananaForest};
 
 	public LKGenLayerPrideLandsBiomes(long l, GenLayer genlayer) {
 		super(l);

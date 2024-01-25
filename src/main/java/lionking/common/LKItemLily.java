@@ -14,11 +14,9 @@ public class LKItemLily extends LKItemMetadata {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		MovingObjectPosition m = this.getMovingObjectPositionFromPlayer(world, entityplayer, true);
+		MovingObjectPosition m = getMovingObjectPositionFromPlayer(world, entityplayer, true);
 
-		if (m == null) {
-			return itemstack;
-		} else {
+		if (m != null) {
 			if (m.typeOfHit == EnumMovingObjectType.TILE) {
 				int i1 = m.blockX;
 				int j1 = m.blockY;
@@ -41,7 +39,7 @@ public class LKItemLily extends LKItemMetadata {
 				}
 			}
 
-			return itemstack;
 		}
+		return itemstack;
 	}
 }

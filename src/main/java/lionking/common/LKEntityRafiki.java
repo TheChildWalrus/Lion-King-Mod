@@ -1,38 +1,13 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
 
 public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 	public boolean isThisTheRealRafiki;
@@ -53,7 +28,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		isThisTheRealRafiki = false;
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new EntityAIWander(this, 1D));
+		tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(3, new EntityAILookIdle(this));
 	}
@@ -61,28 +36,28 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(100D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(100.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.2D);
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(17, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(18, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(19, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(20, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(21, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(22, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(23, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(24, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(25, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(26, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(27, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(28, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(29, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(30, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(31, Byte.valueOf((byte) 0));
+		dataWatcher.addObject(17, (byte) 0);
+		dataWatcher.addObject(18, (byte) 0);
+		dataWatcher.addObject(19, (byte) 0);
+		dataWatcher.addObject(20, (byte) 0);
+		dataWatcher.addObject(21, (byte) 0);
+		dataWatcher.addObject(22, (byte) 0);
+		dataWatcher.addObject(23, (byte) 0);
+		dataWatcher.addObject(24, (byte) 0);
+		dataWatcher.addObject(25, (byte) 0);
+		dataWatcher.addObject(26, (byte) 0);
+		dataWatcher.addObject(27, (byte) 0);
+		dataWatcher.addObject(28, (byte) 0);
+		dataWatcher.addObject(29, (byte) 0);
+		dataWatcher.addObject(30, (byte) 0);
+		dataWatcher.addObject(31, (byte) 0);
 	}
 
 	@Override
@@ -107,12 +82,12 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		if (isThisTheRealRafiki && worldObj.getWorldInfo().getWorldTime() % 100L == 0L) {
 			ChunkCoordinates currentPos = new ChunkCoordinates(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
 			double distanceFromHome = Math.sqrt(currentPos.getDistanceSquared(0, 103, 0));
-			if (distanceFromHome > 20D) {
+			if (distanceFromHome > 20.0D) {
 				for (int i = 0; i < 12; i++) {
 					double d = getRNG().nextGaussian() * 0.02D;
 					double d1 = getRNG().nextGaussian() * 0.02D;
 					double d2 = getRNG().nextGaussian() * 0.02D;
-					worldObj.spawnParticle("portal", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+					worldObj.spawnParticle("portal", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 				}
 				setLocationAndAngles(0, 103, 0, rotationYaw, 0.0F);
 			}
@@ -151,11 +126,11 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 
 		if (canProcess() && getHasBegunPortal() && !getHasFinishedPortal()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fThis portal will take you to the Outlands. I want you to go there, collect four termites, and grind them up.");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fThis portal will take you to the Outlands. I want you to go there, collect four termites, and grind them up.");
 			}
 			processTick = 0;
 			LKQuestBase.rafikiQuest.setDelayed(false);
-			dataWatcher.updateObject(22, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(22, (byte) 1);
 
 			worldObj.setBlockToAir(-9, 105, -1);
 			worldObj.setBlockToAir(-9, 105, 0);
@@ -170,63 +145,63 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		}
 		if (getHasFinishedPortal() && canTalkPortal() && !getHasSpokenAboutPortal()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fMay Mufasa guide you in that dreadful place...");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fMay Mufasa guide you in that dreadful place...");
 			}
-			dataWatcher.updateObject(23, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(23, (byte) 1);
 		}
 		if (getHasTakenMango() && canTalkDust() && !getHasSpokenDust()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fI have long known that the great kings of the past are up there in the stars, watching over us.");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fI have long known that the great kings of the past are up there in the stars, watching over us.");
 			}
-			dataWatcher.updateObject(26, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(26, (byte) 1);
 			talkDustTick = 0;
 		}
 		if (getHasSpokenDust() && canTalkDust() && !getHasSpokenMagic()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fBut it is only recently that I have discovered a way to bring them back to the Pride Lands.");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fBut it is only recently that I have discovered a way to bring them back to the Pride Lands.");
 			}
-			dataWatcher.updateObject(27, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(27, (byte) 1);
 			talkDustTick = 0;
 		}
 		if (getHasSpokenMagic() && canTalkDust() && !getHasSpokenMagicDust()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fWith the materials you have given me, I can create a dust so magical that you can use it to undo Scar's work and return our king from the stars!");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fWith the materials you have given me, I can create a dust so magical that you can use it to undo Scar's work and return our king from the stars!");
 			}
-			dataWatcher.updateObject(28, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(28, (byte) 1);
 			talkDustTick = 0;
 		}
 		if (getHasSpokenMagicDust() && canTalkDust() && !getHasGivenMagicDust()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fHere it is! Now, listen carefully and I will tell you what to do with it.");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fHere it is! Now, listen carefully and I will tell you what to do with it.");
 				dropItem(mod_LionKing.lionDust.itemID, 4);
 			}
-			dataWatcher.updateObject(29, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(29, (byte) 1);
 			talkDustTick = 0;
 		}
 		if (getHasGivenMagicDust() && canTalkDust() && !getHasSpokenAltar()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fYou need to use three of the dust and three silver ingots to craft a Star Altar.");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fYou need to use three of the dust and three silver ingots to craft a Star Altar.");
 			}
-			dataWatcher.updateObject(30, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(30, (byte) 1);
 			talkDustTick = 0;
 		}
 		if (getHasSpokenAltar() && canTalkDust() && !getHasSpokenAltarUse()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fThen place it outside, and use the last dust on it. If you need more dust, bring me the two ingredients again.");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fThen place it outside, and use the last dust on it. If you need more dust, bring me the two ingredients again.");
 			}
-			dataWatcher.updateObject(31, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(31, (byte) 1);
 			talkDustTick = 0;
 			LKQuestBase.rafikiQuest.setDelayed(false);
 		}
 
 		if (LKLevelData.ziraStage == 20 && !worldObj.isRemote) {
-			LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fOhoho! Old Rafiki was never gone for good! But you've kicked up quite a stink here, haven't you?");
+			LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fOhoho! Old Rafiki was never gone for good! But you've kicked up quite a stink here, haven't you?");
 			LKLevelData.setZiraStage(21);
 			processTick = 0;
 		}
 
 		if (LKLevelData.ziraStage == 21 && processTick > 80 && !worldObj.isRemote) {
-			LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fNow's your chance to put things right. Go through that portal and put an end to Zira's outlandish scheme!");
+			LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fNow's your chance to put things right. Go through that portal and put an end to Zira's outlandish scheme!");
 			LKLevelData.setZiraStage(22);
 			LKQuestBase.outlandsQuest.setDelayed(false);
 		}
@@ -237,7 +212,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 			double d = getRNG().nextGaussian() * 0.02D;
 			double d1 = getRNG().nextGaussian() * 0.02D;
 			double d2 = getRNG().nextGaussian() * 0.02D;
-			worldObj.spawnParticle("heart", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+			worldObj.spawnParticle("heart", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 		}
 	}
 
@@ -312,80 +287,80 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
 		super.readEntityFromNBT(nbttagcompound);
 		isThisTheRealRafiki = nbttagcompound.getBoolean("TheRealRafiki");
-		dataWatcher.updateObject(17, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasInteracted") ? 1 : 0)));
-		dataWatcher.updateObject(18, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpokenAboutStick") ? 1 : 0)));
-		dataWatcher.updateObject(19, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasObtainedStick") ? 1 : 0)));
-		dataWatcher.updateObject(20, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpawnedScar") ? 1 : 0)));
-		dataWatcher.updateObject(21, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasBegunPortal") ? 1 : 0)));
-		dataWatcher.updateObject(22, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasFinishedPortal") ? 1 : 0)));
-		dataWatcher.updateObject(23, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpokenAboutPortal") ? 1 : 0)));
-		dataWatcher.updateObject(24, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasTakenTermites") ? 1 : 0)));
-		dataWatcher.updateObject(25, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasTakenMango") ? 1 : 0)));
-		dataWatcher.updateObject(26, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpokenAboutDust") ? 1 : 0)));
-		dataWatcher.updateObject(27, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpokenAboutMagic") ? 1 : 0)));
-		dataWatcher.updateObject(28, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpokenAboutMagicDust") ? 1 : 0)));
-		dataWatcher.updateObject(29, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasGivenMagicDust") ? 1 : 0)));
-		dataWatcher.updateObject(30, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpokenAltar") ? 1 : 0)));
-		dataWatcher.updateObject(31, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpokenAltarUse") ? 1 : 0)));
+		dataWatcher.updateObject(17, (byte) (nbttagcompound.getBoolean("HasInteracted") ? 1 : 0));
+		dataWatcher.updateObject(18, (byte) (nbttagcompound.getBoolean("HasSpokenAboutStick") ? 1 : 0));
+		dataWatcher.updateObject(19, (byte) (nbttagcompound.getBoolean("HasObtainedStick") ? 1 : 0));
+		dataWatcher.updateObject(20, (byte) (nbttagcompound.getBoolean("HasSpawnedScar") ? 1 : 0));
+		dataWatcher.updateObject(21, (byte) (nbttagcompound.getBoolean("HasBegunPortal") ? 1 : 0));
+		dataWatcher.updateObject(22, (byte) (nbttagcompound.getBoolean("HasFinishedPortal") ? 1 : 0));
+		dataWatcher.updateObject(23, (byte) (nbttagcompound.getBoolean("HasSpokenAboutPortal") ? 1 : 0));
+		dataWatcher.updateObject(24, (byte) (nbttagcompound.getBoolean("HasTakenTermites") ? 1 : 0));
+		dataWatcher.updateObject(25, (byte) (nbttagcompound.getBoolean("HasTakenMango") ? 1 : 0));
+		dataWatcher.updateObject(26, (byte) (nbttagcompound.getBoolean("HasSpokenAboutDust") ? 1 : 0));
+		dataWatcher.updateObject(27, (byte) (nbttagcompound.getBoolean("HasSpokenAboutMagic") ? 1 : 0));
+		dataWatcher.updateObject(28, (byte) (nbttagcompound.getBoolean("HasSpokenAboutMagicDust") ? 1 : 0));
+		dataWatcher.updateObject(29, (byte) (nbttagcompound.getBoolean("HasGivenMagicDust") ? 1 : 0));
+		dataWatcher.updateObject(30, (byte) (nbttagcompound.getBoolean("HasSpokenAltar") ? 1 : 0));
+		dataWatcher.updateObject(31, (byte) (nbttagcompound.getBoolean("HasSpokenAltarUse") ? 1 : 0));
 	}
 
-	public boolean getHasInteracted() {
+	private boolean getHasInteracted() {
 		return dataWatcher.getWatchableObjectByte(17) == 1;
 	}
 
-	public boolean getHasSpokenAboutStick() {
+	private boolean getHasSpokenAboutStick() {
 		return dataWatcher.getWatchableObjectByte(18) == 1 && getHasInteracted();
 	}
 
-	public boolean getHasObtainedStick() {
+	private boolean getHasObtainedStick() {
 		return dataWatcher.getWatchableObjectByte(19) == 1 && getHasSpokenAboutStick();
 	}
 
-	public boolean getHasSpawnedScar() {
+	private boolean getHasSpawnedScar() {
 		return dataWatcher.getWatchableObjectByte(20) == 1 && getHasObtainedStick();
 	}
 
-	public boolean getHasBegunPortal() {
+	private boolean getHasBegunPortal() {
 		return dataWatcher.getWatchableObjectByte(21) == 1 && getHasSpawnedScar();
 	}
 
-	public boolean getHasFinishedPortal() {
+	private boolean getHasFinishedPortal() {
 		return dataWatcher.getWatchableObjectByte(22) == 1 && getHasBegunPortal();
 	}
 
-	public boolean getHasSpokenAboutPortal() {
+	private boolean getHasSpokenAboutPortal() {
 		return dataWatcher.getWatchableObjectByte(23) == 1 && getHasFinishedPortal();
 	}
 
-	public boolean getHasTakenTermites() {
+	private boolean getHasTakenTermites() {
 		return dataWatcher.getWatchableObjectByte(24) == 1 && getHasSpokenAboutPortal();
 	}
 
-	public boolean getHasTakenMango() {
+	private boolean getHasTakenMango() {
 		return dataWatcher.getWatchableObjectByte(25) == 1 && getHasTakenTermites();
 	}
 
-	public boolean getHasSpokenDust() {
+	private boolean getHasSpokenDust() {
 		return dataWatcher.getWatchableObjectByte(26) == 1 && getHasTakenMango();
 	}
 
-	public boolean getHasSpokenMagic() {
+	private boolean getHasSpokenMagic() {
 		return dataWatcher.getWatchableObjectByte(27) == 1 && getHasSpokenDust();
 	}
 
-	public boolean getHasSpokenMagicDust() {
+	private boolean getHasSpokenMagicDust() {
 		return dataWatcher.getWatchableObjectByte(28) == 1 && getHasSpokenMagic();
 	}
 
-	public boolean getHasGivenMagicDust() {
+	private boolean getHasGivenMagicDust() {
 		return dataWatcher.getWatchableObjectByte(29) == 1 && getHasSpokenMagicDust();
 	}
 
-	public boolean getHasSpokenAltar() {
+	private boolean getHasSpokenAltar() {
 		return dataWatcher.getWatchableObjectByte(30) == 1 && getHasGivenMagicDust();
 	}
 
-	public boolean getHasSpokenAltarUse() {
+	private boolean getHasSpokenAltarUse() {
 		return dataWatcher.getWatchableObjectByte(31) == 1 && getHasSpokenAltar();
 	}
 
@@ -394,9 +369,9 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		ItemStack itemstack = entityplayer.inventory.getCurrentItem();
 		if (!getHasInteracted() && canTalk()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fOhoho! Welcome to the Pride Lands!");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fOhoho! Welcome to the Pride Lands!");
 			}
-			dataWatcher.updateObject(17, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(17, (byte) 1);
 			talkTick = 0;
 			return true;
 		}
@@ -406,18 +381,18 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 					itemstack.stackSize -= 3;
 					if (!worldObj.isRemote) {
 						dropItem(mod_LionKing.rafikiCoin.itemID, 1);
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fThrow a coin on the ground and it will bring you to me!");
+						LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fThrow a coin on the ground and it will bring you to me!");
 					}
 					itemstack.stackSize -= 3;
 				} else if (itemstack.stackSize == 3) {
 					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
 					if (!worldObj.isRemote) {
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fThrow a coin on the ground and it will bring you to me!");
+						LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fThrow a coin on the ground and it will bring you to me!");
 						dropItem(mod_LionKing.rafikiCoin.itemID, 1);
 					}
 				} else {
 					if (!worldObj.isRemote) {
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fYou'll need three silver ingots if you want a coin.");
+						LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fYou'll need three silver ingots if you want a coin.");
 					}
 				}
 				talkTick = 0;
@@ -431,7 +406,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 				}
 				entityplayer.inventory.consumeInventoryItem(Item.book.itemID);
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fHere's another Book of Quests.");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fHere's another Book of Quests.");
 					dropItem(mod_LionKing.questBook.itemID, 1);
 				}
 				talkTick = 0;
@@ -445,7 +420,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 				}
 				entityplayer.inventory.consumeInventoryItem(mod_LionKing.fur.itemID);
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fHere's another Book of Quests.");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fHere's another Book of Quests.");
 					dropItem(mod_LionKing.questBook.itemID, 1);
 				}
 				talkTick = 0;
@@ -454,9 +429,9 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		}
 		if (!getHasSpokenAboutStick() && canTalk()) {
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fWhat's that? You like my stick? Well, bring old Rafiki a stack of hyena bones and you can have one yourself!");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fWhat's that? You like my stick? Well, bring old Rafiki a stack of hyena bones and you can have one yourself!");
 			}
-			dataWatcher.updateObject(18, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(18, (byte) 1);
 			talkTick = 0;
 			LKQuestBase.rafikiQuest.progress(1);
 			return true;
@@ -465,41 +440,41 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 			if (itemstack != null && itemstack.itemID == mod_LionKing.hyenaBone.itemID && itemstack.stackSize == 64) {
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, new ItemStack(mod_LionKing.rafikiStick));
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fHere you go! If you want one again, bring me another stack of hyena bones.");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fHere you go! If you want one again, bring me another stack of hyena bones.");
 				}
-				dataWatcher.updateObject(19, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(19, (byte) 1);
 				entityplayer.triggerAchievement(LKAchievementList.getStick);
 				talkTick = 0;
 				LKQuestBase.rafikiQuest.setDelayed(true);
 				LKQuestBase.rafikiQuest.progress(2);
-				return true;
 			} else {
 				if (!worldObj.isRemote) {
 					LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.HYENA_BONES));
 				}
 				talkTick = 0;
-				return true;
 			}
+			return true;
 		}
 		if (getHasObtainedStick() && canTalk()) {
 			if (itemstack != null && itemstack.itemID == mod_LionKing.hyenaBone.itemID && itemstack.stackSize == 64) {
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, new ItemStack(mod_LionKing.rafikiStick));
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fHere's another stick.");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fHere's another stick.");
 				}
 				talkTick = 0;
 				return true;
-			} else if (!getHasSpawnedScar()) {
+			}
+			if (!getHasSpawnedScar()) {
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fI hear Scar has returned to the Pride Lands, and he has trapped our king in the Star Realm! You must find Scar and kill him. My stick is the only weapon that can harm him!");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fI hear Scar has returned to the Pride Lands, and he has trapped our king in the Star Realm! You must find Scar and kill him. My stick is the only weapon that can harm him!");
 				}
-				dataWatcher.updateObject(20, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(20, (byte) 1);
 				talkTick = 0;
 
 				if (worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && dimension == 0) {
 					if (!worldObj.isRemote) {
 						LKEntityScar scar = new LKEntityScar(worldObj);
-						scar.setLocationAndAngles(posX, posY, posZ, 0F, 0F);
+						scar.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
 						worldObj.spawnEntityInWorld(scar);
 					}
 				} else {
@@ -522,22 +497,21 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		}
 		if (!getHasBegunPortal() && canTalk()) {
 			if (LKQuestBase.rafikiQuest.getQuestStage() == 3) {
-				dataWatcher.updateObject(21, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(21, (byte) 1);
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fAsante sana, squash banana, wewe nugu, mimi hapana...");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fAsante sana, squash banana, wewe nugu, mimi hapana...");
 				}
 				talkTick = 0;
 				processTick = 0;
 				LKQuestBase.rafikiQuest.setDelayed(true);
 				LKQuestBase.rafikiQuest.progress(4);
-				return true;
 			} else {
 				if (!worldObj.isRemote) {
 					LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.MENTION_SCAR));
 				}
 				talkTick = 0;
-				return true;
 			}
+			return true;
 		}
 		if (getHasSpokenAboutPortal() && !getHasTakenTermites() && canTalk()) {
 			if (itemstack != null && itemstack.itemID == mod_LionKing.termiteDust.itemID && itemstack.stackSize >= 4) {
@@ -549,22 +523,21 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 					double d = getRNG().nextGaussian() * 0.02D;
 					double d1 = getRNG().nextGaussian() * 0.02D;
 					double d2 = getRNG().nextGaussian() * 0.02D;
-					worldObj.spawnParticle("smoke", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+					worldObj.spawnParticle("smoke", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 				}
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fWonderful! Now I just need four ground mango dust, and it will be ready...");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fWonderful! Now I just need four ground mango dust, and it will be ready...");
 				}
-				dataWatcher.updateObject(24, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(24, (byte) 1);
 				talkTick = 0;
 				LKQuestBase.rafikiQuest.progress(5);
-				return true;
 			} else {
 				if (!worldObj.isRemote) {
 					LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.TERMITES));
 				}
 				talkTick = 0;
-				return true;
 			}
+			return true;
 		}
 		if (getHasTakenTermites() && !getHasTakenMango() && canTalk()) {
 			if (itemstack != null && itemstack.itemID == mod_LionKing.mangoDust.itemID && itemstack.stackSize >= 4) {
@@ -576,24 +549,23 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 					double d = getRNG().nextGaussian() * 0.02D;
 					double d1 = getRNG().nextGaussian() * 0.02D;
 					double d2 = getRNG().nextGaussian() * 0.02D;
-					worldObj.spawnParticle("smoke", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+					worldObj.spawnParticle("smoke", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 				}
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fNow it is time!");
+					LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fNow it is time!");
 				}
-				dataWatcher.updateObject(25, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(25, (byte) 1);
 				talkTick = 0;
 				talkDustTick = 0;
 				LKQuestBase.rafikiQuest.setDelayed(true);
 				LKQuestBase.rafikiQuest.progress(6);
-				return true;
 			} else {
 				if (!worldObj.isRemote) {
 					LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.MANGOES));
 				}
 				talkTick = 0;
-				return true;
 			}
+			return true;
 		}
 		if (getHasSpokenAltarUse() && canTalk()) {
 			if (itemstack != null && itemstack.itemID == mod_LionKing.mangoDust.itemID) {
@@ -601,7 +573,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 					entityplayer.inventory.consumeInventoryItem(mod_LionKing.mangoDust.itemID);
 					entityplayer.inventory.consumeInventoryItem(mod_LionKing.termiteDust.itemID);
 					if (!worldObj.isRemote) {
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fHere's some more dust!");
+						LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fHere's some more dust!");
 						dropItem(mod_LionKing.lionDust.itemID, 1);
 					}
 					talkTick = 0;
@@ -613,7 +585,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 					entityplayer.inventory.consumeInventoryItem(mod_LionKing.mangoDust.itemID);
 					entityplayer.inventory.consumeInventoryItem(mod_LionKing.termiteDust.itemID);
 					if (!worldObj.isRemote) {
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fHere's some more dust!");
+						LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fHere's some more dust!");
 						dropItem(mod_LionKing.lionDust.itemID, 1);
 					}
 					talkTick = 0;
@@ -643,7 +615,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		if (canScarSpawnHere(world, i, j, k)) {
 			if (!worldObj.isRemote) {
 				LKEntityScar scar = new LKEntityScar(world);
-				scar.setLocationAndAngles(i, j, k, 0F, 0F);
+				scar.setLocationAndAngles(i, j, k, 0.0F, 0.0F);
 				world.spawnEntityInWorld(scar);
 			}
 			hasSpawnedOneScar = true;
@@ -665,7 +637,7 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		return "lionking:rafiki";
 	}
 
-	private boolean canScarSpawnHere(World world, int i, int j, int k) {
+	private boolean canScarSpawnHere(IBlockAccess world, int i, int j, int k) {
 		return world.isAirBlock(i, j, k) && world.isAirBlock(i, j + 1, k) && world.isBlockOpaqueCube(i, j - 1, k);
 	}
 
@@ -674,13 +646,14 @@ public class LKEntityRafiki extends EntityCreature implements LKCharacter {
 		return false;
 	}
 
+	@Override
 	public ItemStack getHeldItem() {
 		return new ItemStack(mod_LionKing.rafikiStick);
 	}
 
 	@Override
 	public float getBlockPathWeight(int i, int j, int k) {
-		return worldObj.getBlockId(i, j - 1, k) == mod_LionKing.rafikiWood.blockID && worldObj.getBlockMetadata(i, j - 1, k) == 2 && worldObj.isAirBlock(i, j, k) ? 20.0F : -999999F;
+		return worldObj.getBlockId(i, j - 1, k) == mod_LionKing.rafikiWood.blockID && worldObj.getBlockMetadata(i, j - 1, k) == 2 && worldObj.isAirBlock(i, j, k) ? 20.0F : -999999.0F;
 	}
 
 	@Override

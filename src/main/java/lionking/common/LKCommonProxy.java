@@ -1,35 +1,11 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
@@ -38,12 +14,11 @@ import cpw.mods.fml.common.network.*;
 import lionking.client.*;
 
 public class LKCommonProxy implements IGuiHandler {
-	public static int GUI_ID_BOWL = 0;
+	public static int GUI_ID_BOWL;
 	public static int GUI_ID_SIMBA = 1;
 	public static int GUI_ID_TIMON = 2;
 	public static int GUI_ID_QUIVER = 3;
 	public static int GUI_ID_QUESTS = 4;
-	public static int GUI_ID_ACHIEVEMENTS = 5;
 	public static int GUI_ID_TRAP = 6;
 	public static int GUI_ID_DRUM = 7;
 
@@ -53,22 +28,23 @@ public class LKCommonProxy implements IGuiHandler {
 	public void onLoad() {
 	}
 
+	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer entityplayer, World world, int i, int j, int k) {
 		if (ID == GUI_ID_BOWL) {
 			TileEntity bowl = world.getBlockTileEntity(i, j, k);
-			if (bowl != null && bowl instanceof LKTileEntityGrindingBowl) {
+			if (bowl instanceof LKTileEntityGrindingBowl) {
 				return new LKContainerGrindingBowl(entityplayer, (LKTileEntityGrindingBowl) bowl);
 			}
 		}
 		if (ID == GUI_ID_SIMBA) {
 			Entity simba = getEntityFromID(i, world);
-			if (simba != null && simba instanceof LKEntitySimba) {
+			if (simba instanceof LKEntitySimba) {
 				return new LKContainerSimba(entityplayer, (LKEntitySimba) simba);
 			}
 		}
 		if (ID == GUI_ID_TIMON) {
 			Entity timon = getEntityFromID(i, world);
-			if (timon != null && timon instanceof LKEntityTimon) {
+			if (timon instanceof LKEntityTimon) {
 				return new LKContainerTimon(entityplayer, (LKEntityTimon) timon);
 			}
 		}
@@ -81,35 +57,36 @@ public class LKCommonProxy implements IGuiHandler {
 		}
 		if (ID == GUI_ID_TRAP) {
 			TileEntity trap = world.getBlockTileEntity(i, j, k);
-			if (trap != null && trap instanceof LKTileEntityBugTrap) {
+			if (trap instanceof LKTileEntityBugTrap) {
 				return new LKContainerBugTrap(entityplayer, (LKTileEntityBugTrap) trap);
 			}
 		}
 		if (ID == GUI_ID_DRUM) {
 			TileEntity drum = world.getBlockTileEntity(i, j, k);
-			if (drum != null && drum instanceof LKTileEntityDrum) {
+			if (drum instanceof LKTileEntityDrum) {
 				return new LKContainerDrum(entityplayer, world, (LKTileEntityDrum) drum);
 			}
 		}
 		return null;
 	}
 
+	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer entityplayer, World world, int i, int j, int k) {
 		if (ID == GUI_ID_BOWL) {
 			TileEntity bowl = world.getBlockTileEntity(i, j, k);
-			if (bowl != null && bowl instanceof LKTileEntityGrindingBowl) {
+			if (bowl instanceof LKTileEntityGrindingBowl) {
 				return new LKGuiGrindingBowl(entityplayer, (LKTileEntityGrindingBowl) bowl);
 			}
 		}
 		if (ID == GUI_ID_SIMBA) {
 			Entity simba = getEntityFromID(i, world);
-			if (simba != null && simba instanceof LKEntitySimba) {
+			if (simba instanceof LKEntitySimba) {
 				return new LKGuiSimba(entityplayer, (LKEntitySimba) simba);
 			}
 		}
 		if (ID == GUI_ID_TIMON) {
 			Entity timon = getEntityFromID(i, world);
-			if (timon != null && timon instanceof LKEntityTimon) {
+			if (timon instanceof LKEntityTimon) {
 				return new LKGuiTimon(entityplayer, (LKEntityTimon) timon);
 			}
 		}
@@ -120,18 +97,19 @@ public class LKCommonProxy implements IGuiHandler {
 		if (ID == GUI_ID_QUESTS) {
 			return new LKGuiQuests(entityplayer);
 		}
+		int GUI_ID_ACHIEVEMENTS = 5;
 		if (ID == GUI_ID_ACHIEVEMENTS) {
 			return new LKGuiAchievements(Minecraft.getMinecraft().statFileWriter, i);
 		}
 		if (ID == GUI_ID_TRAP) {
 			TileEntity trap = world.getBlockTileEntity(i, j, k);
-			if (trap != null && trap instanceof LKTileEntityBugTrap) {
+			if (trap instanceof LKTileEntityBugTrap) {
 				return new LKGuiBugTrap(entityplayer, (LKTileEntityBugTrap) trap);
 			}
 		}
 		if (ID == GUI_ID_DRUM) {
 			TileEntity drum = world.getBlockTileEntity(i, j, k);
-			if (drum != null && drum instanceof LKTileEntityDrum) {
+			if (drum instanceof LKTileEntityDrum) {
 				return new LKGuiDrum(entityplayer, world, (LKTileEntityDrum) drum);
 			}
 		}
@@ -197,13 +175,13 @@ public class LKCommonProxy implements IGuiHandler {
 
 	public void setInPrideLandsPortal(EntityPlayer entityplayer) {
 		if (!LKTickHandlerServer.playersInPortals.containsKey(entityplayer)) {
-			LKTickHandlerServer.playersInPortals.put(entityplayer, Integer.valueOf(0));
+			LKTickHandlerServer.playersInPortals.put(entityplayer, 0);
 		}
 	}
 
 	public void setInOutlandsPortal(EntityPlayer entityplayer) {
 		if (!LKTickHandlerServer.playersInOutPortals.containsKey(entityplayer)) {
-			LKTickHandlerServer.playersInOutPortals.put(entityplayer, Integer.valueOf(0));
+			LKTickHandlerServer.playersInOutPortals.put(entityplayer, 0);
 		}
 	}
 

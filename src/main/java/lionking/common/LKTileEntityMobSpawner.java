@@ -1,20 +1,17 @@
 package lionking.common;
 
-import java.util.*;
-
 import net.minecraft.entity.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.packet.*;
 import net.minecraft.util.*;
-import net.minecraft.world.World;
 import net.minecraft.tileentity.TileEntity;
 
 import java.nio.ByteBuffer;
 
 public class LKTileEntityMobSpawner extends TileEntity {
-	public int delay = -1;
+	private int delay;
 	public double yaw;
-	public double yaw2 = 0.0D;
+	public double yaw2;
 	private int mobID = 1;
 	private int minSpawnDelay = 200;
 	private int maxSpawnDelay = 800;
@@ -36,8 +33,8 @@ public class LKTileEntityMobSpawner extends TileEntity {
 		mobID = i;
 	}
 
-	public boolean anyPlayerInRange() {
-		return worldObj.getClosestPlayer((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D, (double) requiredPlayerRange) != null;
+	private boolean anyPlayerInRange() {
+		return worldObj.getClosestPlayer(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, requiredPlayerRange) != null;
 	}
 
 	@Override
@@ -46,9 +43,9 @@ public class LKTileEntityMobSpawner extends TileEntity {
 			double var5;
 
 			if (worldObj.isRemote) {
-				double var1 = (double) ((float) xCoord + worldObj.rand.nextFloat());
-				double var3 = (double) ((float) yCoord + worldObj.rand.nextFloat());
-				var5 = (double) ((float) zCoord + worldObj.rand.nextFloat());
+				double var1 = xCoord + worldObj.rand.nextFloat();
+				double var3 = yCoord + worldObj.rand.nextFloat();
+				var5 = zCoord + worldObj.rand.nextFloat();
 				worldObj.spawnParticle("smoke", var1, var3, var5, 0.0D, 0.0D, 0.0D);
 				worldObj.spawnParticle("flame", var1, var3, var5, 0.0D, 0.0D, 0.0D);
 
@@ -57,7 +54,7 @@ public class LKTileEntityMobSpawner extends TileEntity {
 				}
 
 				yaw2 = yaw;
-				yaw = (yaw + (double) (1000.0F / ((float) delay + 200.0F))) % 360.0D;
+				yaw = (yaw + 1000.0F / (delay + 200.0F)) % 360.0D;
 			} else {
 				if (delay == -1) {
 					updateDelay();
@@ -71,37 +68,35 @@ public class LKTileEntityMobSpawner extends TileEntity {
 				boolean var12 = false;
 
 				for (int var2 = 0; var2 < spawnCount; ++var2) {
-					Entity var13 = LKEntities.createEntityByID(getMobID(), worldObj);
+					Entity var13 = LKEntities.createEntityByID(mobID, worldObj);
 
 					if (var13 == null) {
 						return;
 					}
 
-					int var4 = worldObj.getEntitiesWithinAABB(var13.getClass(), AxisAlignedBB.getAABBPool().getAABB((double) xCoord, (double) yCoord, (double) zCoord, (double) (xCoord + 1), (double) (yCoord + 1), (double) (zCoord + 1)).expand((double) (spawnRange * 2), 4.0D, (double) (spawnRange * 2))).size();
+					int var4 = worldObj.getEntitiesWithinAABB(var13.getClass(), AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(spawnRange * 2, 4.0D, spawnRange * 2)).size();
 
 					if (var4 >= maxNearbyEntities) {
 						updateDelay();
 						return;
 					}
 
-					if (var13 != null) {
-						var5 = (double) xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * (double) spawnRange;
-						double var7 = (double) (yCoord + worldObj.rand.nextInt(3) - 1);
-						double var9 = (double) zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * (double) spawnRange;
-						EntityLiving var11 = var13 instanceof EntityLiving ? (EntityLiving) var13 : null;
-						var13.setLocationAndAngles(var5, var7, var9, worldObj.rand.nextFloat() * 360.0F, 0.0F);
+					var5 = xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+					double var7 = yCoord + worldObj.rand.nextInt(3) - 1;
+					double var9 = zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+					EntityLiving var11 = var13 instanceof EntityLiving ? (EntityLiving) var13 : null;
+					var13.setLocationAndAngles(var5, var7, var9, worldObj.rand.nextFloat() * 360.0F, 0.0F);
 
-						if (var11 == null || var11.getCanSpawnHere()) {
-							writeNBTTagsTo(var13);
-							worldObj.spawnEntityInWorld(var13);
-							worldObj.playAuxSFX(2004, xCoord, yCoord, zCoord, 0);
+					if (var11 == null || var11.getCanSpawnHere()) {
+						writeNBTTagsTo(var13);
+						worldObj.spawnEntityInWorld(var13);
+						worldObj.playAuxSFX(2004, xCoord, yCoord, zCoord, 0);
 
-							if (var11 != null) {
-								var11.spawnExplosionParticle();
-							}
-
-							var12 = true;
+						if (var11 != null) {
+							var11.spawnExplosionParticle();
 						}
+
+						var12 = true;
 					}
 				}
 
@@ -114,7 +109,7 @@ public class LKTileEntityMobSpawner extends TileEntity {
 		}
 	}
 
-	public void writeNBTTagsTo(Entity par1Entity) {
+	private void writeNBTTagsTo(Entity par1Entity) {
 		if (par1Entity instanceof EntityLiving && par1Entity.worldObj != null) {
 			((EntityLiving) par1Entity).onSpawnWithEgg(null);
 		}
@@ -159,7 +154,7 @@ public class LKTileEntityMobSpawner extends TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("EntityId", getMobID());
+		par1NBTTagCompound.setInteger("EntityId", mobID);
 		par1NBTTagCompound.setShort("Delay", (short) delay);
 		par1NBTTagCompound.setShort("MinSpawnDelay", (short) minSpawnDelay);
 		par1NBTTagCompound.setShort("MaxSpawnDelay", (short) maxSpawnDelay);
@@ -171,7 +166,7 @@ public class LKTileEntityMobSpawner extends TileEntity {
 
 	public Entity getMobEntity() {
 		if (spawnedMob == null) {
-			Entity entity = LKEntities.createEntityByID(getMobID(), null);
+			Entity entity = LKEntities.createEntityByID(mobID, null);
 			writeNBTTagsTo(entity);
 			spawnedMob = entity;
 		}

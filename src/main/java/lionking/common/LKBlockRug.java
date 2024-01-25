@@ -17,16 +17,16 @@ import net.minecraftforge.common.ForgeDirection;
 import java.util.List;
 
 public class LKBlockRug extends BlockContainer {
-	public static String[] colourNames = {"Default", "White", "Blue", "Yellow", "Red", "Purple", "Light Blue", "Green", "Orange", "Light Grey", "Grey", "Black", "Outlander", "Violet", "Pink", "Light Green"};
-	public static String[] colourNames_US = {"Default", "White", "Blue", "Yellow", "Red", "Purple", "Light Blue", "Green", "Orange", "Light Gray", "Gray", "Black", "Outlander", "Violet", "Pink", "Light Green"};
+	public static String[] colourNames = new String[]{"Default", "White", "Blue", "Yellow", "Red", "Purple", "Light Blue", "Green", "Orange", "Light Grey", "Grey", "Black", "Outlander", "Violet", "Pink", "Light Green"};
+	public static String[] colourNames_US = new String[]{"Default", "White", "Blue", "Yellow", "Red", "Purple", "Light Blue", "Green", "Orange", "Light Gray", "Gray", "Black", "Outlander", "Violet", "Pink", "Light Green"};
 
 	@SideOnly(Side.CLIENT)
 	private Icon[] rugIcons;
-	private String[] rugTypes = {"white", "blue", "yellow", "red", "purple", "lightBlue", "green", "orange", "lightGrey", "grey", "black", "outlander", "violet", "pink", "lightGreen"};
+	private final String[] rugTypes = new String[]{"white", "blue", "yellow", "red", "purple", "lightBlue", "green", "orange", "lightGrey", "grey", "black", "outlander", "violet", "pink", "lightGreen"};
 
 	public LKBlockRug(int i) {
 		super(i, Material.cloth);
-		setBlockBounds(0F, 0F, 0F, 1F, 0.0625F, 1F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
 		setCreativeTab(LKCreativeTabs.tabDeco);
 	}
 
@@ -41,29 +41,29 @@ public class LKBlockRug extends BlockContainer {
 		float f = 0.0625F;
 		switch (direction) {
 			case 0:
-				setBlockBounds(0F, 0F, 0F, 1F, f, 1F);
+				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
 				break;
 			case 1:
-				setBlockBounds(0F, 1F - f, 0F, 1F, 1F, 1F);
+				setBlockBounds(0.0F, 1.0F - f, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 			case 2:
-				setBlockBounds(0F, 0F, 0F, 1F, 1F, f);
+				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 				break;
 			case 3:
-				setBlockBounds(0F, 0F, 1F - f, 1F, 1F, 1F);
+				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 				break;
 			case 4:
-				setBlockBounds(0F, 0F, 0F, f, 1F, 1F);
+				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 				break;
 			case 5:
-				setBlockBounds(1F - f, 0F, 0F, 1F, 1F, 1F);
+				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
 	public void setBlockBoundsForItemRender() {
 		float f = 0.03125F;
-		setBlockBounds(0F, 0.5F - f, 0F, 1F, 0.5F + f, 1F);
+		setBlockBounds(0.0F, 0.5F - f, 0.0F, 1.0F, 0.5F + f, 1.0F);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class LKBlockRug extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
 		if (j == 0) {
-			return super.getIcon(i, j);
+			return super.getIcon(i, 0);
 		}
 		return rugIcons[j - 1];
 	}
@@ -86,7 +86,7 @@ public class LKBlockRug extends BlockContainer {
 		super.registerIcons(iconregister);
 		rugIcons = new Icon[15];
 		for (int i = 0; i < 15; i++) {
-			rugIcons[i] = iconregister.registerIcon(getTextureName() + "_" + rugTypes[i]);
+			rugIcons[i] = iconregister.registerIcon(getTextureName() + '_' + rugTypes[i]);
 		}
 	}
 

@@ -32,7 +32,7 @@ public class LKItemHyenaMeal extends LKItem {
 		int i1 = world.getBlockId(i, j, k);
 		if (i1 == mod_LionKing.sapling.blockID) {
 			itemstack.stackSize--;
-			if ((double) world.rand.nextFloat() < 0.45D) {
+			if (world.rand.nextFloat() < 0.45D) {
 				((LKBlockSapling) mod_LionKing.sapling).growTree(world, i, j, k, world.rand);
 			}
 			return true;
@@ -40,7 +40,7 @@ public class LKItemHyenaMeal extends LKItem {
 
 		if (i1 == mod_LionKing.forestSapling.blockID) {
 			itemstack.stackSize--;
-			if ((double) world.rand.nextFloat() < 0.45D) {
+			if (world.rand.nextFloat() < 0.45D) {
 				((LKBlockSapling) mod_LionKing.forestSapling).growTree(world, i, j, k, world.rand);
 			}
 			return true;
@@ -48,7 +48,7 @@ public class LKItemHyenaMeal extends LKItem {
 
 		if (i1 == mod_LionKing.mangoSapling.blockID) {
 			itemstack.stackSize--;
-			if ((double) world.rand.nextFloat() < 0.45D) {
+			if (world.rand.nextFloat() < 0.45D) {
 				((LKBlockSapling) mod_LionKing.mangoSapling).growTree(world, i, j, k, world.rand);
 			}
 			return true;
@@ -56,7 +56,7 @@ public class LKItemHyenaMeal extends LKItem {
 
 		if (i1 == mod_LionKing.passionSapling.blockID) {
 			itemstack.stackSize--;
-			if ((double) world.rand.nextFloat() < 0.45D) {
+			if (world.rand.nextFloat() < 0.45D) {
 				((LKBlockSapling) mod_LionKing.passionSapling).growTree(world, i, j, k, world.rand);
 			}
 			return true;
@@ -64,7 +64,7 @@ public class LKItemHyenaMeal extends LKItem {
 
 		if (i1 == mod_LionKing.bananaSapling.blockID) {
 			itemstack.stackSize--;
-			if ((double) world.rand.nextFloat() < 0.45D) {
+			if (world.rand.nextFloat() < 0.45D) {
 				((LKBlockSapling) mod_LionKing.bananaSapling).growTree(world, i, j, k, world.rand);
 			}
 			return true;

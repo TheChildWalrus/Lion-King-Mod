@@ -1,48 +1,27 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
 import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.*;
 
 import net.minecraftforge.common.*;
 import cpw.mods.fml.common.*;
-import cpw.mods.fml.common.registry.*;
 
 public class LKTickHandlerServer implements ITickHandler {
 	public static HashMap playersInPortals = new HashMap();
 	public static HashMap playersInOutPortals = new HashMap();
 
+	@Override
 	public void tickStart(EnumSet type, Object... tickData) {
 	}
 
+	@Override
 	public void tickEnd(EnumSet type, Object... tickData) {
 		if (type.equals(EnumSet.of(TickType.WORLD))) {
 			World world = (World) tickData[0];
@@ -67,9 +46,9 @@ public class LKTickHandlerServer implements ITickHandler {
 
 			if (world == DimensionManager.getWorld(mod_LionKing.idPrideLands)) {
 				List players = world.playerEntities;
-				if (players.size() > 0) {
-					for (int player = 0; player < players.size(); player++) {
-						EntityPlayer entityplayer = (EntityPlayer) players.get(player);
+				if (!players.isEmpty()) {
+					for (Object o : players) {
+						EntityPlayer entityplayer = (EntityPlayer) o;
 						int i = MathHelper.floor_double(entityplayer.posX);
 						int j = MathHelper.floor_double(entityplayer.posY);
 						int k = MathHelper.floor_double(entityplayer.posZ);
@@ -103,10 +82,9 @@ public class LKTickHandlerServer implements ITickHandler {
 							overWorld.getWorldInfo().setThundering(false);
 
 							((WorldServer) world).allPlayersSleeping = false;
-							Iterator it = world.playerEntities.iterator();
 
-							while (it.hasNext()) {
-								EntityPlayer player = (EntityPlayer) it.next();
+							for (Object o : world.playerEntities) {
+								EntityPlayer player = (EntityPlayer) o;
 
 								if (player.isPlayerSleeping()) {
 									player.wakeUpPlayer(false, false, true);
@@ -129,7 +107,7 @@ public class LKTickHandlerServer implements ITickHandler {
 
 			if (world == DimensionManager.getWorld(mod_LionKing.idOutlands)) {
 				List players = world.playerEntities;
-				if (players.size() > 0) {
+				if (!players.isEmpty()) {
 					for (int player = 0; player < players.size(); player++) {
 						EntityPlayer entityplayer = (EntityPlayer) players.get(player);
 						if (player == 0 && world.rand.nextInt(120) == 0) {
@@ -153,7 +131,7 @@ public class LKTickHandlerServer implements ITickHandler {
 
 				LKTileEntityOutlandsPool.updateInventory(world);
 
-				if (LKLevelData.ziraStage == 22 && players.size() > 0) {
+				if (LKLevelData.ziraStage == 22 && !players.isEmpty()) {
 					EntityPlayer entityplayer = (EntityPlayer) players.get(0);
 					int i = MathHelper.floor_double(entityplayer.posX);
 					int j = MathHelper.floor_double(entityplayer.boundingBox.minY);
@@ -167,9 +145,9 @@ public class LKTickHandlerServer implements ITickHandler {
 						LKEntityZira zira = new LKEntityZira(world);
 						zira.selfTalkTick = 0;
 						zira.setPosition(i1, j1, k1);
-						zira.getLookHelper().setLookPosition(entityplayer.posX, entityplayer.posY + (double) entityplayer.getEyeHeight(), entityplayer.posZ, 10.0F, (float) zira.getVerticalFaceSpeed());
+						zira.getLookHelper().setLookPosition(entityplayer.posX, entityplayer.posY + entityplayer.getEyeHeight(), entityplayer.posZ, 10.0F, zira.getVerticalFaceSpeed());
 						world.spawnEntityInWorld(zira);
-						world.spawnEntityInWorld(new LKEntityLightning(entityplayer, world, (double) i1, (double) j1, (double) k1, 0));
+						world.spawnEntityInWorld(new LKEntityLightning(entityplayer, world, i1, j1, k1, 0));
 
 						LKLevelData.setZiraStage(23);
 					}
@@ -178,7 +156,7 @@ public class LKTickHandlerServer implements ITickHandler {
 		} else if (type.equals(EnumSet.of(TickType.PLAYER))) {
 			EntityPlayer entityplayer = (EntityPlayer) tickData[0];
 			World world = entityplayer.worldObj;
-			if (entityplayer != null && world != null) {
+			if (world != null) {
 				if (entityplayer.dimension == mod_LionKing.idOutlands) {
 					entityplayer.triggerAchievement(LKAchievementList.enterOutlands);
 				}
@@ -195,7 +173,7 @@ public class LKTickHandlerServer implements ITickHandler {
 					if (LKIngame.isPlayerInLionPortal(entityplayer, true)) {
 						int i = (Integer) playersInPortals.get(entityplayer);
 						i++;
-						playersInPortals.put(entityplayer, Integer.valueOf(i));
+						playersInPortals.put(entityplayer, i);
 						if (i >= 100) {
 							int dimension = 0;
 							if (entityplayer.dimension == 0) {
@@ -217,7 +195,7 @@ public class LKTickHandlerServer implements ITickHandler {
 					if (LKIngame.isPlayerInLionPortal(entityplayer, false)) {
 						int i = (Integer) playersInOutPortals.get(entityplayer);
 						i++;
-						playersInOutPortals.put(entityplayer, Integer.valueOf(i));
+						playersInOutPortals.put(entityplayer, i);
 						if (i >= 100) {
 							int dimension = mod_LionKing.idOutlands;
 							if (entityplayer.dimension == mod_LionKing.idOutlands) {
@@ -239,10 +217,12 @@ public class LKTickHandlerServer implements ITickHandler {
 		}
 	}
 
+	@Override
 	public EnumSet ticks() {
 		return EnumSet.of(TickType.WORLD, TickType.PLAYER);
 	}
 
+	@Override
 	public String getLabel() {
 		return "The Lion King Mod";
 	}

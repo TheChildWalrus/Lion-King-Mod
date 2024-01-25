@@ -1,37 +1,13 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.Random;
-import java.util.List;
 
 public class LKEntityVulture extends EntityMob {
 	public boolean field_753_a;
@@ -39,14 +15,14 @@ public class LKEntityVulture extends EntityMob {
 	public float destPos;
 	public float field_757_d;
 	public float field_756_e;
-	public float field_755_h;
+	private float field_755_h;
 
 	public LKEntityVulture(World world) {
 		super(world);
 		setSize(0.8F, 1.5F);
 		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1D, false));
-		tasks.addTask(2, new EntityAIWander(this, 1D));
+		tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+		tasks.addTask(2, new EntityAIWander(this, 1.0D));
 		tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(4, new EntityAILookIdle(this));
 		targetTasks.addTask(0, new EntityAIHurtByTarget(this, false));
@@ -56,9 +32,9 @@ public class LKEntityVulture extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(16D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(16.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
-		getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(3D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(3.0D);
 	}
 
 	@Override
@@ -75,7 +51,7 @@ public class LKEntityVulture extends EntityMob {
 		super.onLivingUpdate();
 		field_756_e = field_752_b;
 		field_757_d = destPos;
-		destPos += (double) (onGround ? -1 : 4) * 0.29999999999999999D;
+		destPos += (float) ((onGround ? -1 : 4) * 0.29999999999999999D);
 		if (destPos < 0.0F) {
 			destPos = 0.0F;
 		}
@@ -85,7 +61,7 @@ public class LKEntityVulture extends EntityMob {
 		if (!onGround && field_755_h < 1.0F) {
 			field_755_h = 1.0F;
 		}
-		field_755_h *= 0.90000000000000002D;
+		field_755_h *= 0.90000000000000002F;
 		if (!onGround && motionY < 0.0D) {
 			motionY *= 0.59999999999999998D;
 		}
@@ -100,10 +76,7 @@ public class LKEntityVulture extends EntityMob {
 
 	@Override
 	public boolean getCanSpawnHere() {
-		if (posY < 60 && getRNG().nextInt(3) != 0) {
-			return false;
-		}
-		return worldObj.difficultySetting > 0 && worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
+		return (!(posY < 60) || getRNG().nextInt(3) == 0) && worldObj.difficultySetting > 0 && worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty() && !worldObj.isAnyLiquid(boundingBox);
 	}
 
 	@Override

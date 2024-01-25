@@ -1,43 +1,16 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LKGrindingRecipes {
-	private static LKGrindingRecipes grindingBase = new LKGrindingRecipes();
-	private Map grindingList = new HashMap();
-	private Map metaGrindingList = new HashMap();
+	private static final LKGrindingRecipes grindingBase = new LKGrindingRecipes();
+	private final Map grindingList = new HashMap();
+	private final Map metaGrindingList = new HashMap();
 
 	private LKGrindingRecipes() {
 		addGrinding(mod_LionKing.hyenaBone.itemID, new ItemStack(mod_LionKing.hyenaBoneShard));
@@ -78,7 +51,7 @@ public class LKGrindingRecipes {
 	}
 
 	private void addGrinding(int i, ItemStack itemstack) {
-		grindingList.put(Integer.valueOf(i), itemstack);
+		grindingList.put(i, itemstack);
 	}
 
 	private void addGrinding(int i, int j, ItemStack itemstack) {
@@ -93,6 +66,6 @@ public class LKGrindingRecipes {
 		if (stack != null) {
 			return stack;
 		}
-		return (ItemStack) grindingList.get(Integer.valueOf(itemstack.itemID));
+		return (ItemStack) grindingList.get(itemstack.itemID);
 	}
 }

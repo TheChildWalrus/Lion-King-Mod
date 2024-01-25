@@ -1,34 +1,10 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -38,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 
 public class LKBlockKiwanoStem extends BlockFlower {
-	private Block fruitType;
+	private final Block fruitType;
 
 	public LKBlockKiwanoStem(int i) {
 		super(i);
@@ -128,7 +104,7 @@ public class LKBlockKiwanoStem extends BlockFlower {
 		world.setBlockMetadataWithNotify(i, j, k, l, 2);
 	}
 
-	private float getGrowthModifier(World world, int i, int j, int k) {
+	private float getGrowthModifier(IBlockAccess world, int i, int j, int k) {
 		float f = 0.8F;
 		int i1 = world.getBlockId(i, j, k - 1);
 		int j1 = world.getBlockId(i, j, k + 1);
@@ -199,7 +175,7 @@ public class LKBlockKiwanoStem extends BlockFlower {
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
-		maxY = (double) ((float) (world.getBlockMetadata(i, j, k) * 2 + 2) / 16.0F);
+		maxY = (world.getBlockMetadata(i, j, k) * 2 + 2) / 16.0F;
 		float f = 0.125F;
 		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (float) maxY, 0.5F + f);
 	}
@@ -211,7 +187,7 @@ public class LKBlockKiwanoStem extends BlockFlower {
 
 	public int getState(IBlockAccess world, int i, int j, int k) {
 		int l = world.getBlockMetadata(i, j, k);
-		return l < 7 ? -1 : (world.getBlockId(i - 1, j, k) == fruitType.blockID ? 0 : (world.getBlockId(i + 1, j, k) == fruitType.blockID ? 1 : (world.getBlockId(i, j, k - 1) == fruitType.blockID ? 2 : (world.getBlockId(i, j, k + 1) == fruitType.blockID ? 3 : -1))));
+		return l < 7 ? -1 : world.getBlockId(i - 1, j, k) == fruitType.blockID ? 0 : world.getBlockId(i + 1, j, k) == fruitType.blockID ? 1 : world.getBlockId(i, j, k - 1) == fruitType.blockID ? 2 : world.getBlockId(i, j, k + 1) == fruitType.blockID ? 3 : -1;
 	}
 
 	@Override

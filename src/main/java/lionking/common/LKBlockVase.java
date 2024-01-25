@@ -1,38 +1,12 @@
 package lionking.common;
 
-import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-import lionking.client.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -91,7 +65,7 @@ public class LKBlockVase extends LKBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
-		return i == 1 ? vaseIcons[1] : (i == 0 ? mod_LionKing.pridestone.getIcon(2, 0) : vaseIcons[0]);
+		return i == 1 ? vaseIcons[1] : i == 0 ? mod_LionKing.pridestone.getIcon(2, 0) : vaseIcons[0];
 	}
 
 	@Override
@@ -139,7 +113,7 @@ public class LKBlockVase extends LKBlock {
 		checkVaseChange(world, i, j, k);
 	}
 
-	protected final void checkVaseChange(World world, int i, int j, int k) {
+	private void checkVaseChange(World world, int i, int j, int k) {
 		if (!canBlockStay(world, i, j, k)) {
 			dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
 			world.setBlockToAir(i, j, k);
@@ -174,9 +148,9 @@ public class LKBlockVase extends LKBlock {
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		if (world.getBlockMetadata(i, j, k) == 9) {
 			for (int l = 0; l < 4; l++) {
-				double d = (float) i + random.nextFloat();
-				double d1 = (float) j + 0.75F + random.nextFloat();
-				double d2 = (float) k + random.nextFloat();
+				double d = i + random.nextFloat();
+				double d1 = j + 0.75F + random.nextFloat();
+				double d2 = k + random.nextFloat();
 				double d3 = (-0.5F + random.nextFloat()) * 0.01F;
 				double d4 = random.nextFloat() * 0.01F;
 				double d5 = (-0.5F + random.nextFloat()) * 0.01F;

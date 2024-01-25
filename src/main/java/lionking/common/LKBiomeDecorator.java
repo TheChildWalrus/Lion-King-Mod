@@ -1,34 +1,9 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -46,18 +21,18 @@ public class LKBiomeDecorator {
 	private Random rand;
 	private int chunk_X;
 	private int chunk_Z;
-	private LKPrideLandsBiome biome;
-	private WorldGenerator dirtGen;
-	private WorldGenerator coalGen;
-	private WorldGenerator silverGen;
-	private WorldGenerator peacockGen;
-	private WorldGenerator mangoGen;
-	private WorldGenerator whiteFlowerGen;
-	private WorldGenerator purpleFlowerGen;
-	private WorldGenerator blueFlowerGen;
-	private WorldGenerator logGen;
-	private WorldGenerator zazuGen;
-	private WorldGenerator maizeGen;
+	private final LKPrideLandsBiome biome;
+	private final WorldGenerator dirtGen;
+	private final WorldGenerator coalGen;
+	private final WorldGenerator silverGen;
+	private final WorldGenerator peacockGen;
+	private final WorldGenerator mangoGen;
+	private final WorldGenerator whiteFlowerGen;
+	private final WorldGenerator purpleFlowerGen;
+	private final WorldGenerator blueFlowerGen;
+	private final WorldGenerator logGen;
+	private final WorldGenerator zazuGen;
+	private final WorldGenerator maizeGen;
 
 	public LKBiomeDecorator(LKPrideLandsBiome pridelandsbiome) {
 		dirtGen = new LKWorldGenMinable(Block.dirt.blockID, 32);
@@ -88,7 +63,6 @@ public class LKBiomeDecorator {
 		chunk_X = i;
 		chunk_Z = j;
 		decorate();
-		return;
 	}
 
 	private void decorate() {
@@ -166,7 +140,7 @@ public class LKBiomeDecorator {
 
 		for (int i3 = 0; i3 < 18; i3++) {
 			int i1 = chunk_X + rand.nextInt(16) + 8;
-			int j2 = rand.nextInt((64) + 16);
+			int j2 = rand.nextInt(64 + 16);
 			int k3 = chunk_Z + rand.nextInt(16) + 8;
 			new LKWorldGenLiquids(Block.lavaMoving.blockID).generate(worldObj, rand, i1, j2, k3);
 		}

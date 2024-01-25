@@ -3,32 +3,11 @@ package lionking.common;
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 import java.util.Random;
@@ -90,7 +69,7 @@ public class LKBlockWoodSlab extends BlockHalfSlab {
 
 	@Override
 	public String getFullSlabName(int i) {
-		return super.getUnlocalizedName() + "." + i;
+		return getUnlocalizedName() + '.' + i;
 	}
 
 	@Override
@@ -98,15 +77,15 @@ public class LKBlockWoodSlab extends BlockHalfSlab {
 	public boolean shouldSideBeRendered(IBlockAccess world, int i, int j, int k, int l) {
 		if (blockID == mod_LionKing.woodSlabDouble.blockID) {
 			return super.shouldSideBeRendered(world, i, j, k, l);
-		} else if (l != 1 && l != 0 && !super.shouldSideBeRendered(world, i, j, k, l)) {
-			return false;
-		} else {
-			int i1 = i + Facing.offsetsXForSide[Facing.oppositeSide[l]];
-			int j1 = j + Facing.offsetsYForSide[Facing.oppositeSide[l]];
-			int k1 = k + Facing.offsetsZForSide[Facing.oppositeSide[l]];
-			boolean flag = (world.getBlockMetadata(i1, j1, k1) & 8) != 0;
-			return flag ? (l == 0 ? true : (l == 1 && super.shouldSideBeRendered(world, i, j, k, l) ? true : world.getBlockId(i, j, k) != mod_LionKing.woodSlabSingle.blockID || (world.getBlockMetadata(i, j, k) & 8) == 0)) : (l == 1 ? true : (l == 0 && super.shouldSideBeRendered(world, i, j, k, l) ? true : world.getBlockId(i, j, k) != mod_LionKing.woodSlabSingle.blockID || (world.getBlockMetadata(i, j, k) & 8) != 0));
 		}
+		if (l != 1 && l != 0 && !super.shouldSideBeRendered(world, i, j, k, l)) {
+			return false;
+		}
+		int i1 = i + Facing.offsetsXForSide[Facing.oppositeSide[l]];
+		int j1 = j + Facing.offsetsYForSide[Facing.oppositeSide[l]];
+		int k1 = k + Facing.offsetsZForSide[Facing.oppositeSide[l]];
+		boolean flag = (world.getBlockMetadata(i1, j1, k1) & 8) != 0;
+		return flag ? l == 0 || l == 1 && super.shouldSideBeRendered(world, i, j, k, l) || world.getBlockId(i, j, k) != mod_LionKing.woodSlabSingle.blockID || (world.getBlockMetadata(i, j, k) & 8) == 0 : l == 1 || l == 0 && super.shouldSideBeRendered(world, i, j, k, l) || world.getBlockId(i, j, k) != mod_LionKing.woodSlabSingle.blockID || (world.getBlockMetadata(i, j, k) & 8) != 0;
 	}
 
 	@Override
@@ -122,12 +101,12 @@ public class LKBlockWoodSlab extends BlockHalfSlab {
 	@Override
 	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		return (((meta & 8) == 8) || isOpaqueCube());
+		return (meta & 8) == 8 || isOpaqueCube();
 	}
 
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
-		return (((world.getBlockMetadata(x, y, z) & 8) == 8 && (side.ordinal() == 1)) || isOpaqueCube());
+		return (world.getBlockMetadata(x, y, z) & 8) == 8 && side.ordinal() == 1 || isOpaqueCube();
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public class LKBlockOre extends LKBlock {
 
 	@Override
 	public int idDropped(int i, Random random, int j) {
-		return blockID == mod_LionKing.prideCoal.blockID ? (i == 0 ? Item.coal.itemID : mod_LionKing.nukaShard.itemID) : blockID;
+		return blockID == mod_LionKing.prideCoal.blockID ? (i == 0 ? Item.coal : mod_LionKing.nukaShard).itemID : blockID;
 	}
 
 	@Override
@@ -75,9 +75,9 @@ public class LKBlockOre extends LKBlock {
 	public void harvestBlock(World world, EntityPlayer entityplayer, int i, int j, int k, int l) {
 		if (blockID == mod_LionKing.prideCoal.blockID && l == 1 && !EnchantmentHelper.getSilkTouchModifier(entityplayer)) {
 			Random random = world.rand;
-			int i1 = random.nextInt(10) == 0 ? 1 : (random.nextInt(3) == 0 ? 2 : 3);
+			int i1 = random.nextInt(10) == 0 ? 1 : random.nextInt(3) == 0 ? 2 : 3;
 			for (int j1 = 0; j1 < i1; j1++) {
-				super.harvestBlock(world, entityplayer, i, j, k, l);
+				super.harvestBlock(world, entityplayer, i, j, k, 1);
 			}
 		} else {
 			super.harvestBlock(world, entityplayer, i, j, k, l);
@@ -100,9 +100,8 @@ public class LKBlockOre extends LKBlock {
 				j = 0;
 			}
 			return quantityDropped(random) * (j + 1);
-		} else {
-			return quantityDropped(random);
 		}
+		return quantityDropped(random);
 	}
 
 	@Override

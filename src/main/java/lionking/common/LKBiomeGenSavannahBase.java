@@ -6,7 +6,7 @@ import net.minecraft.world.biome.SpawnListEntry;
 import java.util.Random;
 
 public class LKBiomeGenSavannahBase extends LKPrideLandsBiome {
-	public LKBiomeGenSavannahBase(int i) {
+	protected LKBiomeGenSavannahBase(int i) {
 		super(i);
 
 		lkDecorator.treesPerChunk = 0;

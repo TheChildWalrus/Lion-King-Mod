@@ -1,60 +1,37 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.chunk.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 import java.util.Random;
 
 public class LKChunkProviderOutlands
 		implements IChunkProvider {
-	public NoiseGeneratorOctaves noiseGen5;
-	public NoiseGeneratorOctaves noiseGen6;
-	double[] noise3;
-	double[] noise1;
-	double[] noise2;
-	double[] noise5;
-	double[] noise6;
-	float[] noiseFloatArray;
+	private final NoiseGeneratorOctaves noiseGen5;
+	private final NoiseGeneratorOctaves noiseGen6;
+	private double[] noise3;
+	private double[] noise1;
+	private double[] noise2;
+	private double[] noise5;
+	private double[] noise6;
+	private float[] noiseFloatArray;
 	int[][] unusedIntArray = new int[32][32];
-	private Random rand;
-	private NoiseGeneratorOctaves noiseGen1;
-	private NoiseGeneratorOctaves noiseGen2;
-	private NoiseGeneratorOctaves noiseGen3;
-	private NoiseGeneratorOctaves noiseGen4;
-	private World worldObj;
+	private final Random rand;
+	private final NoiseGeneratorOctaves noiseGen1;
+	private final NoiseGeneratorOctaves noiseGen2;
+	private final NoiseGeneratorOctaves noiseGen3;
+	private final NoiseGeneratorOctaves noiseGen4;
+	private final World worldObj;
 	private double[] noiseField;
 	private double[] stoneNoise = new double[256];
-	private MapGenBase caveGenerator = new LKMapGenOutlandsCaves();
+	private final MapGenBase caveGenerator = new LKMapGenOutlandsCaves();
 	private BiomeGenBase[] biomesForGeneration;
 
 	public LKChunkProviderOutlands(World world, long l) {
@@ -68,7 +45,7 @@ public class LKChunkProviderOutlands
 		noiseGen6 = new NoiseGeneratorOctaves(rand, 16);
 	}
 
-	public void generateTerrain(int i, int j, byte[] byteArray) {
+	private void generateTerrain(int i, int j, byte[] byteArray) {
 		byte byte0 = 4;
 		byte byte1 = 16;
 		byte byte2 = 63;
@@ -82,13 +59,13 @@ public class LKChunkProviderOutlands
 			for (int j1 = 0; j1 < byte0; ++j1) {
 				for (int k1 = 0; k1 < byte1; ++k1) {
 					double d = 0.125D;
-					double d1 = noiseField[((i1 + 0) * l + j1 + 0) * byte3 + k1 + 0];
-					double d2 = noiseField[((i1 + 0) * l + j1 + 1) * byte3 + k1 + 0];
-					double d3 = noiseField[((i1 + 1) * l + j1 + 0) * byte3 + k1 + 0];
-					double d4 = noiseField[((i1 + 1) * l + j1 + 1) * byte3 + k1 + 0];
-					double d5 = (noiseField[((i1 + 0) * l + j1 + 0) * byte3 + k1 + 1] - d1) * d;
-					double d6 = (noiseField[((i1 + 0) * l + j1 + 1) * byte3 + k1 + 1] - d2) * d;
-					double d7 = (noiseField[((i1 + 1) * l + j1 + 0) * byte3 + k1 + 1] - d3) * d;
+					double d1 = noiseField[(i1 * l + j1) * byte3 + k1];
+					double d2 = noiseField[(i1 * l + j1 + 1) * byte3 + k1];
+					double d3 = noiseField[((i1 + 1) * l + j1) * byte3 + k1];
+					double d4 = noiseField[((i1 + 1) * l + j1 + 1) * byte3 + k1];
+					double d5 = (noiseField[(i1 * l + j1) * byte3 + k1 + 1] - d1) * d;
+					double d6 = (noiseField[(i1 * l + j1 + 1) * byte3 + k1 + 1] - d2) * d;
+					double d7 = (noiseField[((i1 + 1) * l + j1) * byte3 + k1 + 1] - d3) * d;
 					double d8 = (noiseField[((i1 + 1) * l + j1 + 1) * byte3 + k1 + 1] - d4) * d;
 
 					for (int l1 = 0; l1 < 8; ++l1) {
@@ -99,7 +76,7 @@ public class LKChunkProviderOutlands
 						double d13 = (d4 - d2) * d9;
 
 						for (int i2 = 0; i2 < 4; ++i2) {
-							int j2 = i2 + i1 * 4 << 11 | 0 + j1 * 4 << 7 | k1 * 8 + l1;
+							int j2 = i2 + i1 * 4 << 11 | j1 * 4 << 7 | k1 * 8 + l1;
 							short s = 128;
 							j2 -= s;
 							double d14 = 0.25D;
@@ -129,7 +106,7 @@ public class LKChunkProviderOutlands
 		}
 	}
 
-	public void replaceBlocksForBiome(int i, int j, byte[] byteArray, BiomeGenBase[] biomeArray) {
+	private void replaceBlocksForBiome(int i, int j, byte[] byteArray, BiomeGenBase[] biomeArray) {
 		byte byte0 = 63;
 		double d = 0.03125D;
 		stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0, 16, 16, 1, d * 2.0D, d * 2.0D, d * 2.0D);
@@ -143,7 +120,7 @@ public class LKChunkProviderOutlands
 				byte byte2 = biomegenbase.fillerBlock;
 				for (int k1 = 127; k1 >= 0; --k1) {
 					int l1 = (l * 16 + k) * 128 + k1;
-					if (k1 <= 0 + rand.nextInt(5)) {
+					if (k1 <= rand.nextInt(5)) {
 						byteArray[l1] = (byte) Block.bedrock.blockID;
 					} else {
 						byte byte3 = byteArray[l1];
@@ -189,7 +166,7 @@ public class LKChunkProviderOutlands
 
 	@Override
 	public Chunk provideChunk(int i, int j) {
-		rand.setSeed((long) i * 341873128712L + (long) j * 132897987541L);
+		rand.setSeed(i * 341873128712L + j * 132897987541L);
 		byte[] blocks = new byte[32768];
 		generateTerrain(i, j, blocks);
 		biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
@@ -218,15 +195,16 @@ public class LKChunkProviderOutlands
 	}
 
 	private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7) {
-		if (par1ArrayOfDouble == null) {
-			par1ArrayOfDouble = new double[par5 * par6 * par7];
+		double[] par1ArrayOfDouble1 = par1ArrayOfDouble;
+		if (par1ArrayOfDouble1 == null) {
+			par1ArrayOfDouble1 = new double[par5 * par6 * par7];
 		}
 		if (noiseFloatArray == null) {
 			noiseFloatArray = new float[25];
 
 			for (int var8 = -2; var8 <= 2; ++var8) {
 				for (int var9 = -2; var9 <= 2; ++var9) {
-					float var10 = 10.0F / MathHelper.sqrt_float((float) (var8 * var8 + var9 * var9) + 0.2F);
+					float var10 = 10.0F / MathHelper.sqrt_float((var8 * var8 + var9 * var9) + 0.2F);
 					noiseFloatArray[var8 + 2 + (var9 + 2) * 5] = var10;
 				}
 			}
@@ -289,13 +267,12 @@ public class LKChunkProviderOutlands
 				}
 				++var13;
 				for (int var46 = 0; var46 < par6; ++var46) {
-					double var48 = (double) var17;
-					double var26 = (double) var16;
+					double var48 = var17;
 					var48 += var47 * 0.2D;
-					var48 = var48 * (double) par6 / 16.0D;
-					double var28 = (double) par6 / 2.0D + var48 * 4.0D;
-					double var30 = 0.0D;
-					double var32 = ((double) var46 - var28) * 12.0D * 128.0D / 128.0D / var26;
+					var48 = var48 * par6 / 16.0D;
+					double var28 = par6 / 2.0D + var48 * 4.0D;
+					double var30;
+					double var32 = (var46 - var28) * 12.0D * 128.0D / 128.0D / var16;
 					if (var32 < 0.0D) {
 						var32 *= 4.0D;
 					}
@@ -311,15 +288,15 @@ public class LKChunkProviderOutlands
 					}
 					var30 -= var32;
 					if (var46 > par6 - 4) {
-						double var40 = (double) ((float) (var46 - (par6 - 4)) / 3.0F);
+						double var40 = (var46 - (par6 - 4)) / 3.0F;
 						var30 = var30 * (1.0D - var40) + -10.0D * var40;
 					}
-					par1ArrayOfDouble[var12] = var30;
+					par1ArrayOfDouble1[var12] = var30;
 					++var12;
 				}
 			}
 		}
-		return par1ArrayOfDouble;
+		return par1ArrayOfDouble1;
 	}
 
 	@Override
@@ -334,9 +311,9 @@ public class LKChunkProviderOutlands
 		int l = j * 16;
 		BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(k + 16, l + 16);
 		rand.setSeed(worldObj.getSeed());
-		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
-		long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-		rand.setSeed((long) i * l1 + (long) j * l2 ^ worldObj.getSeed());
+		long l1 = rand.nextLong() / 2L * 2L + 1L;
+		long l2 = rand.nextLong() / 2L * 2L + 1L;
+		rand.setSeed(i * l1 + j * l2 ^ worldObj.getSeed());
 		boolean flag = false;
 
 		if (rand.nextInt(15) == 0 && !(biomegenbase instanceof LKBiomeGenOutlandsRiver)) {

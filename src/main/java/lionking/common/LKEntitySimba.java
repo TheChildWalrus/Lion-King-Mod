@@ -1,38 +1,20 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
 import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
-import net.minecraft.server.MinecraftServer;
-
-public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnimals {
+public class LKEntitySimba extends EntityCreature implements LKCharacter {
 	public LKInventorySimba inventory;
 	private int eatingTick;
 
@@ -43,7 +25,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 		tasks.addTask(1, new EntityAISwimming(this));
 		tasks.addTask(2, new LKEntityAISimbaAttack(this, 1.3D, true));
 		tasks.addTask(3, new LKEntityAISimbaFollow(this, 1.3D, 10.0F, 2.0F));
-		tasks.addTask(4, new LKEntityAISimbaWander(this, 1D));
+		tasks.addTask(4, new LKEntityAISimbaWander(this, 1.0D));
 		tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(6, new EntityAILookIdle(this));
 		targetTasks.addTask(1, new LKEntityAISimbaAttackPlayerAttacker(this));
@@ -55,19 +37,19 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(isChild() ? 15D : 30D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(isChild() ? 15.0D : 30.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(12, new Integer(0));
+		dataWatcher.addObject(12, 0);
 		dataWatcher.addObject(13, "");
-		dataWatcher.addObject(14, new Integer(0));
-		dataWatcher.addObject(15, new Integer(0));
-		dataWatcher.addObject(17, new Byte((byte) 0));
-		dataWatcher.addObject(18, new Byte((byte) 0));
+		dataWatcher.addObject(14, 0);
+		dataWatcher.addObject(15, 0);
+		dataWatcher.addObject(17, (byte) 0);
+		dataWatcher.addObject(18, (byte) 0);
 	}
 
 	@Override
@@ -79,8 +61,8 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 		return dataWatcher.getWatchableObjectByte(17) == (byte) 1;
 	}
 
-	public void setHasCharm(boolean flag) {
-		dataWatcher.updateObject(17, Byte.valueOf(flag ? (byte) 1 : (byte) 0));
+	private void setHasCharm(boolean flag) {
+		dataWatcher.updateObject(17, (byte) (flag ? 1 : 0));
 	}
 
 	public boolean isSitting() {
@@ -88,14 +70,14 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 	}
 
 	public void setSitting(boolean flag) {
-		dataWatcher.updateObject(18, Byte.valueOf(flag ? (byte) 1 : (byte) 0));
+		dataWatcher.updateObject(18, (byte) (flag ? 1 : 0));
 	}
 
 	public EntityPlayer getOwner() {
 		return worldObj.getPlayerEntityByName(getOwnerName());
 	}
 
-	public String getOwnerName() {
+	private String getOwnerName() {
 		return dataWatcher.getWatchableObjectString(13);
 	}
 
@@ -114,9 +96,9 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 		if (!worldObj.isRemote) {
 			for (int i = 0; i < 32; i++) {
 				double d = getRNG().nextGaussian() * 0.02D;
-				double d1 = (getRNG().nextGaussian() * 0.02D) + (double) (getRNG().nextFloat() * 0.25F);
+				double d1 = getRNG().nextGaussian() * 0.02D + getRNG().nextFloat() * 0.25F;
 				double d2 = getRNG().nextGaussian() * 0.02D;
-				LKIngame.spawnCustomFX(worldObj, 64 + getRNG().nextInt(4), 16, true, (posX + (((double) (getRNG().nextFloat() * width * 2.0F)) - (double) width) * 0.75F), posY + 0.25F + (double) (getRNG().nextFloat() * height), (posZ + (((double) (getRNG().nextFloat() * width * 2.0F)) - (double) width) * 0.75F), d, d1, d2);
+				LKIngame.spawnCustomFX(worldObj, 64 + getRNG().nextInt(4), 16, true, posX + ((double) (getRNG().nextFloat() * width * 2.0F) - width) * 0.75F, posY + 0.25F + getRNG().nextFloat() * height, posZ + ((double) (getRNG().nextFloat() * width * 2.0F) - width) * 0.75F, d, d1, d2);
 			}
 		}
 		super.onDeath(damagesource);
@@ -127,7 +109,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 			double d = getRNG().nextGaussian() * 0.02D;
 			double d1 = getRNG().nextGaussian() * 0.02D;
 			double d2 = getRNG().nextGaussian() * 0.02D;
-			worldObj.spawnParticle("portal", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+			worldObj.spawnParticle("portal", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 		}
 
 		if (entity instanceof EntityPlayer) {
@@ -145,38 +127,34 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 	}
 
 	public void setAge(int i) {
-		dataWatcher.updateObject(12, Integer.valueOf(i));
+		dataWatcher.updateObject(12, i);
 	}
 
-	public int getFishingRecharge() {
+	private int getFishingRecharge() {
 		return dataWatcher.getWatchableObjectInt(14);
 	}
 
-	public void setFishingRecharge(int i) {
-		dataWatcher.updateObject(14, Integer.valueOf(i));
+	private void setFishingRecharge(int i) {
+		dataWatcher.updateObject(14, i);
 	}
 
-	public int getFishingCount() {
+	private int getFishingCount() {
 		return dataWatcher.getWatchableObjectInt(15);
 	}
 
-	public void setFishingCount(int i) {
-		dataWatcher.updateObject(15, Integer.valueOf(i));
+	private void setFishingCount(int i) {
+		dataWatcher.updateObject(15, i);
 	}
 
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
-		if (!(getOwnerName().equals(""))) {
+		if (!"".equals(getOwnerName())) {
 			if (MinecraftServer.getServer() != null) {
 				EntityPlayer entityplayer = worldObj.getPlayerEntityByName(getOwnerName());
 				if (entityplayer != null) {
-					if (isEntityAlive()) {
-						LKLevelData.setHasSimba(entityplayer, true);
-					} else {
-						LKLevelData.setHasSimba(entityplayer, false);
-					}
+					LKLevelData.setHasSimba(entityplayer, isEntityAlive());
 				}
 			}
 		}
@@ -193,7 +171,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 			}
 			if (l == -1) {
 				setAge(0);
-				getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(30D);
+				getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(30.0D);
 				setHealth(getMaxHealth());
 			}
 			if (getFishingCount() == -1) {
@@ -256,7 +234,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 			}
 			if (eatingTick > 0) {
 				if (eatingTick % 4 == 0) {
-					worldObj.playSoundAtEntity(this, "random.eat", 0.8F + 0.5F * (float) getRNG().nextInt(2), (getRNG().nextFloat() - getRNG().nextFloat()) * 0.2F + 1.0F);
+					worldObj.playSoundAtEntity(this, "random.eat", 0.8F + 0.5F * getRNG().nextInt(2), (getRNG().nextFloat() - getRNG().nextFloat()) * 0.2F + 1.0F);
 				}
 				eatingTick--;
 			}
@@ -264,9 +242,9 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 	}
 
 	private void catchFishAt(int i, int j, int k) {
-		EntityItem fish = new EntityItem(worldObj, (double) i, (double) j, (double) k, new ItemStack(Item.fishRaw));
+		EntityItem fish = new EntityItem(worldObj, i, j, k, new ItemStack(Item.fishRaw));
 		fish.delayBeforeCanPickup = 10;
-		fish.addVelocity(0F, 0.3D + ((double) (getRNG().nextFloat() / 3)), 0F);
+		fish.addVelocity(0.0F, 0.3D + getRNG().nextFloat() / 3, 0.0F);
 		worldObj.spawnEntityInWorld(fish);
 	}
 
@@ -295,7 +273,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
-		return entity.attackEntityFrom(DamageSource.causeMobDamage(this), isChild() ? 3F : 4F);
+		return entity.attackEntityFrom(DamageSource.causeMobDamage(this), isChild() ? 3.0F : 4.0F);
 	}
 
 	@Override
@@ -328,7 +306,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 
 		String s = nbt.getString("Owner");
 
-		if (s.length() > 0) {
+		if (!s.isEmpty()) {
 			setOwnerName(s);
 		}
 	}
@@ -340,19 +318,19 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float f) {
+		float f1 = f;
 		Entity entity = damagesource.getEntity();
 		if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow) && !(entity instanceof LKEntityDart) && !(entity instanceof LKEntitySpear)) {
-			f = (f + 1F) / 2F;
+			f1 = (f1 + 1.0F) / 2.0F;
 		}
 		setSitting(false);
-		if (super.attackEntityFrom(damagesource, f)) {
+		if (super.attackEntityFrom(damagesource, f1)) {
 			if (entity != this && entity != null && !(entity instanceof EntityPlayer)) {
 				entityToAttack = entity;
 			}
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -372,7 +350,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 				double d = getRNG().nextGaussian() * 0.02D;
 				double d1 = getRNG().nextGaussian() * 0.02D;
 				double d2 = getRNG().nextGaussian() * 0.02D;
-				worldObj.spawnParticle("portal", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+				worldObj.spawnParticle("portal", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 			}
 			if (!worldObj.isRemote) {
 				setHasCharm(true);
@@ -390,11 +368,12 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 				double d = getRNG().nextGaussian() * 0.02D;
 				double d1 = getRNG().nextGaussian() * 0.02D;
 				double d2 = getRNG().nextGaussian() * 0.02D;
-				worldObj.spawnParticle("smoke", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+				worldObj.spawnParticle("smoke", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 			}
 			eatingTick = 12;
 			return true;
-		} else if (itemstack != null && itemstack.getItem() != mod_LionKing.lionRaw && itemstack.getItem() != mod_LionKing.lionCooked && (Item.itemsList[itemstack.itemID] instanceof ItemFood) && getHealth() < getMaxHealth()) {
+		}
+		if (itemstack != null && itemstack.getItem() != mod_LionKing.lionRaw && itemstack.getItem() != mod_LionKing.lionCooked && Item.itemsList[itemstack.itemID] instanceof ItemFood && getHealth() < getMaxHealth()) {
 			ItemFood food = (ItemFood) Item.itemsList[itemstack.itemID];
 			if (food.isWolfsFavoriteMeat() || food == Item.fishRaw || food == Item.fishCooked) {
 				itemstack.stackSize--;
@@ -406,7 +385,7 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 					double d = getRNG().nextGaussian() * 0.02D;
 					double d1 = getRNG().nextGaussian() * 0.02D;
 					double d2 = getRNG().nextGaussian() * 0.02D;
-					worldObj.spawnParticle("smoke", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+					worldObj.spawnParticle("smoke", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 				}
 				eatingTick = 12;
 				return true;
@@ -418,12 +397,11 @@ public class LKEntitySimba extends EntityCreature implements LKCharacter, IAnima
 				setSitting(!isSitting());
 			}
 			return true;
-		} else {
-			if (!worldObj.isRemote) {
-				entityplayer.openGui(mod_LionKing.instance, mod_LionKing.proxy.GUI_ID_SIMBA, worldObj, entityId, 0, 0);
-			}
-			return true;
 		}
+		if (!worldObj.isRemote) {
+			entityplayer.openGui(mod_LionKing.instance, LKCommonProxy.GUI_ID_SIMBA, worldObj, entityId, 0, 0);
+		}
+		return true;
 	}
 
 	@Override

@@ -11,8 +11,8 @@ import java.util.Map;
 import static lionking.common.mod_LionKing.*;
 
 public class LKItemInfo {
-	private static Map itemInfo = new HashMap();
-	private static Map metaItemInfo = new HashMap();
+	private static final Map itemInfo = new HashMap();
+	private static final Map metaItemInfo = new HashMap();
 
 	static {
 		addInfo(lionPortalFrame, "The indestructible frame of a", "Pride Lands Portal.", "", "Found in Lion King Ticket Booths", "and can be activated with a", "Lion King Ticket.");
@@ -262,8 +262,11 @@ public class LKItemInfo {
 		addInfo(driedMaize, "Can be crafted into Dried Maize", "building materials.");
 	}
 
+	private LKItemInfo() {
+	}
+
 	private static void addInfo(Block block, String... lines) {
-		itemInfo.put(Integer.valueOf(block.blockID), lines);
+		itemInfo.put(block.blockID, lines);
 	}
 
 	private static void addInfo(Block block, int i, String... lines) {
@@ -271,7 +274,7 @@ public class LKItemInfo {
 	}
 
 	private static void addInfo(Item item, String... lines) {
-		itemInfo.put(Integer.valueOf(item.itemID), lines);
+		itemInfo.put(item.itemID, lines);
 	}
 
 	private static void addInfo(Item item, int i, String... lines) {
@@ -286,6 +289,6 @@ public class LKItemInfo {
 		if (info != null) {
 			return info;
 		}
-		return (String[]) itemInfo.get(Integer.valueOf(itemstack.itemID));
+		return (String[]) itemInfo.get(itemstack.itemID);
 	}
 }

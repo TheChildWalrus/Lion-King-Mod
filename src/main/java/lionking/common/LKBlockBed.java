@@ -28,12 +28,11 @@ public class LKBlockBed extends BlockBed {
 	public Icon getIcon(int i, int j) {
 		if (i == 0) {
 			return mod_LionKing.prideWood.getIcon(2, 0);
-		} else {
-			int k = getDirection(j);
-			int l = Direction.bedDirection[k][i];
-			int i1 = isBlockHeadOfBed(j) ? 1 : 0;
-			return (i1 != 1 || l != 2) && (i1 != 0 || l != 3) ? (l != 5 && l != 4 ? bedTopIcons[i1] : bedSideIcons[i1]) : bedEndIcons[i1];
 		}
+		int k = getDirection(j);
+		int l = Direction.bedDirection[k][i];
+		int i1 = isBlockHeadOfBed(j) ? 1 : 0;
+		return (i1 != 1 || l != 2) && (i1 != 0 || l != 3) ? l != 5 && l != 4 ? bedTopIcons[i1] : bedSideIcons[i1] : bedEndIcons[i1];
 	}
 
 	@Override

@@ -3,34 +3,11 @@ package lionking.common;
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
-import java.util.Random;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -40,7 +17,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 public class LKBlockWood extends LKBlock {
 	@SideOnly(Side.CLIENT)
 	private Icon[][] woodIcons;
-	private String[] woodNames = {"acacia", "rainforest", "mango", "passion"};
+	private final String[] woodNames = new String[]{"acacia", "rainforest", "mango", "passion"};
 
 	public LKBlockWood(int i) {
 		super(i, Material.wood);
@@ -75,17 +52,18 @@ public class LKBlockWood extends LKBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
-		int j1 = j & 12;
-		j &= 3;
+		int j2 = j;
+		int j1 = j2 & 12;
+		j2 &= 3;
 
-		if (j >= woodNames.length) {
-			j = 0;
+		if (j2 >= woodNames.length) {
+			j2 = 0;
 		}
 
-		if ((j1 == 0 && (i == 0 || i == 1)) || (j1 == 4 && (i == 4 || i == 5)) || (j1 == 8 && (i == 2 || i == 3))) {
-			return woodIcons[j][0];
+		if (j1 == 0 && (i == 0 || i == 1) || j1 == 4 && (i == 4 || i == 5) || j1 == 8 && (i == 2 || i == 3)) {
+			return woodIcons[j2][0];
 		}
-		return woodIcons[j][1];
+		return woodIcons[j2][1];
 	}
 
 	@Override

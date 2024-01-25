@@ -16,7 +16,7 @@ public class LKItemRug extends LKItemMetadata {
 		boolean flag = super.placeBlockAt(itemstack, entityplayer, world, i, j, k, side, hitX, hitY, hitZ, metadata);
 		if (flag && world.getBlockId(i, j, k) == getBlockID()) {
 			TileEntity tileentity = world.getBlockTileEntity(i, j, k);
-			if (tileentity != null && tileentity instanceof LKTileEntityFurRug) {
+			if (tileentity instanceof LKTileEntityFurRug) {
 				ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
 				((LKTileEntityFurRug) world.getBlockTileEntity(i, j, k)).direction = (byte) dir.ordinal();
 			}

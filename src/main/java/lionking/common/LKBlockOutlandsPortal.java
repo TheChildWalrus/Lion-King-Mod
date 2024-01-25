@@ -1,39 +1,14 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.*;
 
-import net.minecraftforge.common.*;
-import lionking.client.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,20 +18,22 @@ public class LKBlockOutlandsPortal extends BlockBreakable {
 	}
 
 	public static boolean tryToCreatePortal(World world, int i, int j, int k) {
+		int i3 = i;
+		int k2 = k;
 		int l = 0;
 		int i1 = 0;
-		if (world.getBlockId(i - 1, j, k) == mod_LionKing.outlandsPortalFrame.blockID || world.getBlockId(i + 1, j, k) == mod_LionKing.outlandsPortalFrame.blockID) {
+		if (world.getBlockId(i3 - 1, j, k2) == mod_LionKing.outlandsPortalFrame.blockID || world.getBlockId(i3 + 1, j, k2) == mod_LionKing.outlandsPortalFrame.blockID) {
 			l = 1;
 		}
-		if (world.getBlockId(i, j, k - 1) == mod_LionKing.outlandsPortalFrame.blockID || world.getBlockId(i, j, k + 1) == mod_LionKing.outlandsPortalFrame.blockID) {
+		if (world.getBlockId(i3, j, k2 - 1) == mod_LionKing.outlandsPortalFrame.blockID || world.getBlockId(i3, j, k2 + 1) == mod_LionKing.outlandsPortalFrame.blockID) {
 			i1 = 1;
 		}
 		if (l == i1) {
 			return false;
 		}
-		if (world.getBlockId(i - l, j, k - i1) == 0) {
-			i -= l;
-			k -= i1;
+		if (world.getBlockId(i3 - l, j, k2 - i1) == 0) {
+			i3 -= l;
+			k2 -= i1;
 		}
 		for (int j1 = -1; j1 <= 2; j1++) {
 			for (int l1 = -1; l1 <= 3; l1++) {
@@ -64,7 +41,7 @@ public class LKBlockOutlandsPortal extends BlockBreakable {
 				if ((j1 == -1 || j1 == 2) && (l1 == -1 || l1 == 3)) {
 					continue;
 				}
-				int j2 = world.getBlockId(i + l * j1, j + l1, k + i1 * j1);
+				int j2 = world.getBlockId(i3 + l * j1, j + l1, k2 + i1 * j1);
 				if (flag) {
 					if (j2 != mod_LionKing.outlandsPortalFrame.blockID) {
 						return false;
@@ -80,7 +57,7 @@ public class LKBlockOutlandsPortal extends BlockBreakable {
 
 		for (int k1 = 0; k1 < 2; k1++) {
 			for (int i2 = 0; i2 < 3; i2++) {
-				world.setBlock(i + l * k1, j + i2, k + i1 * k1, mod_LionKing.outlandsPortal.blockID, 0, 2);
+				world.setBlock(i3 + l * k1, j + i2, k2 + i1 * k1, mod_LionKing.outlandsPortal.blockID, 0, 2);
 			}
 
 		}
@@ -146,9 +123,6 @@ public class LKBlockOutlandsPortal extends BlockBreakable {
 		}
 		if ((world.getBlockId(i + i1, j, k + j1) != mod_LionKing.outlandsPortalFrame.blockID || world.getBlockId(i - i1, j, k - j1) != blockID) && (world.getBlockId(i - i1, j, k - j1) != mod_LionKing.outlandsPortalFrame.blockID || world.getBlockId(i + i1, j, k + j1) != blockID)) {
 			world.setBlockToAir(i, j, k);
-			return;
-		} else {
-			return;
 		}
 	}
 
@@ -164,16 +138,7 @@ public class LKBlockOutlandsPortal extends BlockBreakable {
 		boolean flag3 = iblockaccess.getBlockId(i, j, k + 1) == blockID && iblockaccess.getBlockId(i, j, k + 2) != blockID;
 		boolean flag4 = flag || flag1;
 		boolean flag5 = flag2 || flag3;
-		if (flag4 && l == 4) {
-			return true;
-		}
-		if (flag4 && l == 5) {
-			return true;
-		}
-		if (flag5 && l == 2) {
-			return true;
-		}
-		return flag5 && l == 3;
+		return flag4 && l == 4 || flag4 && l == 5 || flag5 && l == 2 || flag5 && l == 3;
 	}
 
 	@Override
@@ -190,12 +155,8 @@ public class LKBlockOutlandsPortal extends BlockBreakable {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
 		if (entity.ridingEntity == null && entity.riddenByEntity == null && entity instanceof EntityPlayer) {
-			if (entity.ridingEntity == null && entity.riddenByEntity == null) {
-				if (entity instanceof EntityPlayer) {
-					EntityPlayer entityplayer = (EntityPlayer) entity;
-					mod_LionKing.proxy.setInOutlandsPortal(entityplayer);
-				}
-			}
+			EntityPlayer entityplayer = (EntityPlayer) entity;
+			mod_LionKing.proxy.setInOutlandsPortal(entityplayer);
 		}
 	}
 
@@ -203,25 +164,22 @@ public class LKBlockOutlandsPortal extends BlockBreakable {
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		if (random.nextInt(100) == 0) {
-			world.playSoundEffect((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "portal.portal", 1.0F, random.nextFloat() * 0.4F + 0.8F);
+			world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "portal.portal", 1.0F, random.nextFloat() * 0.4F + 0.8F);
 		}
 		for (int l = 0; l < 4; l++) {
-			double d = (float) i + random.nextFloat();
-			double d1 = (float) j + random.nextFloat();
-			double d2 = (float) k + random.nextFloat();
-			double d3 = 0.0D;
-			double d4 = 0.0D;
-			double d5 = 0.0D;
+			double d = i + random.nextFloat();
+			double d1 = j + random.nextFloat();
+			double d2 = k + random.nextFloat();
 			int i1 = random.nextInt(2) * 2 - 1;
-			d3 = ((double) random.nextFloat() - 0.5D) * 0.5D;
-			d4 = ((double) random.nextFloat() - 0.5D) * 0.5D;
-			d5 = ((double) random.nextFloat() - 0.5D) * 0.5D;
+			double d3 = (random.nextFloat() - 0.5D) * 0.5D;
+			double d4 = (random.nextFloat() - 0.5D) * 0.5D;
+			double d5 = (random.nextFloat() - 0.5D) * 0.5D;
 			if (world.getBlockId(i - 1, j, k) == blockID || world.getBlockId(i + 1, j, k) == blockID) {
-				d2 = (double) k + 0.5D + 0.25D * (double) i1;
-				d5 = random.nextFloat() * 2.0F * (float) i1;
+				d2 = k + 0.5D + 0.25D * i1;
+				d5 = random.nextFloat() * 2.0F * i1;
 			} else {
-				d = (double) i + 0.5D + 0.25D * (double) i1;
-				d3 = random.nextFloat() * 2.0F * (float) i1;
+				d = i + 0.5D + 0.25D * i1;
+				d3 = random.nextFloat() * 2.0F * i1;
 			}
 
 			mod_LionKing.proxy.spawnParticle("outlandsPortal", d, d1, d2, d3, d4, d5);

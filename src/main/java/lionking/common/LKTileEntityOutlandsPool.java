@@ -1,36 +1,15 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class LKTileEntityOutlandsPool extends TileEntity {
@@ -59,22 +38,22 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 						if (l.item.itemID == mod_LionKing.silver.itemID) {
 							for (int j = 0; j < l.item.stackSize; j++) {
 								silver++;
-								silverList.add(Integer.valueOf(i));
+								silverList.add(i);
 							}
 						}
 						if (l.item.itemID == mod_LionKing.kivulite.itemID) {
 							for (int j = 0; j < l.item.stackSize; j++) {
 								kivulite++;
-								kivuliteList.add(Integer.valueOf(i));
+								kivuliteList.add(i);
 							}
 						}
 					}
 				}
 
 				if (silver > 1 && kivulite > 4) {
-					int count = MathHelper.floor_double(silver / 2);
-					if (MathHelper.floor_double(kivulite / 5) < count) {
-						count = MathHelper.floor_double(kivulite / 5);
+					int count = MathHelper.floor_double((double) silver / 2);
+					if (MathHelper.floor_double((double) kivulite / 5) < count) {
+						count = MathHelper.floor_double((double) kivulite / 5);
 					}
 
 					for (int i = 0; i < count; i++) {
@@ -107,10 +86,10 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 					}
 
 					for (int i = 0; i < count; i++) {
-						EntityItem item = new EntityItem(world, (double) LKLevelData.moundX + 0.45D + (double) (world.rand.nextFloat() * 0.1F), (double) LKLevelData.moundY + 9D, (double) LKLevelData.moundZ + 0.45D + (double) (world.rand.nextFloat() * 0.1F), new ItemStack(mod_LionKing.outlandsHelm));
+						EntityItem item = new EntityItem(world, LKLevelData.moundX + 0.45D + world.rand.nextFloat() * 0.1F, LKLevelData.moundY + 9.0D, LKLevelData.moundZ + 0.45D + world.rand.nextFloat() * 0.1F, new ItemStack(mod_LionKing.outlandsHelm));
 						item.delayBeforeCanPickup = 10;
 						item.motionX = 0.0D;
-						item.motionY = 0.4D + (double) (world.rand.nextFloat() / 5.0F);
+						item.motionY = 0.4D + world.rand.nextFloat() / 5.0F;
 						item.motionZ = 0.0D;
 						world.spawnEntityInWorld(item);
 						world.playSoundAtEntity(item, "random.explode", 1.5F, 0.5F + world.rand.nextFloat() * 0.2F);
@@ -132,25 +111,25 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 						if (l.item.itemID == mod_LionKing.featherBlue.itemID) {
 							for (int j = 0; j < l.item.stackSize; j++) {
 								featherBlue++;
-								featherBlueList.add(Integer.valueOf(i));
+								featherBlueList.add(i);
 							}
 						}
 						if (l.item.itemID == mod_LionKing.featherYellow.itemID) {
 							for (int j = 0; j < l.item.stackSize; j++) {
 								featherYellow++;
-								featherYellowList.add(Integer.valueOf(i));
+								featherYellowList.add(i);
 							}
 						}
 						if (l.item.itemID == mod_LionKing.featherRed.itemID) {
 							for (int j = 0; j < l.item.stackSize; j++) {
 								featherRed++;
-								featherRedList.add(Integer.valueOf(i));
+								featherRedList.add(i);
 							}
 						}
 						if (l.item.itemID == mod_LionKing.featherBlack.itemID) {
 							for (int j = 0; j < l.item.stackSize; j++) {
 								featherBlack++;
-								featherBlackList.add(Integer.valueOf(i));
+								featherBlackList.add(i);
 							}
 						}
 					}
@@ -216,32 +195,32 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 					}
 
 					for (int i = 0; i < count; i++) {
-						EntityItem item = new EntityItem(world, (double) LKLevelData.moundX + 0.45D + (double) (world.rand.nextFloat() * 0.1F), (double) LKLevelData.moundY + 9D, (double) LKLevelData.moundZ + 0.45D + (double) (world.rand.nextFloat() * 0.1F), new ItemStack(mod_LionKing.outlandsFeather));
+						EntityItem item = new EntityItem(world, LKLevelData.moundX + 0.45D + world.rand.nextFloat() * 0.1F, LKLevelData.moundY + 9.0D, LKLevelData.moundZ + 0.45D + world.rand.nextFloat() * 0.1F, new ItemStack(mod_LionKing.outlandsFeather));
 						item.delayBeforeCanPickup = 10;
 						item.motionX = 0.0D;
-						item.motionY = 0.4D + (double) (world.rand.nextFloat() / 5.0F);
+						item.motionY = 0.4D + world.rand.nextFloat() / 5.0F;
 						item.motionZ = 0.0D;
 						world.spawnEntityInWorld(item);
 						world.playSoundAtEntity(item, "random.explode", 1.5F, 0.5F + world.rand.nextFloat() * 0.2F);
 					}
 				}
 
-				ArrayList rafikiCoinList = new ArrayList();
+				Collection rafikiCoinList = new ArrayList();
 
 				for (int i = 0; i < inventory.size(); i++) {
 					ListedItem l = (ListedItem) inventory.get(i);
 					if (l != null) {
 						if (l.item.itemID == mod_LionKing.rafikiCoin.itemID) {
 							for (int j = 0; j < l.item.stackSize; j++) {
-								rafikiCoinList.add(Integer.valueOf(i));
+								rafikiCoinList.add(i);
 							}
 						}
 					}
 				}
 
 				if (!rafikiCoinList.isEmpty()) {
-					for (int i = 0; i < rafikiCoinList.size(); i++) {
-						int j = (Integer) rafikiCoinList.get(i);
+					for (Object o : rafikiCoinList) {
+						int j = (Integer) o;
 						ListedItem l = (ListedItem) inventory.get(j);
 						if (l != null) {
 							ItemStack itemstack = l.item;
@@ -255,26 +234,26 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 					}
 
 					for (int i = 0; i < rafikiCoinList.size(); i++) {
-						EntityItem item = new EntityItem(world, (double) LKLevelData.moundX + 0.45D + (double) (world.rand.nextFloat() * 0.1F), (double) LKLevelData.moundY + 9D, (double) LKLevelData.moundZ + 0.45D + (double) (world.rand.nextFloat() * 0.1F), new ItemStack(mod_LionKing.ziraCoin));
+						EntityItem item = new EntityItem(world, LKLevelData.moundX + 0.45D + world.rand.nextFloat() * 0.1F, LKLevelData.moundY + 9.0D, LKLevelData.moundZ + 0.45D + world.rand.nextFloat() * 0.1F, new ItemStack(mod_LionKing.ziraCoin));
 						item.delayBeforeCanPickup = 10;
 						item.motionX = 0.0D;
-						item.motionY = 0.4D + (double) (world.rand.nextFloat() / 5.0F);
+						item.motionY = 0.4D + world.rand.nextFloat() / 5.0F;
 						item.motionZ = 0.0D;
 						world.spawnEntityInWorld(item);
 						world.playSoundAtEntity(item, "random.explode", 1.5F, 0.5F + world.rand.nextFloat() * 0.2F);
 					}
 				}
 
-				for (int i = 0; i < inventory.size(); i++) {
-					ListedItem l = (ListedItem) inventory.get(i);
+				for (Object o : inventory) {
+					ListedItem l = (ListedItem) o;
 					if (l != null) {
 						int randPosX = LKLevelData.moundX + (world.rand.nextBoolean() ? 1 : -1);
 						int randPosZ = LKLevelData.moundZ + (world.rand.nextBoolean() ? 1 : -1);
 
-						EntityItem item = new EntityItem(world, (double) randPosX + 0.25D + (double) (world.rand.nextFloat() / 2.0F), (double) LKLevelData.moundY + 8D, (double) randPosZ + 0.25D + (double) (world.rand.nextFloat() / 2.0F), l.item);
+						EntityItem item = new EntityItem(world, randPosX + 0.25D + world.rand.nextFloat() / 2.0F, LKLevelData.moundY + 8.0D, randPosZ + 0.25D + world.rand.nextFloat() / 2.0F, l.item);
 						item.delayBeforeCanPickup = 10;
 						item.motionX = 0.0D;
-						item.motionY = 0.3D + (double) (world.rand.nextFloat() / 5.0F);
+						item.motionY = 0.3D + world.rand.nextFloat() / 5.0F;
 						item.motionZ = 0.0D;
 						world.spawnEntityInWorld(item);
 					}
@@ -288,8 +267,8 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 	public static void writeInventoryToNBT(NBTTagCompound levelData) {
 		NBTTagList taglist = new NBTTagList();
 
-		for (int i = 0; i < inventory.size(); i++) {
-			ListedItem l = (ListedItem) inventory.get(i);
+		for (Object o : inventory) {
+			ListedItem l = (ListedItem) o;
 			if (l != null) {
 				ItemStack itemstack = l.item;
 				Location location = l.location;
@@ -332,8 +311,8 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 		if (worldObj.provider.dimensionId == mod_LionKing.idOutlands && !worldObj.isRemote) {
 			List list = worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 0.875, zCoord + 1));
 			if (!list.isEmpty()) {
-				for (int i = 0; i < list.size(); i++) {
-					EntityItem entity = (EntityItem) list.get(i);
+				for (Object o : list) {
+					EntityItem entity = (EntityItem) o;
 					ItemStack itemstack = entity.getEntityItem();
 					worldObj.playSoundAtEntity(entity, "random.fizz", 0.7F, 1.6F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.4F);
 					if (itemstack != null) {
@@ -350,7 +329,7 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 
 		if (timeUntilInventoryClear > 0) {
 			if (worldObj.rand.nextInt(3) == 0) {
-				worldObj.spawnParticle("smoke", (double) ((float) xCoord + worldObj.rand.nextFloat()), (double) ((float) yCoord + 0.8F), (double) ((float) zCoord + worldObj.rand.nextFloat()), 0.0D, 0.0D + (double) (worldObj.rand.nextFloat() * 0.25F), 0.0D);
+				worldObj.spawnParticle("smoke", xCoord + worldObj.rand.nextFloat(), yCoord + 0.8F, zCoord + worldObj.rand.nextFloat(), 0.0D, 0.0D + worldObj.rand.nextFloat() * 0.25F, 0.0D);
 			}
 			if (worldObj.rand.nextInt(100) == 0) {
 				worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.fizz", 0.7F, 1.6F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.4F);
@@ -359,42 +338,92 @@ public class LKTileEntityOutlandsPool extends TileEntity {
 	}
 
 	private static class ListedItem {
-		public long timestamp;
-		public ItemStack item;
-		public Location location;
+		long timestamp;
+		ItemStack item;
+		Location location;
 
-		public ListedItem(long l, ItemStack itemstack, Location coords) {
+		protected ListedItem(long l, ItemStack itemstack, Location coords) {
 			timestamp = l;
 			item = itemstack;
 			location = coords;
 		}
 
+		@Override
 		public boolean equals(Object obj) {
-			if (!(obj instanceof ListedItem) || obj == null) {
+			if (!(obj instanceof ListedItem)) {
 				return false;
 			}
 			ListedItem l = (ListedItem) obj;
 			return timestamp == l.timestamp && location.equals(l.location) && item.itemID == l.item.itemID && item.stackSize == l.item.stackSize && item.getItemDamage() == l.item.getItemDamage();
 		}
+
+		public ItemStack getItem() {
+			return item;
+		}
+
+		public void setItem(ItemStack item) {
+			this.item = item;
+		}
+
+		public long getTimestamp() {
+			return timestamp;
+		}
+
+		public void setTimestamp(long timestamp) {
+			this.timestamp = timestamp;
+		}
+
+		public Location getLocation() {
+			return location;
+		}
+
+		public void setLocation(Location location) {
+			this.location = location;
+		}
 	}
 
 	private static class Location {
-		public double posX;
-		public double posY;
-		public double posZ;
+		double posX;
+		double posY;
+		double posZ;
 
-		public Location(double d, double d1, double d2) {
+		protected Location(double d, double d1, double d2) {
 			posX = d;
 			posY = d1;
 			posZ = d2;
 		}
 
+		@Override
 		public boolean equals(Object obj) {
-			if (!(obj instanceof Location) || obj == null) {
+			if (!(obj instanceof Location)) {
 				return false;
 			}
 			Location l = (Location) obj;
 			return posX == l.posX && posY == l.posY && posZ == l.posZ;
+		}
+
+		public double getPosX() {
+			return posX;
+		}
+
+		public void setPosX(double posX) {
+			this.posX = posX;
+		}
+
+		public double getPosZ() {
+			return posZ;
+		}
+
+		public void setPosZ(double posZ) {
+			this.posZ = posZ;
+		}
+
+		public double getPosY() {
+			return posY;
+		}
+
+		public void setPosY(double posY) {
+			this.posY = posY;
 		}
 	}
 }

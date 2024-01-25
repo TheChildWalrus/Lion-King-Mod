@@ -2,33 +2,15 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
 import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
 import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -43,7 +25,7 @@ public class LKBlockMountedShooter extends BlockContainer {
 	public LKBlockMountedShooter(int i) {
 		super(i, Material.circuits);
 		setCreativeTab(null);
-		setBlockBounds(0.25F, 0F, 0F, 0.75F, 0.75F, 1F);
+		setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 0.75F, 1.0F);
 	}
 
 	@Override
@@ -61,9 +43,9 @@ public class LKBlockMountedShooter extends BlockContainer {
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
 		int l = world.getBlockMetadata(i, j, k);
 		if (l % 2 == 0) {
-			setBlockBounds(0.25F, 0F, 0F, 0.75F, 0.75F, 1F);
+			setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 0.75F, 1.0F);
 		} else {
-			setBlockBounds(0F, 0F, 0.25F, 1F, 0.75F, 0.75F);
+			setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 0.75F, 0.75F);
 		}
 	}
 
@@ -111,9 +93,9 @@ public class LKBlockMountedShooter extends BlockContainer {
 				zVelocity = -1;
 			}
 
-			double d = (double) i + (double) xVelocity * 0.6D + 0.5D;
-			double d1 = (double) j + 0.5D;
-			double d2 = (double) k + (double) zVelocity * 0.6D + 0.5D;
+			double d = i + xVelocity * 0.6D + 0.5D;
+			double d1 = j + 0.5D;
+			double d2 = k + zVelocity * 0.6D + 0.5D;
 
 			LKEntityDart dart = new LKEntityBlueDart(world, d, d1, d2);
 			if (shooter.dartID == mod_LionKing.dartYellow.itemID) {
@@ -129,7 +111,7 @@ public class LKBlockMountedShooter extends BlockContainer {
 				dart.silverFired = true;
 			}
 
-			dart.setDartHeading(xVelocity * 1.5, 0.05D, zVelocity * 1.5, 2F, 1F);
+			dart.setDartHeading(xVelocity * 1.5, 0.05D, zVelocity * 1.5, 2.0F, 1.0F);
 			if (!world.isRemote) {
 				world.spawnEntityInWorld(dart);
 			}
@@ -158,7 +140,7 @@ public class LKBlockMountedShooter extends BlockContainer {
 			data[l + 4] = posY[l];
 			data[l + 8] = posZ[l];
 		}
-		data[12] = (byte) -1;
+		data[12] = -1;
 		Packet250CustomPayload packet = new Packet250CustomPayload("lk.tileEntity", data);
 		PlayerInstance player = world.getPlayerManager().getOrCreateChunkWatcher(i >> 4, k >> 4, false);
 		if (player != null) {
@@ -188,7 +170,8 @@ public class LKBlockMountedShooter extends BlockContainer {
 					shooter.dartStackSize = 0;
 				}
 				return true;
-			} else if (Item.itemsList[shooter.dartID] == null && shooter.dartStackSize == 0 && itemstack != null && (itemstack.itemID == mod_LionKing.dartBlue.itemID || itemstack.itemID == mod_LionKing.dartYellow.itemID || itemstack.itemID == mod_LionKing.dartRed.itemID || itemstack.itemID == mod_LionKing.dartBlack.itemID || itemstack.itemID == mod_LionKing.dartPink.itemID)) {
+			}
+			if (Item.itemsList[shooter.dartID] == null && shooter.dartStackSize == 0 && itemstack != null && (itemstack.itemID == mod_LionKing.dartBlue.itemID || itemstack.itemID == mod_LionKing.dartYellow.itemID || itemstack.itemID == mod_LionKing.dartRed.itemID || itemstack.itemID == mod_LionKing.dartBlack.itemID || itemstack.itemID == mod_LionKing.dartPink.itemID)) {
 				shooter.dartID = itemstack.itemID;
 				shooter.dartStackSize = itemstack.stackSize;
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
@@ -214,7 +197,7 @@ public class LKBlockMountedShooter extends BlockContainer {
 	}
 
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving) {
-		int i1 = MathHelper.floor_double((double) (entityliving.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
+		int i1 = MathHelper.floor_double(entityliving.rotationYaw * 4.0F / 360.0F + 2.5D) & 3;
 		world.setBlockMetadataWithNotify(i, j, k, i1, 2);
 	}
 
@@ -242,7 +225,7 @@ public class LKBlockMountedShooter extends BlockContainer {
 	@Override
 	public int getDamageValue(World world, int i, int j, int k) {
 		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
-		if (tileentity != null && tileentity instanceof LKTileEntityMountedShooter) {
+		if (tileentity instanceof LKTileEntityMountedShooter) {
 			return ((LKTileEntityMountedShooter) tileentity).getShooterType();
 		}
 		return 0;
@@ -254,11 +237,12 @@ public class LKBlockMountedShooter extends BlockContainer {
 
 	@Override
 	public void onBlockHarvested(World world, int i, int j, int k, int l, EntityPlayer entityplayer) {
+		int l1 = l;
 		if (entityplayer.capabilities.isCreativeMode) {
-			l |= 8;
-			world.setBlockMetadataWithNotify(i, j, k, l, 4);
+			l1 |= 8;
+			world.setBlockMetadataWithNotify(i, j, k, l1, 4);
 		}
-		super.onBlockHarvested(world, i, j, k, l, entityplayer);
+		super.onBlockHarvested(world, i, j, k, l1, entityplayer);
 	}
 
 	@Override

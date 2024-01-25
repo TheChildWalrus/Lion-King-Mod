@@ -1,45 +1,26 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
-import net.minecraft.world.*;
 import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 import java.util.List;
 import java.nio.ByteBuffer;
 
-public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISidedInventory {
-	private Random rand = new Random();
+public class LKTileEntityBugTrap extends TileEntity implements ISidedInventory {
+	private final Random rand = new Random();
 	private ItemStack[] inventory;
 	private int closureTime = -1;
-	private int[] inputSlots = new int[]{0, 1, 2, 3};
-	private int[] outputSlots = new int[]{4};
+	private final int[] inputSlots = new int[]{0, 1, 2, 3};
+	private final int[] outputSlots = new int[]{4};
 
 	public LKTileEntityBugTrap() {
 		inventory = new ItemStack[5];
@@ -66,10 +47,10 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 				}
 			}
 		}
-		List list = worldObj.getEntitiesWithinAABB(LKEntityBug.class, AxisAlignedBB.getAABBPool().getAABB((double) xCoord, (double) yCoord, (double) zCoord, (double) (xCoord + 1), (double) (yCoord + 1), (double) (zCoord + 1)).expand(16D, 8D, 16D));
-		if (list.size() > 0) {
-			for (int i = 0; i < list.size(); i++) {
-				LKEntityBug bug = (LKEntityBug) list.get(i);
+		List list = worldObj.getEntitiesWithinAABB(LKEntityBug.class, AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(16.0D, 8.0D, 16.0D));
+		if (!list.isEmpty()) {
+			for (Object o : list) {
+				LKEntityBug bug = (LKEntityBug) o;
 				if (bug.targetTrap == this) {
 					if (bug.getDistanceSq((double) xCoord + 0.5F, (double) yCoord + 0.5F, (double) zCoord + 0.5F) <= 4.0F) {
 						if (bug.trapTick == -1 && getAverageBaitSaturation() > 0.0F) {
@@ -96,9 +77,9 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 							}
 						}
 						if (bug.trapTick >= 34) {
-							double d = ((xCoord + 0.5D) - bug.posX) / 8.0D;
-							double d1 = ((yCoord) - bug.posY) / 8.0D;
-							double d2 = ((zCoord + 0.5D) - bug.posZ) / 8.0D;
+							double d = (xCoord + 0.5D - bug.posX) / 8.0D;
+							double d1 = (yCoord - bug.posY) / 8.0D;
+							double d2 = (zCoord + 0.5D - bug.posZ) / 8.0D;
 							double d3 = Math.sqrt(d * d + d1 * d1 + d2 * d2);
 							double d4 = 1.0D - d3;
 
@@ -137,7 +118,7 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 			closureTime = -1;
 		}
 		calculateBugProbability();
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, closureTime >= 0 && closureTime < 8 ? closureTime : (closureTime >= 8 && closureTime < 42 ? 8 : (closureTime >= 42 && closureTime < 50 ? 50 - closureTime : 0)), 3);
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, closureTime >= 0 && closureTime < 8 ? closureTime : closureTime >= 8 && closureTime < 42 ? 8 : closureTime >= 42 && closureTime < 50 ? 50 - closureTime : 0, 3);
 	}
 
 	public float getAverageBaitSaturation() {
@@ -146,7 +127,7 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 			ItemStack itemstack = getStackInSlot(i);
 			if (itemstack != null && Item.itemsList[itemstack.itemID] instanceof ItemFood) {
 				float f1 = ((ItemFood) Item.itemsList[itemstack.itemID]).getSaturationModifier();
-				float f2 = (float) itemstack.stackSize / 64.0F;
+				float f2 = itemstack.stackSize / 64.0F;
 				f2 += 0.6F;
 				if (f2 > 1.0F) {
 					f2 = 1.0F;
@@ -161,7 +142,7 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 		if (worldObj.provider.dimensionId != mod_LionKing.idPrideLands) {
 			return 0.0F;
 		}
-		List list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double) xCoord, (double) yCoord, (double) zCoord, (double) (xCoord + 1), (double) (yCoord + 1), (double) (zCoord + 1)).expand(16D, 16D, 16D));
+		List list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(16.0D, 16.0D, 16.0D));
 		if (!list.isEmpty()) {
 			return 0.0F;
 		}
@@ -206,22 +187,19 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 			for (int j = -4; j <= 4; j++) {
 				for (int k = -8; k <= 8; k++) {
 					TileEntity tileentity = worldObj.getBlockTileEntity(xCoord + i, yCoord + j, zCoord + k);
-					if (tileentity != null && tileentity instanceof LKTileEntityBugTrap) {
+					if (tileentity instanceof LKTileEntityBugTrap) {
 						numNearbyTrapsIncludingThis++;
 					}
 				}
 			}
 		}
 
-		float nearbyTrapReductionFactor = 0.3F + (0.7F / (float) numNearbyTrapsIncludingThis);
+		float nearbyTrapReductionFactor = 0.3F + 0.7F / numNearbyTrapsIncludingThis;
 		probability *= nearbyTrapReductionFactor;
 
 		probability *= 1.0F + getAverageBaitSaturation();
 		float finalProbability = probability / 10.0F;
-		if (finalProbability > 0.9F) {
-			finalProbability = 0.9F;
-		}
-		return finalProbability;
+		return Math.min(finalProbability, 0.9F);
 	}
 
 	@Override
@@ -247,9 +225,8 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 				inventory[i] = null;
 			}
 			return itemstack1;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -308,10 +285,7 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		}
-		return entityplayer.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -320,9 +294,8 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 			ItemStack stack = inventory[i];
 			inventory[i] = null;
 			return stack;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -351,8 +324,8 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 				damage = ByteBuffer.allocate(4).putInt(itemstack.getItemDamage()).array();
 			}
 			for (int j = 0; j < 4; j++) {
-				data[12 + (i * 8) + j] = id[j];
-				data[16 + (i * 8) + j] = damage[j];
+				data[12 + i * 8 + j] = id[j];
+				data[16 + i * 8 + j] = damage[j];
 			}
 		}
 		return new Packet250CustomPayload("lk.tileEntity", data);
@@ -364,12 +337,7 @@ public class LKTileEntityBugTrap extends TileEntity implements IInventory, ISide
 			Item item = itemstack.getItem();
 			if (item instanceof ItemFood) {
 				ItemFood food = (ItemFood) item;
-				if (food.isWolfsFavoriteMeat()) {
-					return false;
-				} else if (food == Item.fishRaw || food == Item.fishCooked) {
-					return false;
-				}
-				return food.getSaturationModifier() > 0.0F;
+				return !food.isWolfsFavoriteMeat() && food != Item.fishRaw && food != Item.fishCooked && food.getSaturationModifier() > 0.0F;
 			}
 			return false;
 		}

@@ -1,47 +1,24 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-public class LKTileEntityGrindingBowl extends TileEntity implements IInventory, ISidedInventory {
-	public int grindTime = 0;
+public class LKTileEntityGrindingBowl extends TileEntity implements ISidedInventory {
+	public int grindTime;
 	public float stickRotation;
 	private ItemStack[] inventory = new ItemStack[2];
-	private Random rand = new Random();
-	private int[] inputSlots = new int[]{0};
-	private int[] outputSlots = new int[]{1};
+	private final int[] inputSlots = new int[]{0};
+	private final int[] outputSlots = new int[]{1};
 
 	public LKTileEntityGrindingBowl() {
-		stickRotation = (float) rand.nextInt(360);
+		Random rand = new Random();
+		stickRotation = rand.nextInt(360);
 	}
 
 	@Override
@@ -67,9 +44,8 @@ public class LKTileEntityGrindingBowl extends TileEntity implements IInventory, 
 				inventory[i] = null;
 			}
 			return itemstack1;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -123,7 +99,7 @@ public class LKTileEntityGrindingBowl extends TileEntity implements IInventory, 
 	}
 
 	public int getGrindProgressScaled(int i) {
-		return (grindTime * i) / 200;
+		return grindTime * i / 200;
 	}
 
 	@Override
@@ -135,7 +111,6 @@ public class LKTileEntityGrindingBowl extends TileEntity implements IInventory, 
 				if (grindTime == 200) {
 					grindTime = 0;
 					grindItem();
-					update = true;
 				}
 			} else {
 				grindTime = 0;
@@ -147,36 +122,24 @@ public class LKTileEntityGrindingBowl extends TileEntity implements IInventory, 
 		}
 
 		if (worldObj.rand.nextBoolean()) {
-			worldObj.spawnParticle("smoke", (double) (xCoord + 0.5F + (worldObj.rand.nextFloat() / 2.0F) - (worldObj.rand.nextFloat() / 2.0F)), (double) (yCoord + 0.6F), (double) (zCoord + 0.5F + (worldObj.rand.nextFloat() / 2.0F) - (worldObj.rand.nextFloat() / 2.0F)), 0.0D, 0.0D, 0.0D);
+			worldObj.spawnParticle("smoke", xCoord + 0.5F + worldObj.rand.nextFloat() / 2.0F - worldObj.rand.nextFloat() / 2.0F, yCoord + 0.6F, zCoord + 0.5F + worldObj.rand.nextFloat() / 2.0F - worldObj.rand.nextFloat() / 2.0F, 0.0D, 0.0D, 0.0D);
 		}
 
-		stickRotation += 8F;
-		if (stickRotation >= 360F) {
-			stickRotation -= 360F;
+		stickRotation += 8.0F;
+		if (stickRotation >= 360.0F) {
+			stickRotation -= 360.0F;
 		}
 	}
 
-	public boolean canGrind() {
+	private boolean canGrind() {
 		if (inventory[0] == null) {
 			return false;
 		}
 		ItemStack itemstack = LKGrindingRecipes.grinding().getGrindingResult(inventory[0]);
-		if (itemstack == null) {
-			return false;
-		}
-		if (inventory[1] == null) {
-			return true;
-		}
-		if (!inventory[1].isItemEqual(itemstack)) {
-			return false;
-		}
-		if (inventory[1].stackSize < getInventoryStackLimit() && inventory[1].stackSize < inventory[1].getMaxStackSize()) {
-			return true;
-		}
-		return inventory[1].stackSize < itemstack.getMaxStackSize();
+		return itemstack != null && (inventory[1] == null || inventory[1].isItemEqual(itemstack) && (inventory[1].stackSize < getInventoryStackLimit() && inventory[1].stackSize < inventory[1].getMaxStackSize() || inventory[1].stackSize < itemstack.getMaxStackSize()));
 	}
 
-	public void grindItem() {
+	private void grindItem() {
 		if (!canGrind()) {
 			return;
 		}
@@ -198,10 +161,7 @@ public class LKTileEntityGrindingBowl extends TileEntity implements IInventory, 
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		}
-		return entityplayer.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -210,9 +170,8 @@ public class LKTileEntityGrindingBowl extends TileEntity implements IInventory, 
 			ItemStack stack = inventory[i];
 			inventory[i] = null;
 			return stack;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override

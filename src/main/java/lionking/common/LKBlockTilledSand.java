@@ -2,33 +2,10 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -51,7 +28,7 @@ public class LKBlockTilledSand extends LKBlock {
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getAABBPool().getAABB((double) (i + 0), (double) (j + 0), (double) (k + 0), (double) (i + 1), (double) (j + 1), (double) (k + 1));
+		return AxisAlignedBB.getAABBPool().getAABB(i, j, k, i + 1, j + 1, k + 1);
 	}
 
 	@Override
@@ -68,10 +45,9 @@ public class LKBlockTilledSand extends LKBlock {
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
 		if (i == 1) {
-			return j > 0 ? tilledSandIcons[1] : tilledSandIcons[0];
-		} else {
-			return Block.sand.getIcon(i, 0);
+			return tilledSandIcons[j > 0 ? 1 : 0];
 		}
+		return Block.sand.getIcon(i, 0);
 	}
 
 	@Override
@@ -110,7 +86,7 @@ public class LKBlockTilledSand extends LKBlock {
 		}
 	}
 
-	private boolean isCropsNearby(World world, int i, int j, int k) {
+	private boolean isCropsNearby(IBlockAccess world, int i, int j, int k) {
 		for (int i1 = i; i1 <= i; i1++) {
 			for (int k1 = k; k1 <= k; k1++) {
 				int var8 = world.getBlockId(i1, j + 1, k1);
@@ -124,7 +100,7 @@ public class LKBlockTilledSand extends LKBlock {
 		return false;
 	}
 
-	private boolean isWaterNearby(World world, int i, int j, int k) {
+	private boolean isWaterNearby(IBlockAccess world, int i, int j, int k) {
 		for (int i1 = i - 4; i1 <= i + 4; ++i1) {
 			for (int j1 = j; j1 <= j + 1; ++j1) {
 				for (int k1 = k - 4; k1 <= k + 4; ++k1) {

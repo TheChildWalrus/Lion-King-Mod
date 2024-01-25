@@ -1,44 +1,15 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
 import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class LKAchievement extends Achievement {
 	public final int displayColumn;
 	public final int displayRow;
-	public final LKAchievement parentAchievement;
-	public final ItemStack theItemStack;
 	private final String achievementDescription;
 	public String lkAchievementTitle;
 	private IStatStringFormat statStringFormatter;
@@ -54,7 +25,6 @@ public class LKAchievement extends Achievement {
 
 	public LKAchievement(int i, String s, int j, int k, ItemStack itemstack, LKAchievement achievement) {
 		super(0x19941994 + i, s, j, k, itemstack, achievement);
-		theItemStack = itemstack;
 		achievementDescription = s;
 		displayColumn = j;
 		displayRow = k;
@@ -70,19 +40,21 @@ public class LKAchievement extends Achievement {
 		if (k > LKAchievementList.maxDisplayRow) {
 			LKAchievementList.maxDisplayRow = k;
 		}
-		parentAchievement = achievement;
 	}
 
+	@Override
 	public LKAchievement setIndependent() {
 		isIndependent = true;
 		return this;
 	}
 
+	@Override
 	public LKAchievement setSpecial() {
 		isSpecial = true;
 		return this;
 	}
 
+	@Override
 	public LKAchievement registerAchievement() {
 		super.registerAchievement();
 		AchievementList.achievementList.remove(this);
@@ -104,11 +76,11 @@ public class LKAchievement extends Achievement {
 	public String getDescription() {
 		if (statStringFormatter != null) {
 			return statStringFormatter.formatString(achievementDescription);
-		} else {
-			return achievementDescription;
 		}
+		return achievementDescription;
 	}
 
+	@Override
 	public LKAchievement setStatStringFormatter(IStatStringFormat istatstringformat) {
 		statStringFormatter = istatstringformat;
 		return this;

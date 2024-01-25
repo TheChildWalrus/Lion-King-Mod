@@ -1,38 +1,11 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
-import lionking.client.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -66,7 +39,7 @@ public class LKBlockSapling extends LKBlockFlower {
 		}
 	}
 
-	public void incrementGrowth(World world, int i, int j, int k, Random random) {
+	private void incrementGrowth(World world, int i, int j, int k, Random random) {
 		int l = world.getBlockMetadata(i, j, k);
 		if ((l & 8) == 0) {
 			world.setBlockMetadataWithNotify(i, j, k, l | 8, 4);
@@ -127,7 +100,7 @@ public class LKBlockSapling extends LKBlockFlower {
 		}
 
 		if (tree != null) {
-			if (!((WorldGenerator) tree).generate(world, random, i + i1, j, k + j1)) {
+			if (!tree.generate(world, random, i + i1, j, k + j1)) {
 				if (growHugeTree) {
 					world.setBlock(i + i1, j, k + j1, blockID, 0, 4);
 					world.setBlock(i + i1 + 1, j, k + j1, blockID, 0, 4);
@@ -145,9 +118,9 @@ public class LKBlockSapling extends LKBlockFlower {
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		if (blockID == mod_LionKing.passionSapling.blockID) {
 			for (int l = 0; l < 4; l++) {
-				double d = (float) i + random.nextFloat();
-				double d1 = (float) j + random.nextFloat();
-				double d2 = (float) k + random.nextFloat();
+				double d = i + random.nextFloat();
+				double d1 = j + random.nextFloat();
+				double d2 = k + random.nextFloat();
 				double d3 = (-0.5F + random.nextFloat()) * 0.01F;
 				double d4 = random.nextFloat() * 0.01F;
 				double d5 = (-0.5F + random.nextFloat()) * 0.01F;

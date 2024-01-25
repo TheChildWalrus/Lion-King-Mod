@@ -1,40 +1,13 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.List;
 
 public class LKInventorySimba implements IInventory {
-	public ItemStack inventory[];
-	public LKEntitySimba theSimba;
+	private ItemStack[] inventory;
+	private final LKEntitySimba theSimba;
 
 	public LKInventorySimba(LKEntitySimba entity) {
 		inventory = new ItemStack[9];
@@ -91,19 +64,17 @@ public class LKInventorySimba implements IInventory {
 		if (l > getInventoryStackLimit() - inventory[k].stackSize) {
 			l = getInventoryStackLimit() - inventory[k].stackSize;
 		}
-		if (l == 0) {
-			return j;
-		} else {
+		if (l != 0) {
 			j -= l;
 			inventory[k].stackSize += l;
 			inventory[k].animationsToGo = 5;
-			return j;
 		}
+		return j;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		ItemStack aitemstack[] = inventory;
+		ItemStack[] aitemstack = inventory;
 		if (aitemstack[i] != null) {
 			if (aitemstack[i].stackSize <= j) {
 				ItemStack itemstack = aitemstack[i];
@@ -115,14 +86,13 @@ public class LKInventorySimba implements IInventory {
 				aitemstack[i] = null;
 			}
 			return itemstack1;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		ItemStack aitemstack[] = inventory;
+		ItemStack[] aitemstack = inventory;
 		aitemstack[i] = itemstack;
 	}
 
@@ -147,7 +117,7 @@ public class LKInventorySimba implements IInventory {
 			if (itemstack.getItem() == null) {
 				continue;
 			}
-			if (j >= 0 && j < inventory.length) {
+			if (j < inventory.length) {
 				inventory[j] = itemstack;
 			}
 		}
@@ -160,7 +130,7 @@ public class LKInventorySimba implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		ItemStack aitemstack[] = inventory;
+		ItemStack[] aitemstack = inventory;
 		return aitemstack[i];
 	}
 
@@ -180,10 +150,7 @@ public class LKInventorySimba implements IInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (theSimba.getHealth() <= 0) {
-			return false;
-		}
-		return entityplayer.getDistanceSqToEntity(theSimba) <= 64D;
+		return !(theSimba.getHealth() <= 0) && entityplayer.getDistanceSqToEntity(theSimba) <= 64.0D;
 	}
 
 	public void dropAllItems() {
@@ -197,13 +164,12 @@ public class LKInventorySimba implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if (this.inventory[i] != null) {
-			ItemStack stack = this.inventory[i];
-			this.inventory[i] = null;
+		if (inventory[i] != null) {
+			ItemStack stack = inventory[i];
+			inventory[i] = null;
 			return stack;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override

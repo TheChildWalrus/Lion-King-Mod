@@ -1,40 +1,16 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.Random;
 
 public class LKEntityTermite extends EntityMob {
-	int timeSinceIgnited;
-	int lastActiveTime;
+	private int timeSinceIgnited;
+	private int lastActiveTime;
 
 	public LKEntityTermite(World world) {
 		super(world);
@@ -45,14 +21,14 @@ public class LKEntityTermite extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(9D);
-		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(1D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(9.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(1.0D);
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(16, Byte.valueOf((byte) -1));
+		dataWatcher.addObject(16, (byte) -1);
 	}
 
 	@Override
@@ -102,7 +78,7 @@ public class LKEntityTermite extends EntityMob {
 			return;
 		}
 		int i = getTermiteState();
-		if (i <= 0 && f < 3F || i > 0 && f < 7F) {
+		if (f < (i <= 0 ? 3.0F : 7.0F)) {
 			if (timeSinceIgnited == 0) {
 				worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
 			}
@@ -123,7 +99,7 @@ public class LKEntityTermite extends EntityMob {
 	}
 
 	public float setTermiteFlashTime(float f) {
-		return ((float) lastActiveTime + (float) (timeSinceIgnited - lastActiveTime) * f) / 28F;
+		return (lastActiveTime + (timeSinceIgnited - lastActiveTime) * f) / 28.0F;
 	}
 
 	@Override
@@ -136,7 +112,7 @@ public class LKEntityTermite extends EntityMob {
 	}
 
 	private void setTermiteState(int i) {
-		dataWatcher.updateObject(16, Byte.valueOf((byte) i));
+		dataWatcher.updateObject(16, (byte) i);
 	}
 
 	@Override

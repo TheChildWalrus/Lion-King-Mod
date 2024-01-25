@@ -1,50 +1,31 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
 public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LKAngerable {
-	private int hostileTick = 0;
+	private int hostileTick;
 
-	public LKEntityLionBase(World world) {
+	protected LKEntityLionBase(World world) {
 		super(world);
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new LKEntityAILionAttack(this, EntityPlayer.class, 1.5D, false));
 		tasks.addTask(2, new LKEntityAIAngerablePanic(this, 1.5D));
-		tasks.addTask(3, new LKEntityAIAngerableMate(this, 1D));
+		tasks.addTask(3, new LKEntityAIAngerableMate(this, 1.0D));
 		tasks.addTask(4, new EntityAITempt(this, 1.4D, mod_LionKing.hyenaBone.itemID, false));
 		tasks.addTask(5, new EntityAIFollowParent(this, 1.4D));
-		tasks.addTask(6, new EntityAIWander(this, 1D));
+		tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(8, new EntityAILookIdle(this));
 		targetTasks.addTask(0, new EntityAIHurtByTarget(this, false));
@@ -54,7 +35,7 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(18D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(18.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.2F);
 	}
 
@@ -63,6 +44,7 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 		return true;
 	}
 
+	@Override
 	public boolean isHostile() {
 		return hostileTick > 0;
 	}
@@ -84,9 +66,8 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 	protected int getDropItemId() {
 		if (isBurning()) {
 			return mod_LionKing.lionCooked.itemID;
-		} else {
-			return mod_LionKing.lionRaw.itemID;
 		}
+		return mod_LionKing.lionRaw.itemID;
 	}
 
 	@Override
@@ -119,7 +100,7 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 			i -= 2 << getActivePotionEffect(Potion.weakness).getAmplifier();
 		}
 
-		return entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float) i);
+		return entity.attackEntityFrom(DamageSource.causeMobDamage(this), i);
 	}
 
 	@Override
@@ -132,18 +113,18 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 		Entity attacker = damagesource.getEntity();
 		if (isChild()) {
 			fleeingTick = 60;
-			List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(12D, 12D, 12D));
-			for (int j = 0; j < list.size(); j++) {
-				Entity entity = (Entity) list.get(j);
+			List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(12.0D, 12.0D, 12.0D));
+			for (Object o : list) {
+				Entity entity = (Entity) o;
 				if (entity instanceof LKEntityLionBase) {
 					LKEntityLionBase lion = (LKEntityLionBase) entity;
-					if (!lion.isChild() && attacker != null && attacker instanceof EntityLivingBase) {
+					if (!lion.isChild() && attacker instanceof EntityLivingBase) {
 						lion.becomeAngryAt((EntityLivingBase) attacker);
 					}
 				}
 			}
 		}
-		if (attacker != null && attacker instanceof EntityLivingBase && !isChild()) {
+		if (attacker instanceof EntityLivingBase && !isChild()) {
 			becomeAngryAt((EntityLivingBase) attacker);
 		}
 		return super.attackEntityFrom(damagesource, f);
@@ -178,9 +159,8 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 		}
 		if (this instanceof LKEntityLion) {
 			return mate instanceof LKEntityLioness;
-		} else {
-			return mate instanceof LKEntityLion;
 		}
+		return mate instanceof LKEntityLion;
 	}
 
 	@Override
@@ -193,13 +173,11 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 				double d = getRNG().nextGaussian() * 0.02D;
 				double d1 = getRNG().nextGaussian() * 0.02D;
 				double d2 = getRNG().nextGaussian() * 0.02D;
-				worldObj.spawnParticle("smoke", (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.5D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+				worldObj.spawnParticle("smoke", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.5D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 			}
 			return true;
-		} else if (isHostile()) {
-			return false;
 		}
-		return super.interact(entityplayer);
+		return !isHostile() && super.interact(entityplayer);
 	}
 
 	@Override
@@ -217,6 +195,7 @@ public abstract class LKEntityLionBase extends LKEntityQuestAnimal implements LK
 		return "lionking:liondeath";
 	}
 
+	@Override
 	public ItemStack getQuestItem() {
 		int i = getRNG().nextInt(5);
 		switch (i) {

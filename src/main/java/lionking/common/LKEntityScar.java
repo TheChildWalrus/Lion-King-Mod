@@ -1,34 +1,16 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.*;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
@@ -38,7 +20,7 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new LKEntityAILionAttack(this, EntityPlayer.class, 1.4D, false));
-		tasks.addTask(2, new EntityAIWander(this, 1D));
+		tasks.addTask(2, new EntityAIWander(this, 1.0D));
 		tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(4, new EntityAILookIdle(this));
 		targetTasks.addTask(0, new EntityAIHurtByTarget(this, false));
@@ -49,10 +31,11 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(250D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(250.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
 	}
 
+	@Override
 	public boolean isHostile() {
 		return isScarHostile();
 	}
@@ -70,10 +53,10 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(16, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(17, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(18, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(19, Byte.valueOf((byte) 0));
+		dataWatcher.addObject(16, (byte) 0);
+		dataWatcher.addObject(17, (byte) 0);
+		dataWatcher.addObject(18, (byte) 0);
+		dataWatcher.addObject(19, (byte) 0);
 	}
 
 	@Override
@@ -96,32 +79,30 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
 		super.readEntityFromNBT(nbttagcompound);
-		dataWatcher.updateObject(16, Byte.valueOf((byte) (nbttagcompound.getBoolean("IsHostile") ? 1 : 0)));
-		dataWatcher.updateObject(17, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasFirstSpoken") ? 1 : 0)));
-		dataWatcher.updateObject(18, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpawnedHyenas") ? 1 : 0)));
-		dataWatcher.updateObject(19, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasMadeExplosions") ? 1 : 0)));
+		dataWatcher.updateObject(16, (byte) (nbttagcompound.getBoolean("IsHostile") ? 1 : 0));
+		dataWatcher.updateObject(17, (byte) (nbttagcompound.getBoolean("HasFirstSpoken") ? 1 : 0));
+		dataWatcher.updateObject(18, (byte) (nbttagcompound.getBoolean("HasSpawnedHyenas") ? 1 : 0));
+		dataWatcher.updateObject(19, (byte) (nbttagcompound.getBoolean("HasMadeExplosions") ? 1 : 0));
 	}
 
 	public boolean isScarHostile() {
 		return dataWatcher.getWatchableObjectByte(16) == 1;
 	}
 
-	public void setScarHostile(boolean flag) {
-		dataWatcher.updateObject(16, Byte.valueOf(flag ? (byte) 1 : (byte) 0));
+	private void setScarHostile(boolean flag) {
+		dataWatcher.updateObject(16, (byte) (flag ? 1 : 0));
 	}
 
 	@Override
 	protected Entity findPlayerToAttack() {
-		if (!isScarHostile()) {
-			return null;
-		} else {
-			EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
+		if (isScarHostile()) {
+			EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16.0D);
 			if (entityplayer != null && canEntityBeSeen(entityplayer)) {
 				return entityplayer;
-			} else {
-				return null;
 			}
+			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -134,42 +115,43 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
-		return entity.attackEntityFrom(DamageSource.causeMobDamage(this), 6F);
+		return entity.attackEntityFrom(DamageSource.causeMobDamage(this), 6.0F);
 	}
 
-	public boolean getHasFirstSpoken() {
+	private boolean getHasFirstSpoken() {
 		return dataWatcher.getWatchableObjectByte(17) == 1;
 	}
 
-	public boolean getHasSpawnedHyenas() {
+	private boolean getHasSpawnedHyenas() {
 		return dataWatcher.getWatchableObjectByte(18) == 1;
 	}
 
-	public boolean getHasMadeExplosions() {
+	private boolean getHasMadeExplosions() {
 		return dataWatcher.getWatchableObjectByte(19) == 1;
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float f) {
+		float f1 = f;
 		Entity entity = damagesource.getEntity();
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer entityplayer = (EntityPlayer) entity;
 			ItemStack itemstack = entityplayer.inventory.getCurrentItem();
 			if (itemstack == null || itemstack.itemID != mod_LionKing.rafikiStick.itemID) {
-				f = 0F;
+				f1 = 0.0F;
 			}
 		} else {
-			f = 0F;
+			f1 = 0.0F;
 		}
 		if (!getHasFirstSpoken() && entity instanceof EntityPlayer) {
 			EntityPlayer entityplayer = (EntityPlayer) entity;
 			if (!worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Scar> \u00a7fYou think you can fight me and live?");
+				LKIngame.sendMessageToAllPlayers("§e<Scar> §fYou think you can fight me and live?");
 			}
-			dataWatcher.updateObject(17, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(17, (byte) 1);
 			becomeAngryAt(entityplayer);
 		}
-		return super.attackEntityFrom(damagesource, f);
+		return super.attackEntityFrom(damagesource, f1);
 	}
 
 	private void becomeAngryAt(Entity entity) {
@@ -183,18 +165,18 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 		super.onLivingUpdate();
 
 		if (!getHasFirstSpoken()) {
-			EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 8D);
+			EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 8.0D);
 			if (entityplayer != null) {
 				Vec3 vec1 = entityplayer.getLook(1.0F).normalize();
-				Vec3 vec2 = worldObj.getWorldVec3Pool().getVecFromPool(posX - entityplayer.posX, boundingBox.minY + (double) (height / 2.0F) - (entityplayer.posY + (double) entityplayer.getEyeHeight()), posZ - entityplayer.posZ);
+				Vec3 vec2 = worldObj.getWorldVec3Pool().getVecFromPool(posX - entityplayer.posX, boundingBox.minY + height / 2.0F - (entityplayer.posY + entityplayer.getEyeHeight()), posZ - entityplayer.posZ);
 				double d = vec2.lengthVector();
 				vec2 = vec2.normalize();
 				double d1 = vec1.dotProduct(vec2);
 				if (d1 > 1.0D - 0.025D / d && entityplayer.canEntityBeSeen(this)) {
 					if (!worldObj.isRemote) {
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Scar> \u00a7fYou think you can fight me and live?");
+						LKIngame.sendMessageToAllPlayers("§e<Scar> §fYou think you can fight me and live?");
 					}
-					dataWatcher.updateObject(17, Byte.valueOf((byte) 1));
+					dataWatcher.updateObject(17, (byte) 1);
 					becomeAngryAt(entityplayer);
 				}
 			}
@@ -205,21 +187,21 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 				double d = getRNG().nextGaussian() * 0.02D;
 				double d1 = getRNG().nextGaussian() * 0.02D;
 				double d2 = getRNG().nextGaussian() * 0.02D;
-				worldObj.spawnParticle((getRNG().nextInt(3) == 0 ? "smoke" : "flame"), (posX + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, posY + 0.0D + (double) (getRNG().nextFloat() * height), (posZ + (double) (getRNG().nextFloat() * width * 2.0F)) - (double) width, d, d1, d2);
+				worldObj.spawnParticle(getRNG().nextInt(3) == 0 ? "smoke" : "flame", posX + getRNG().nextFloat() * width * 2.0F - width, posY + 0.0D + getRNG().nextFloat() * height, posZ + getRNG().nextFloat() * width * 2.0F - width, d, d1, d2);
 			}
 
-			EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, 128D);
+			EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, 128.0D);
 			if (entityplayer == null) {
 				return;
 			}
 
-			if (getHealth() <= 175F && !getHasSpawnedHyenas()) {
+			if (getHealth() <= 175.0F && !getHasSpawnedHyenas()) {
 				int i = MathHelper.floor_double(posX);
 				int j = MathHelper.floor_double(posY);
 				int k = MathHelper.floor_double(posZ);
 
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Scar> \u00a7fMinions! Tear this weakling's flesh apart!");
+					LKIngame.sendMessageToAllPlayers("§e<Scar> §fMinions! Tear this weakling's flesh apart!");
 
 					for (int i1 = 0; i1 < 3; i1++) {
 						LKEntityHyena hyena = new LKEntityHyena(worldObj);
@@ -228,11 +210,11 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 					}
 				}
 
-				dataWatcher.updateObject(18, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(18, (byte) 1);
 			}
 
 			if (!worldObj.isRemote && getHasSpawnedHyenas() && getRNG().nextInt(200) == 0) {
-				List list = worldObj.getEntitiesWithinAABB(LKEntityHyena.class, boundingBox.addCoord(16F, 16F, 16F).addCoord(-16F, -16F, -16F));
+				List list = worldObj.getEntitiesWithinAABB(LKEntityHyena.class, boundingBox.addCoord(16.0F, 16.0F, 16.0F).addCoord(-16.0F, -16.0F, -16.0F));
 				if (list.size() < 6) {
 					int i = MathHelper.floor_double(posX);
 					int j = MathHelper.floor_double(posY);
@@ -244,13 +226,13 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 				}
 			}
 
-			if (getHealth() <= 70F && !getHasMadeExplosions()) {
+			if (getHealth() <= 70.0F && !getHasMadeExplosions()) {
 				int i = MathHelper.floor_double(posX);
 				int j = MathHelper.floor_double(posY);
 				int k = MathHelper.floor_double(posZ);
 
 				if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Scar> \u00a7fI will NOT be defeated!");
+					LKIngame.sendMessageToAllPlayers("§e<Scar> §fI will NOT be defeated!");
 				}
 
 				for (int i1 = -8; i1 < 9; i1++) {
@@ -261,12 +243,12 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 							}
 
 							if (worldObj.isAirBlock(i + i1, j + j1, k + k1) && getRNG().nextInt(40) == 0) {
-								worldObj.createExplosion(this, (double) i + i1, (double) j + j1, (double) k + k1, 0F, false);
+								worldObj.createExplosion(this, (double) i + i1, (double) j + j1, (double) k + k1, 0.0F, false);
 							}
 						}
 					}
 				}
-				dataWatcher.updateObject(19, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(19, (byte) 1);
 			}
 		}
 	}
@@ -298,12 +280,10 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 				}
 			}
 
-			List list = worldObj.getEntitiesWithinAABB(LKEntityHyena.class, boundingBox.addCoord(18F, 18F, 18F).addCoord(-18F, -18F, -18F));
-			{
-				for (int l = 0; l < list.size(); l++) {
-					if (!worldObj.isRemote) {
-						((LKEntityHyena) list.get(l)).setDead();
-					}
+			List list = worldObj.getEntitiesWithinAABB(LKEntityHyena.class, boundingBox.addCoord(18.0F, 18.0F, 18.0F).addCoord(-18.0F, -18.0F, -18.0F));
+			for (Object o : list) {
+				if (!worldObj.isRemote) {
+					((Entity) o).setDead();
 				}
 			}
 
@@ -314,7 +294,7 @@ public class LKEntityScar extends EntityCreature implements LKCharacter, LKAnger
 			}
 
 			if (!worldObj.isRemote) {
-				worldObj.createExplosion(this, (double) i, (double) j, (double) k, 0F, false);
+				worldObj.createExplosion(this, i, j, k, 0.0F, false);
 
 				for (int i1 = 0; i1 < getRNG().nextInt(7) + 7; i1++) {
 					dropItem(mod_LionKing.hyenaBone.itemID, 1);

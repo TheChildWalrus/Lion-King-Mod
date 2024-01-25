@@ -1,37 +1,9 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.List;
-import java.util.Arrays;
 
 public class LKInventoryTimon implements IInventory {
 	public static int[] costs = new int[]
@@ -43,7 +15,7 @@ public class LKInventoryTimon implements IInventory {
 					10
 			};
 
-	public ItemStack[] inventory = new ItemStack[]
+	private ItemStack[] inventory = new ItemStack[]
 			{
 					new ItemStack(mod_LionKing.tunnahDiggah),
 					new ItemStack(mod_LionKing.pumbaaBomb),
@@ -52,7 +24,7 @@ public class LKInventoryTimon implements IInventory {
 					new ItemStack(mod_LionKing.amulet)
 			};
 
-	public LKEntityTimon theTimon;
+	private final LKEntityTimon theTimon;
 
 	public LKInventoryTimon(LKEntityTimon entity) {
 		theTimon = entity;
@@ -108,19 +80,17 @@ public class LKInventoryTimon implements IInventory {
 		if (l > getInventoryStackLimit() - inventory[k].stackSize) {
 			l = getInventoryStackLimit() - inventory[k].stackSize;
 		}
-		if (l == 0) {
-			return j;
-		} else {
+		if (l != 0) {
 			j -= l;
 			inventory[k].stackSize += l;
 			inventory[k].animationsToGo = 5;
-			return j;
 		}
+		return j;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		ItemStack aitemstack[] = inventory;
+		ItemStack[] aitemstack = inventory;
 		if (aitemstack[i] != null) {
 			if (aitemstack[i].stackSize <= j) {
 				ItemStack itemstack = aitemstack[i];
@@ -132,9 +102,8 @@ public class LKInventoryTimon implements IInventory {
 				aitemstack[i] = null;
 			}
 			return itemstack1;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -163,7 +132,7 @@ public class LKInventoryTimon implements IInventory {
 			if (itemstack.getItem() == null) {
 				continue;
 			}
-			if (j >= 0 && j < inventory.length) {
+			if (j < inventory.length) {
 				inventory[j] = itemstack;
 			}
 		}
@@ -176,7 +145,7 @@ public class LKInventoryTimon implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		ItemStack aitemstack[] = inventory;
+		ItemStack[] aitemstack = inventory;
 		return aitemstack[i];
 	}
 
@@ -192,10 +161,7 @@ public class LKInventoryTimon implements IInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (theTimon == null || theTimon.getHealth() <= 0) {
-			return false;
-		}
-		return entityplayer.getDistanceSqToEntity(theTimon) <= 144D;
+		return theTimon != null && !(theTimon.getHealth() <= 0) && entityplayer.getDistanceSqToEntity(theTimon) <= 144.0D;
 	}
 
 	public void dropAllItems() {
@@ -217,9 +183,8 @@ public class LKInventoryTimon implements IInventory {
 			ItemStack stack = inventory[i];
 			inventory[i] = null;
 			return stack;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override

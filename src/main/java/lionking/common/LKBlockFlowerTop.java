@@ -2,33 +2,9 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -39,7 +15,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 public class LKBlockFlowerTop extends LKBlock {
 	@SideOnly(Side.CLIENT)
 	private Icon[] flowerIcons;
-	private String[] flowerNames = {"purpleFlower_top", "redFlower_top"};
+	private final String[] flowerNames = new String[]{"purpleFlower_top", "redFlower_top"};
 
 	public LKBlockFlowerTop(int i) {
 		super(i, Material.plants);
@@ -52,10 +28,11 @@ public class LKBlockFlowerTop extends LKBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
-		if (j >= flowerNames.length) {
-			j = 0;
+		int j1 = j;
+		if (j1 >= flowerNames.length) {
+			j1 = 0;
 		}
-		return flowerIcons[j];
+		return flowerIcons[j1];
 	}
 
 	@Override
@@ -133,6 +110,6 @@ public class LKBlockFlowerTop extends LKBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int idPicked(World world, int i, int j, int k) {
-		return world.getBlockMetadata(i, j, k) == 1 ? mod_LionKing.redFlower.itemID : mod_LionKing.purpleFlower.itemID;
+		return (world.getBlockMetadata(i, j, k) == 1 ? mod_LionKing.redFlower : mod_LionKing.purpleFlower).itemID;
 	}
 }

@@ -1,44 +1,22 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
 import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.*;
 
 public class LKContainerDrum extends Container {
 	public int[] enchantLevels = new int[3];
-	private IInventory theDrum;
-	private IInventory theDrumEnchant = new LKInventoryDrum(this, "Bongo Drum", false, 1);
-	private World worldObj;
-	private Random rand = new Random();
-	private EntityPlayer thePlayer;
+	private final IInventory theDrum;
+	private final IInventory theDrumEnchant = new LKInventoryDrum(this, "Bongo Drum", false, 1);
+	private final World worldObj;
+	private final Random rand = new Random();
+	private final EntityPlayer thePlayer;
 
 	public LKContainerDrum(EntityPlayer entityplayer, World world, LKTileEntityDrum drum) {
 		theDrum = new LKInventoryDrum(this, false, drum);
@@ -49,7 +27,7 @@ public class LKContainerDrum extends Container {
 
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 4; j++) {
-				addSlotToContainer(new LKSlotNote(theDrum, j + (i * 4), i == 0 ? 8 : 152, j * 20 + 5));
+				addSlotToContainer(new LKSlotNote(theDrum, j + i * 4, i == 0 ? 8 : 152, j * 20 + 5));
 			}
 		}
 
@@ -75,9 +53,8 @@ public class LKContainerDrum extends Container {
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		Iterator i = crafters.iterator();
-		while (i.hasNext()) {
-			ICrafting crafting = (ICrafting) i.next();
+		for (Object crafter : crafters) {
+			ICrafting crafting = (ICrafting) crafter;
 			crafting.sendProgressBarUpdate(this, 0, enchantLevels[0]);
 			crafting.sendProgressBarUpdate(this, 1, enchantLevels[1]);
 			crafting.sendProgressBarUpdate(this, 2, enchantLevels[2]);
@@ -107,7 +84,7 @@ public class LKContainerDrum extends Container {
 						}
 					}
 
-					noteValues = MathHelper.floor_double(noteValues / 7F);
+					noteValues = MathHelper.floor_double(noteValues / 7.0F);
 
 					for (int i = 0; i < 3; i++) {
 						int j = EnchantmentHelper.calcItemStackEnchantability(rand, i, noteValues, itemstack);
@@ -135,9 +112,8 @@ public class LKContainerDrum extends Container {
 				List list = EnchantmentHelper.buildEnchantmentList(rand, itemstack, enchantLevels[i]);
 				if (list != null) {
 					entityplayer.addExperienceLevel(-enchantLevels[i]);
-					Iterator iterator = list.iterator();
-					while (iterator.hasNext()) {
-						EnchantmentData enchantment = (EnchantmentData) iterator.next();
+					for (Object o : list) {
+						EnchantmentData enchantment = (EnchantmentData) o;
 						itemstack.addEnchantment(enchantment.enchantmentobj, enchantment.enchantmentLevel);
 					}
 					onCraftMatrixChanged(theDrumEnchant);
@@ -145,9 +121,8 @@ public class LKContainerDrum extends Container {
 				}
 			}
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -177,11 +152,11 @@ public class LKContainerDrum extends Container {
 				if (!mergeItemStack(itemstack1, 9, 45, true)) {
 					return null;
 				}
-			} else if (i >= 9 && i < 36) {
+			} else if (i < 36) {
 				if (!mergeItemStack(itemstack1, 36, 45, false)) {
 					return null;
 				}
-			} else if (i >= 36 && i < 45) {
+			} else if (i < 45) {
 				if (!mergeItemStack(itemstack1, 9, 36, false)) {
 					return null;
 				}
@@ -193,11 +168,10 @@ public class LKContainerDrum extends Container {
 			} else {
 				slot.onSlotChanged();
 			}
-			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onPickupFromSlot(entityplayer, itemstack1);
-			} else {
+			if (itemstack1.stackSize == itemstack.stackSize) {
 				return null;
 			}
+			slot.onPickupFromSlot(entityplayer, itemstack1);
 		}
 		return itemstack;
 	}

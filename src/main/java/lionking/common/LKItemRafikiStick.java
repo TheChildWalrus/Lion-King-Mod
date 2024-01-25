@@ -1,37 +1,17 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
 import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 import com.google.common.collect.Multimap;
-
-import java.util.ArrayList;
 
 import net.minecraftforge.common.IShearable;
 import cpw.mods.fml.relauncher.Side;
@@ -209,7 +189,7 @@ public class LKItemRafikiStick extends LKItem {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
 		int level = EnchantmentHelper.getEnchantmentLevel(mod_LionKing.rafikiStickThunder.effectId, itemstack);
 		if (level > 0 && lastThunderUseTick == 0) {
-			MovingObjectPosition m = entityplayer.rayTrace(5, 1F);
+			MovingObjectPosition m = entityplayer.rayTrace(5, 1.0F);
 			if (m != null) {
 				return itemstack;
 			}
@@ -222,18 +202,15 @@ public class LKItemRafikiStick extends LKItem {
 	public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int l) {
 		int level = EnchantmentHelper.getEnchantmentLevel(mod_LionKing.rafikiStickThunder.effectId, itemstack);
 		if (level > 0) {
-			MovingObjectPosition m = entityplayer.rayTrace(2 + Math.pow(4, level + 1), 1F);
-			MovingObjectPosition n = entityplayer.rayTrace(5, 1F);
+			MovingObjectPosition m = entityplayer.rayTrace(2 + Math.pow(4, level + 1), 1.0F);
+			MovingObjectPosition n = entityplayer.rayTrace(5, 1.0F);
 			if (m != null && m.typeOfHit == EnumMovingObjectType.TILE && n == null) {
 				int i = m.blockX;
 				int j = m.blockY;
 				int k = m.blockZ;
-				double d = (double) i;
-				double d1 = (double) j;
-				double d2 = (double) k;
 				entityplayer.setItemInUse(itemstack, getMaxItemUseDuration(itemstack));
 				if (world.isBlockOpaqueCube(i, j, k) && world.isAirBlock(i, j + 1, k)) {
-					LKEntityLightning bolt = new LKEntityLightning(entityplayer, world, d, d1, d2, level);
+					LKEntityLightning bolt = new LKEntityLightning(entityplayer, world, i, j, k, level);
 					if (!world.isRemote) {
 						world.spawnEntityInWorld(bolt);
 					}
@@ -246,9 +223,9 @@ public class LKItemRafikiStick extends LKItem {
 				double d = itemRand.nextGaussian() * 0.02D;
 				double d1 = itemRand.nextGaussian() * 0.02D;
 				double d2 = itemRand.nextGaussian() * 0.02D;
-				world.spawnParticle("smoke", (entityplayer.posX + (double) (itemRand.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width,
-						entityplayer.posY - 0.5D + (double) (itemRand.nextFloat() * (entityplayer.height / 2)),
-						(entityplayer.posZ + (double) (itemRand.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width, d, d1, d2);
+				world.spawnParticle("smoke", entityplayer.posX + itemRand.nextFloat() * entityplayer.width * 2.0F - entityplayer.width,
+						entityplayer.posY - 0.5D + itemRand.nextFloat() * (entityplayer.height / 2),
+						entityplayer.posZ + itemRand.nextFloat() * entityplayer.width * 2.0F - entityplayer.width, d, d1, d2);
 			}
 		}
 	}
@@ -296,17 +273,16 @@ public class LKItemRafikiStick extends LKItem {
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
-		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double) 5D, 0));
+		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", 5.0D, 0));
 		return multimap;
 	}
 
 	@Override
 	public float getStrVsBlock(ItemStack itemstack, Block block) {
 		if (block instanceof LKBlockLeaves || block instanceof BlockTallGrass || block instanceof BlockDeadBush || block instanceof LKBlockAridGrass) {
-			return 15F;
-		} else {
-			return super.getStrVsBlock(itemstack, block);
+			return 15.0F;
 		}
+		return super.getStrVsBlock(itemstack, block);
 	}
 
 	@Override
@@ -314,9 +290,8 @@ public class LKItemRafikiStick extends LKItem {
 		if (Block.blocksList[i] instanceof LKBlockLeaves) {
 			damageRafikiStick(itemstack, 1, entityliving);
 			return true;
-		} else {
-			return super.onBlockDestroyed(itemstack, world, i, j, k, l, entityliving);
 		}
+		return super.onBlockDestroyed(itemstack, world, i, j, k, l, entityliving);
 	}
 
 	private void damageRafikiStick(ItemStack itemstack, int i, EntityLivingBase entityliving) {
@@ -352,13 +327,13 @@ public class LKItemRafikiStick extends LKItem {
 		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof IShearable) {
 			IShearable target = (IShearable) Block.blocksList[id];
 			if (target.isShearable(itemstack, player.worldObj, x, y, z)) {
-				ArrayList<ItemStack> drops = target.onSheared(itemstack, player.worldObj, x, y, z, EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, itemstack));
+				Iterable<ItemStack> drops = target.onSheared(itemstack, player.worldObj, x, y, z, EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, itemstack));
 				for (ItemStack stack : drops) {
 					float f = 0.7F;
-					double d = (double) (player.getRNG().nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-					double d1 = (double) (player.getRNG().nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-					double d2 = (double) (player.getRNG().nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-					EntityItem entityitem = new EntityItem(player.worldObj, (double) x + d, (double) y + d1, (double) z + d2, stack);
+					double d = player.getRNG().nextFloat() * f + (1.0F - f) * 0.5D;
+					double d1 = player.getRNG().nextFloat() * f + (1.0F - f) * 0.5D;
+					double d2 = player.getRNG().nextFloat() * f + (1.0F - f) * 0.5D;
+					EntityItem entityitem = new EntityItem(player.worldObj, x + d, y + d1, z + d2, stack);
 					entityitem.delayBeforeCanPickup = 10;
 					player.worldObj.spawnEntityInWorld(entityitem);
 				}
@@ -368,10 +343,10 @@ public class LKItemRafikiStick extends LKItem {
 		} else if (id == Block.deadBush.blockID) {
 			ItemStack stack = new ItemStack(Block.deadBush);
 			float f = 0.7F;
-			double d = (double) (player.getRNG().nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			double d1 = (double) (player.getRNG().nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			double d2 = (double) (player.getRNG().nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			EntityItem entityitem = new EntityItem(player.worldObj, (double) x + d, (double) y + d1, (double) z + d2, stack);
+			double d = player.getRNG().nextFloat() * f + (1.0F - f) * 0.5D;
+			double d1 = player.getRNG().nextFloat() * f + (1.0F - f) * 0.5D;
+			double d2 = player.getRNG().nextFloat() * f + (1.0F - f) * 0.5D;
+			EntityItem entityitem = new EntityItem(player.worldObj, x + d, y + d1, z + d2, stack);
 			entityitem.delayBeforeCanPickup = 10;
 			player.worldObj.spawnEntityInWorld(entityitem);
 			damageRafikiStick(itemstack, 1, player);

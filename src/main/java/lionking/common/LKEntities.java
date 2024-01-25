@@ -14,15 +14,18 @@ import java.util.LinkedHashMap;
 public class LKEntities {
 	public static HashMap creatures = new LinkedHashMap();
 
+	private LKEntities() {
+	}
+
 	public static void registerCreature(Class entityClass, String name, int id, int eggBackground, int eggSpots) {
 		EntityRegistry.registerModEntity(entityClass, name, id, mod_LionKing.instance, 80, 3, true);
-		LanguageRegistry.instance().addStringLocalization("entity." + FMLCommonHandler.instance().findContainerFor(mod_LionKing.instance).getModId() + "." + name + ".name", name);
-		creatures.put(Integer.valueOf(id), new EntityEggInfo(id, eggBackground, eggSpots));
+		LanguageRegistry.instance().addStringLocalization("entity." + FMLCommonHandler.instance().findContainerFor(mod_LionKing.instance).getModId() + '.' + name + ".name", name);
+		creatures.put(id, new EntityEggInfo(id, eggBackground, eggSpots));
 	}
 
 	public static void registerEntity(Class entityClass, String name, int id) {
 		EntityRegistry.registerModEntity(entityClass, name, id, mod_LionKing.instance, 80, 3, true);
-		LanguageRegistry.instance().addStringLocalization("entity." + FMLCommonHandler.instance().findContainerFor(mod_LionKing.instance).getModId() + "." + name + ".name", name);
+		LanguageRegistry.instance().addStringLocalization("entity." + FMLCommonHandler.instance().findContainerFor(mod_LionKing.instance).getModId() + '.' + name + ".name", name);
 	}
 
 	public static int getEntityID(Entity entity) {
@@ -46,10 +49,10 @@ public class LKEntities {
 		try {
 			ModContainer container = FMLCommonHandler.instance().findContainerFor(mod_LionKing.instance);
 			EntityRegistry.EntityRegistration registry = EntityRegistry.instance().lookupModSpawn(container, id);
-			Class entityClass = registry.getEntityClass();
+			Class<? extends Entity> entityClass = registry.getEntityClass();
 
 			if (entityClass != null) {
-				entity = (Entity) entityClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+				entity = entityClass.getConstructor(World.class).newInstance(world);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

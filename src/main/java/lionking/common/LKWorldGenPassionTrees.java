@@ -1,34 +1,9 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -49,7 +24,7 @@ public class LKWorldGenPassionTrees extends WorldGenerator {
 			if (i1 == j) {
 				byte0 = 0;
 			}
-			if (i1 >= (j + 1 + l) - 2) {
+			if (i1 >= j + 1 + l - 2) {
 				byte0 = 2;
 			}
 			for (int i2 = i - byte0; i2 <= i + byte0 && flag; i2++) {
@@ -76,7 +51,7 @@ public class LKWorldGenPassionTrees extends WorldGenerator {
 			return false;
 		}
 		world.setBlock(i, j - 1, k, Block.dirt.blockID, 0, 2);
-		for (int k1 = (j - 3) + l; k1 <= j + l; k1++) {
+		for (int k1 = j - 3 + l; k1 <= j + l; k1++) {
 			int j2 = k1 - (j + l);
 			int i3 = 1 - j2 / 2;
 			for (int k3 = i - i3; k3 <= i + i3; k3++) {

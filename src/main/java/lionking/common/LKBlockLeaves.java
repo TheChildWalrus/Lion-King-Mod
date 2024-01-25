@@ -2,43 +2,18 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 import java.util.ArrayList;
 
 import net.minecraftforge.common.IShearable;
-import lionking.client.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.client.Minecraft;
 
 public class LKBlockLeaves extends BlockLeavesBase implements IShearable {
 	@SideOnly(Side.CLIENT)
@@ -100,13 +75,13 @@ public class LKBlockLeaves extends BlockLeavesBase implements IShearable {
 						for (int i3 = -byte0; i3 <= byte0; i3++) {
 							int k3 = world.getBlockId(i + l1, j + k2, k + i3);
 							if (k3 == mod_LionKing.prideWood.blockID || k3 == mod_LionKing.prideWood2.blockID) {
-								adjacentTreeBlocks[(l1 + k1) * j1 + (k2 + k1) * byte1 + (i3 + k1)] = 0;
+								adjacentTreeBlocks[(l1 + k1) * j1 + (k2 + k1) * byte1 + i3 + k1] = 0;
 								continue;
 							}
 							if (k3 == blockID) {
-								adjacentTreeBlocks[(l1 + k1) * j1 + (k2 + k1) * byte1 + (i3 + k1)] = -2;
+								adjacentTreeBlocks[(l1 + k1) * j1 + (k2 + k1) * byte1 + i3 + k1] = -2;
 							} else {
-								adjacentTreeBlocks[(l1 + k1) * j1 + (k2 + k1) * byte1 + (i3 + k1)] = -1;
+								adjacentTreeBlocks[(l1 + k1) * j1 + (k2 + k1) * byte1 + i3 + k1] = -1;
 							}
 						}
 
@@ -118,26 +93,26 @@ public class LKBlockLeaves extends BlockLeavesBase implements IShearable {
 					for (int l2 = -byte0; l2 <= byte0; l2++) {
 						for (int j3 = -byte0; j3 <= byte0; j3++) {
 							for (int l3 = -byte0; l3 <= byte0; l3++) {
-								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + (l3 + k1)] != i2 - 1) {
+								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + l3 + k1] != i2 - 1) {
 									continue;
 								}
-								if (adjacentTreeBlocks[((l2 + k1) - 1) * j1 + (j3 + k1) * byte1 + (l3 + k1)] == -2) {
-									adjacentTreeBlocks[((l2 + k1) - 1) * j1 + (j3 + k1) * byte1 + (l3 + k1)] = i2;
+								if (adjacentTreeBlocks[(l2 + k1 - 1) * j1 + (j3 + k1) * byte1 + l3 + k1] == -2) {
+									adjacentTreeBlocks[(l2 + k1 - 1) * j1 + (j3 + k1) * byte1 + l3 + k1] = i2;
 								}
-								if (adjacentTreeBlocks[(l2 + k1 + 1) * j1 + (j3 + k1) * byte1 + (l3 + k1)] == -2) {
-									adjacentTreeBlocks[(l2 + k1 + 1) * j1 + (j3 + k1) * byte1 + (l3 + k1)] = i2;
+								if (adjacentTreeBlocks[(l2 + k1 + 1) * j1 + (j3 + k1) * byte1 + l3 + k1] == -2) {
+									adjacentTreeBlocks[(l2 + k1 + 1) * j1 + (j3 + k1) * byte1 + l3 + k1] = i2;
 								}
-								if (adjacentTreeBlocks[(l2 + k1) * j1 + ((j3 + k1) - 1) * byte1 + (l3 + k1)] == -2) {
-									adjacentTreeBlocks[(l2 + k1) * j1 + ((j3 + k1) - 1) * byte1 + (l3 + k1)] = i2;
+								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1 - 1) * byte1 + l3 + k1] == -2) {
+									adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1 - 1) * byte1 + l3 + k1] = i2;
 								}
-								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1 + 1) * byte1 + (l3 + k1)] == -2) {
-									adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1 + 1) * byte1 + (l3 + k1)] = i2;
+								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1 + 1) * byte1 + l3 + k1] == -2) {
+									adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1 + 1) * byte1 + l3 + k1] = i2;
 								}
-								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + ((l3 + k1) - 1)] == -2) {
-									adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + ((l3 + k1) - 1)] = i2;
+								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + l3 + k1 - 1] == -2) {
+									adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + l3 + k1 - 1] = i2;
 								}
-								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + (l3 + k1 + 1)] == -2) {
-									adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + (l3 + k1 + 1)] = i2;
+								if (adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + l3 + k1 + 1] == -2) {
+									adjacentTreeBlocks[(l2 + k1) * j1 + (j3 + k1) * byte1 + l3 + k1 + 1] = i2;
 								}
 							}
 
@@ -161,17 +136,17 @@ public class LKBlockLeaves extends BlockLeavesBase implements IShearable {
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		if (world.canLightningStrikeAt(i, j + 1, k) && !world.doesBlockHaveSolidTopSurface(i, j - 1, k) && random.nextInt(15) == 1) {
-			double d = (double) ((float) i + random.nextFloat());
-			double d1 = (double) j - 0.05D;
-			double d2 = (double) ((float) k + random.nextFloat());
+			double d = i + random.nextFloat();
+			double d1 = j - 0.05D;
+			double d2 = k + random.nextFloat();
 			world.spawnParticle("dripWater", d, d1, d2, 0.0D, 0.0D, 0.0D);
 		}
 
 		if (blockID == mod_LionKing.passionLeaves.blockID) {
 			for (int l = 0; l < 4; l++) {
-				double d = (float) i + random.nextFloat();
-				double d1 = (float) j + random.nextFloat();
-				double d2 = (float) k + random.nextFloat();
+				double d = i + random.nextFloat();
+				double d1 = j + random.nextFloat();
+				double d2 = k + random.nextFloat();
 				double d3 = (-0.5F + random.nextFloat()) * 0.01F;
 				double d4 = random.nextFloat() * 0.01F;
 				double d5 = (-0.5F + random.nextFloat()) * 0.01F;
@@ -204,16 +179,14 @@ public class LKBlockLeaves extends BlockLeavesBase implements IShearable {
 		if (blockID == mod_LionKing.mangoLeaves.blockID) {
 			if (random.nextInt(5) > 1) {
 				return mod_LionKing.mango.itemID;
-			} else {
-				return mod_LionKing.mangoSapling.blockID;
 			}
+			return mod_LionKing.mangoSapling.blockID;
 		}
 		if (blockID == mod_LionKing.passionLeaves.blockID) {
 			if (random.nextBoolean()) {
 				return mod_LionKing.passionFruit.itemID;
-			} else {
-				return mod_LionKing.passionSapling.blockID;
 			}
+			return mod_LionKing.passionSapling.blockID;
 		}
 		if (blockID == mod_LionKing.bananaLeaves.blockID) {
 			return mod_LionKing.bananaSapling.blockID;

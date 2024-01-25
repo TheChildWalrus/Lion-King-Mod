@@ -24,9 +24,8 @@ public class LKBlockYam extends BlockCrops {
 	public boolean canBlockStay(World world, int i, int j, int k) {
 		if (world.getBlockMetadata(i, j, k) == 8) {
 			return (world.getBlockId(i, j - 1, k) == Block.dirt.blockID || world.getBlockId(i, j - 1, k) == Block.grass.blockID) && (world.getFullBlockLightValue(i, j, k) >= 8 || world.canBlockSeeTheSky(i, j, k));
-		} else {
-			return super.canBlockStay(world, i, j, k);
 		}
+		return super.canBlockStay(world, i, j, k);
 	}
 
 	@Override
@@ -46,14 +45,14 @@ public class LKBlockYam extends BlockCrops {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
-		if (j < 7) {
-			if (j == 6) {
-				j = 5;
+		int j1 = j;
+		if (j1 < 7) {
+			if (j1 == 6) {
+				j1 = 5;
 			}
-			return yamIcons[j >> 1];
-		} else {
-			return yamIcons[3];
+			return yamIcons[j1 >> 1];
 		}
+		return yamIcons[3];
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class LKBlockYam extends BlockCrops {
 	public void registerIcons(IconRegister iconregister) {
 		yamIcons = new Icon[4];
 		for (int i = 0; i < 4; i++) {
-			yamIcons[i] = iconregister.registerIcon(getTextureName() + "_" + i);
+			yamIcons[i] = iconregister.registerIcon(getTextureName() + '_' + i);
 		}
 	}
 
@@ -83,8 +82,7 @@ public class LKBlockYam extends BlockCrops {
 				drops.add(new ItemStack(mod_LionKing.yam));
 			}
 			return drops;
-		} else {
-			return super.getBlockDropped(world, i, j, k, metadata, fortune);
 		}
+		return super.getBlockDropped(world, i, j, k, metadata, fortune);
 	}
 }

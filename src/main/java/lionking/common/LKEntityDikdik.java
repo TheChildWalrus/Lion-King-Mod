@@ -1,45 +1,23 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class LKEntityDikdik extends EntityAmbientCreature {
 	public LKEntityDikdik(World world) {
 		super(world);
-		setSize(0.6F, 1F);
+		setSize(0.6F, 1.0F);
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new LKEntityAIAmbientAvoid(this, LKEntityHyena.class, 8.0F, 1D, 1.5D));
+		tasks.addTask(1, new LKEntityAIAmbientAvoid(this, LKEntityHyena.class, 8.0F, 1.0D, 1.5D));
 		tasks.addTask(2, new LKEntityAIAmbientPanic(this, 1.5D));
 		tasks.addTask(3, new LKEntityAIAmbientWander(this, 1.2D));
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 4.0F));
@@ -49,14 +27,14 @@ public class LKEntityDikdik extends EntityAmbientCreature {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(20, Byte.valueOf((byte) getRNG().nextInt(3)));
+		dataWatcher.addObject(20, (byte) getRNG().nextInt(3));
 	}
 
 	@Override
@@ -68,8 +46,8 @@ public class LKEntityDikdik extends EntityAmbientCreature {
 		return dataWatcher.getWatchableObjectByte(20);
 	}
 
-	public void setDikdikType(byte b) {
-		dataWatcher.updateObject(20, Byte.valueOf(b));
+	private void setDikdikType(byte b) {
+		dataWatcher.updateObject(20, b);
 	}
 
 	@Override

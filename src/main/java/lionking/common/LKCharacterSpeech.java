@@ -1,35 +1,5 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
 import java.util.Random;
 
 public enum LKCharacterSpeech {
@@ -59,22 +29,22 @@ public enum LKCharacterSpeech {
 	GEMSBOK("Gemsbok", Speech.gemsbokSpeeches),
 	GEMSBOK_CALF("Gemsbok Calf", Speech.gemsbokCalfSpeeches);
 
-	private static Random random = new Random();
+	private static final Random random = new Random();
 
-	private String characterName;
-	private String[] speeches;
+	private final String characterName;
+	private final String[] speeches;
 
-	private LKCharacterSpeech(String s, String[] s1) {
+	LKCharacterSpeech(String s, String[] s1) {
 		characterName = s;
 		speeches = s1;
 	}
 
 	public static String giveSpeech(LKCharacterSpeech speech) {
-		return "\u00a7e<" + speech.characterName + "> \u00a7f" + speech.speeches[random.nextInt(speech.speeches.length)];
+		return "§e<" + speech.characterName + "> §f" + speech.speeches[random.nextInt(speech.speeches.length)];
 	}
 
 	private static class Speech {
-		private static String[] morningReportSpeeches = new String[]
+		static final String[] morningReportSpeeches = new String[]
 				{
 						"The chimps are going ape!",
 						"As usual, Giraffes remain above it all.",
@@ -94,7 +64,7 @@ public enum LKCharacterSpeech {
 						"You can't trust a tiger. You never know when he could be lion...",
 				};
 
-		private static String[] hyenaBonesSpeeches = new String[]
+		static final String[] hyenaBonesSpeeches = new String[]
 				{
 						"I need sixty-four hyena bones if you want one of my sticks.",
 						"You don't have those hyena bones yet? A cub could do better!",
@@ -106,7 +76,7 @@ public enum LKCharacterSpeech {
 						"Come back when you have the hyena bones."
 				};
 
-		private static String[] mentionScarSpeeches = new String[]
+		static final String[] mentionScarSpeeches = new String[]
 				{
 						"You need to kill Scar! He's a danger to us all!",
 						"While Scar lives, the Pride Lands are in danger!",
@@ -116,7 +86,7 @@ public enum LKCharacterSpeech {
 						"My stick is the only weapon which can harm Scar."
 				};
 
-		private static String[] termitesSpeeches = new String[]
+		static final String[] termitesSpeeches = new String[]
 				{
 						"I know the Outlands are dangerous, but we can't continue until you bring me four ground termites.",
 						"I need four ground termites!",
@@ -127,7 +97,7 @@ public enum LKCharacterSpeech {
 						"Find some termites, put them in a Grinding Bowl, and bring them to old Rafiki."
 				};
 
-		private static String[] mangoesSpeeches = new String[]
+		static final String[] mangoesSpeeches = new String[]
 				{
 						"Bring me four ground mangoes!",
 						"I only need four ground mangoes, then we can carry on!",
@@ -138,7 +108,7 @@ public enum LKCharacterSpeech {
 						"You don't have the mangoes yet? It's not as if they grow on trees..."
 				};
 
-		private static String[] starAltarSpeeches = new String[]
+		static final String[] starAltarSpeeches = new String[]
 				{
 						"You need to craft a Star Altar with three Rafiki Dust and three silver ingots.",
 						"Use some Rafiki Dust on the Star Altar!",
@@ -146,7 +116,7 @@ public enum LKCharacterSpeech {
 						"Go and use the Star Altar."
 				};
 
-		private static String[] hintSpeeches = new String[]
+		static final String[] hintSpeeches = new String[]
 				{
 						"Are you taking good care of Simba?",
 						"How is Simba doing? Is he dead yet?",
@@ -190,7 +160,7 @@ public enum LKCharacterSpeech {
 						"What time does the narwhal bacon?"
 				};
 
-		private static String[] flowerSpeeches = new String[]
+		static final String[] flowerSpeeches = new String[]
 				{
 						"What beautiful flowers!",
 						"Those flowers are simply divine.",
@@ -200,7 +170,7 @@ public enum LKCharacterSpeech {
 						"Such marvellous flowers you have there."
 				};
 
-		private static String[] bugsSpeeches = new String[]
+		static final String[] bugsSpeeches = new String[]
 				{
 						"Do you have those bugs yet?",
 						"We're really hungry! Please, bring us some bugs.",
@@ -211,7 +181,7 @@ public enum LKCharacterSpeech {
 						"Hurry up with those bugs. Pumbaa and I are starving!"
 				};
 
-		private static String[] moreBugsSpeeches = new String[]
+		static final String[] moreBugsSpeeches = new String[]
 				{
 						"Those bugs were delicious. But there's always room for more!",
 						"You want something else from me? Bring us some more bugs.",
@@ -225,7 +195,7 @@ public enum LKCharacterSpeech {
 						"Bugs don't just hide under logs. You can lure them out into the open with a trap and the right bait."
 				};
 
-		private static String[] rugScarSpeeches = new String[]
+		static final String[] rugScarSpeeches = new String[]
 				{
 						"How dare you treat me like this?",
 						"Life's just not fair.",
@@ -248,7 +218,7 @@ public enum LKCharacterSpeech {
 						"Zazu always did say I'd make a very handsome throw rug."
 				};
 
-		private static String[] ziraIngotsSpeeches = new String[]
+		static final String[] ziraIngotsSpeeches = new String[]
 				{
 						"Bring me five kivulite and two silver ingots.",
 						"I tire of waiting for the ingots.",
@@ -259,7 +229,7 @@ public enum LKCharacterSpeech {
 						"Haven't you found any kivulite yet? There's probably some in the caves nearby."
 				};
 
-		private static String[] ziraFeathersSpeeches = new String[]
+		static final String[] ziraFeathersSpeeches = new String[]
 				{
 						"You don't have the feathers yet? I thought better of you.",
 						"I need three Wayward Feathers!",
@@ -270,7 +240,7 @@ public enum LKCharacterSpeech {
 						"The Wayward Feathers aren't going to collect themselves, are they?"
 				};
 
-		private static String[] ziraConquestSpeeches = new String[]
+		static final String[] ziraConquestSpeeches = new String[]
 				{
 						"This tree looks much nicer now it's under our control.",
 						"The Pride Lands will be mine soon!",
@@ -281,7 +251,7 @@ public enum LKCharacterSpeech {
 						"We will take this entire kingdom... by force!"
 				};
 
-		private static String[] rugZiraSpeeches = new String[]
+		static final String[] rugZiraSpeeches = new String[]
 				{
 						"Well, I never thought I'd end up like this.",
 						"This is very uncomfortable.",
@@ -294,7 +264,7 @@ public enum LKCharacterSpeech {
 						"A plague of vultures shall avenge my death!"
 				};
 
-		private static String[] lionSpeeches = new String[]
+		static final String[] lionSpeeches = new String[]
 				{
 						"By Mufasa's mane! You can understand me!",
 						"I like to chew on hyena bones before I breed.",
@@ -307,14 +277,14 @@ public enum LKCharacterSpeech {
 						"Simba was moving too slowly, so I told him to Mufasa."
 				};
 
-		private static String[] lionCubSpeeches = new String[]
+		static final String[] lionCubSpeeches = new String[]
 				{
 						"Roar!",
 						"Grrr!",
 						"Rrr!"
 				};
 
-		private static String[] zebraSpeeches = new String[]
+		static final String[] zebraSpeeches = new String[]
 				{
 						"Stay away from the rainforests at night. That's when the crocodiles come out.",
 						"I nearly got eaten by a crocodile! Good thing I can run faster than them.",
@@ -325,14 +295,14 @@ public enum LKCharacterSpeech {
 						"Zebra meat tastes disgusting, I'll have you know."
 				};
 
-		private static String[] zebraFoalSpeeches = new String[]
+		static final String[] zebraFoalSpeeches = new String[]
 				{
 						"Hmmph!",
 						"Hssh!",
 						"Hmm!"
 				};
 
-		private static String[] rhinoSpeeches = new String[]
+		static final String[] rhinoSpeeches = new String[]
 				{
 						"Have I seen you before?",
 						"Zebra Chops are much nicer than rhino meat.",
@@ -343,14 +313,14 @@ public enum LKCharacterSpeech {
 						"I've got one tail, four feet and twelve toes."
 				};
 
-		private static String[] rhinoCalfSpeeches = new String[]
+		static final String[] rhinoCalfSpeeches = new String[]
 				{
 						"Rrr!",
 						"Hmm!",
 						"Hrrh!"
 				};
 
-		private static String[] gemsbokSpeeches = new String[]
+		static final String[] gemsbokSpeeches = new String[]
 				{
 						"I bet you've never even heard of a Gemsbok before.",
 						"Don't you wish you had horns like mine?",
@@ -362,7 +332,7 @@ public enum LKCharacterSpeech {
 						"Stay away from the crocodiles!"
 				};
 
-		private static String[] gemsbokCalfSpeeches = new String[]
+		static final String[] gemsbokCalfSpeeches = new String[]
 				{
 						"Hmmph!",
 						"Hssh!",

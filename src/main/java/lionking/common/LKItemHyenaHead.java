@@ -27,10 +27,11 @@ public class LKItemHyenaHead extends LKItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int i) {
-		if (i >= 4) {
-			i = 0;
+		int i1 = i;
+		if (i1 >= 4) {
+			i1 = 0;
 		}
-		return headIcons[i];
+		return headIcons[i1];
 	}
 
 	@Override
@@ -44,44 +45,47 @@ public class LKItemHyenaHead extends LKItem {
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack) {
-		return super.getUnlocalizedName() + "." + itemstack.getItemDamage();
+		return getUnlocalizedName() + '.' + itemstack.getItemDamage();
 	}
 
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float f, float f1, float f2) {
-		if (l == 0 || !world.getBlockMaterial(i, j, k).isSolid()) {
+		int j1 = j;
+		int k1 = k;
+		int i1 = i;
+		if (l == 0 || !world.getBlockMaterial(i1, j1, k1).isSolid()) {
 			return false;
 		}
 
 		if (l == 1) {
-			j++;
+			j1++;
 		}
 		if (l == 2) {
-			k--;
+			k1--;
 		}
 		if (l == 3) {
-			k++;
+			k1++;
 		}
 		if (l == 4) {
-			i--;
+			i1--;
 		}
 		if (l == 5) {
-			i++;
+			i1++;
 		}
 
-		if (!entityplayer.canPlayerEdit(i, j, k, l, itemstack) || !mod_LionKing.hyenaHead.canPlaceBlockAt(world, i, j, k)) {
+		if (!entityplayer.canPlayerEdit(i1, j1, k1, l, itemstack) || !mod_LionKing.hyenaHead.canPlaceBlockAt(world, i1, j1, k1)) {
 			return false;
 		}
 
-		world.setBlock(i, j, k, mod_LionKing.hyenaHead.blockID, l, 3);
+		world.setBlock(i1, j1, k1, mod_LionKing.hyenaHead.blockID, l, 3);
 
 		int rotation = 0;
 		if (l == 1) {
 			rotation = MathHelper.floor_double(entityplayer.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
 		}
 
-		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
-		if (tileentity != null && tileentity instanceof LKTileEntityHyenaHead) {
+		TileEntity tileentity = world.getBlockTileEntity(i1, j1, k1);
+		if (tileentity instanceof LKTileEntityHyenaHead) {
 			((LKTileEntityHyenaHead) tileentity).setHyenaType(itemstack.getItemDamage());
 			((LKTileEntityHyenaHead) tileentity).setRotation(rotation);
 		}

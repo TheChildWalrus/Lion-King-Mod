@@ -1,42 +1,16 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 public class LKContainerTimon extends Container {
-	private LKInventoryTimon timonInventory;
+	private final LKInventoryTimon timonInventory;
 
 	public LKContainerTimon(EntityPlayer entityplayer, LKEntityTimon timon) {
 		timonInventory = timon.inventory;
 		for (int i = 0; i < 5; i++) {
-			addSlotToContainer(new LKSlotTimon(timonInventory, i, 15 + (i * 33), 32, timon, LKInventoryTimon.costs[i]));
+			addSlotToContainer(new LKSlotTimon(timonInventory, i, 15 + i * 33, 32, timon, LKInventoryTimon.costs[i]));
 		}
 
 		for (int k = 0; k < 3; k++) {
@@ -66,11 +40,11 @@ public class LKContainerTimon extends Container {
 				if (!mergeItemStack(itemstack1, 5, 41, true)) {
 					return null;
 				}
-			} else if (i >= 5 && i < 32) {
+			} else if (i < 32) {
 				if (!mergeItemStack(itemstack1, 32, 41, false)) {
 					return null;
 				}
-			} else if (i >= 32 && i < 41) {
+			} else if (i < 41) {
 				if (!mergeItemStack(itemstack1, 5, 32, false)) {
 					return null;
 				}
@@ -82,11 +56,10 @@ public class LKContainerTimon extends Container {
 			} else {
 				slot.onSlotChanged();
 			}
-			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onPickupFromSlot(entityplayer, itemstack1);
-			} else {
+			if (itemstack1.stackSize == itemstack.stackSize) {
 				return null;
 			}
+			slot.onPickupFromSlot(entityplayer, itemstack1);
 		}
 		return itemstack;
 	}
@@ -96,7 +69,7 @@ public class LKContainerTimon extends Container {
 		if (i >= 0) {
 			Slot slotForTrading = (Slot) inventorySlots.get(i);
 			if (slotForTrading instanceof LKSlotTimon) {
-				if (!(hasTradableStack(entityplayer, ((LKSlotTimon) slotForTrading).cost))) {
+				if (!hasTradableStack(entityplayer, ((LKSlotTimon) slotForTrading).cost)) {
 					return null;
 				}
 			}

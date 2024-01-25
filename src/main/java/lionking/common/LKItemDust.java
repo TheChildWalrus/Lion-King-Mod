@@ -26,13 +26,13 @@ public class LKItemDust extends LKItem {
 		int i1 = world.getBlockId(i, j, k);
 		if (i1 == mod_LionKing.starAltar.blockID) {
 			itemstack.stackSize--;
-			LKEntityLightning bolt = new LKEntityLightning(entityplayer, world, (double) i, (double) j, (double) k, 0);
+			LKEntityLightning bolt = new LKEntityLightning(entityplayer, world, i, j, k, 0);
 			if (!world.isRemote) {
 				world.spawnEntityInWorld(bolt);
 			}
-			world.createExplosion(entityplayer, (double) i, (double) j + 1, (double) k, 0F, false);
+			world.createExplosion(entityplayer, i, (double) j + 1, k, 0.0F, false);
 			LKEntitySimba simba = new LKEntitySimba(world);
-			simba.setLocationAndAngles(i + 0.5, j + 1, k + 0.5, 0F, 0F);
+			simba.setLocationAndAngles(i + 0.5, j + 1, k + 0.5, 0.0F, 0.0F);
 			simba.setAge(-36000);
 			simba.setHealth(15);
 			simba.setOwnerName(entityplayer.username);
@@ -42,7 +42,7 @@ public class LKItemDust extends LKItem {
 			entityplayer.triggerAchievement(LKAchievementList.simba);
 			if (LKQuestBase.rafikiQuest.getQuestStage() == 6) {
 				LKQuestBase.rafikiQuest.progress(7);
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fYou see? He lives in you! Ohohoho!");
+				LKIngame.sendMessageToAllPlayers("§e<Rafiki> §fYou see? He lives in you! Ohohoho!");
 			}
 			return true;
 		}

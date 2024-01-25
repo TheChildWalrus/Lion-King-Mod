@@ -1,39 +1,13 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.util.Random;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class LKEntityTicketLion extends EntityCreature implements IAnimals {
 	private int talkTick;
@@ -44,7 +18,7 @@ public class LKEntityTicketLion extends EntityCreature implements IAnimals {
 		talkTick = 40;
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new EntityAIWander(this, 1D));
+		tasks.addTask(1, new EntityAIWander(this, 1.0D));
 		tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
 		tasks.addTask(3, new EntityAILookIdle(this));
 	}
@@ -52,7 +26,7 @@ public class LKEntityTicketLion extends EntityCreature implements IAnimals {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.2D);
 	}
 
@@ -86,7 +60,7 @@ public class LKEntityTicketLion extends EntityCreature implements IAnimals {
 						entityplayer.inventory.addItemStackToInventory(new ItemStack(mod_LionKing.ticket, 1, 1));
 					}
 					if (!worldObj.isRemote) {
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Ticket Lion> \u00a7fMerry Christmas! Have a cracker!");
+						LKIngame.sendMessageToAllPlayers("§e<Ticket Lion> §fMerry Christmas! Have a cracker!");
 					}
 					talkTick = 0;
 					return true;
@@ -101,11 +75,11 @@ public class LKEntityTicketLion extends EntityCreature implements IAnimals {
 					}
 					entityplayer.inventory.addItemStackToInventory(new ItemStack(mod_LionKing.ticket));
 					if (!worldObj.isRemote) {
-						LKIngame.sendMessageToAllPlayers("\u00a7e<Ticket Lion> \u00a7fThank you. Use the ticket to open the portal in the room behind me.");
+						LKIngame.sendMessageToAllPlayers("§e<Ticket Lion> §fThank you. Use the ticket to open the portal in the room behind me.");
 						addEffects(7);
 					}
 				} else if (!worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Ticket Lion> \u00a7fBring me a gold ingot and I will exchange it for a Lion King Ticket.");
+					LKIngame.sendMessageToAllPlayers("§e<Ticket Lion> §fBring me a gold ingot and I will exchange it for a Lion King Ticket.");
 				}
 				talkTick = 0;
 				return true;
@@ -127,7 +101,7 @@ public class LKEntityTicketLion extends EntityCreature implements IAnimals {
 			double d = getRNG().nextGaussian() * 0.02D;
 			double d1 = getRNG().nextGaussian() * 0.02D;
 			double d2 = getRNG().nextGaussian() * 0.02D;
-			LKIngame.spawnCustomFX(worldObj, 48, 32, false, (posX + (((double) (getRNG().nextFloat() * width * 2.0F)) - (double) width) * 0.75F), posY + 0.25F + (double) (getRNG().nextFloat() * height), (posZ + (((double) (getRNG().nextFloat() * width * 2.0F)) - (double) width) * 0.75F), d, d1, d2);
+			LKIngame.spawnCustomFX(worldObj, 48, 32, false, posX + ((double) (getRNG().nextFloat() * width * 2.0F) - width) * 0.75F, posY + 0.25F + getRNG().nextFloat() * height, posZ + ((double) (getRNG().nextFloat() * width * 2.0F) - width) * 0.75F, d, d1, d2);
 		}
 	}
 

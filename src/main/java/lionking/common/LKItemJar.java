@@ -9,7 +9,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class LKItemJar extends LKItem {
-	private int isFull;
+	private final int isFull;
 
 	public LKItemJar(int i, int j) {
 		super(i);
@@ -20,9 +20,9 @@ public class LKItemJar extends LKItem {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
 		float f = 1.0F;
-		double d = entityplayer.prevPosX + (entityplayer.posX - entityplayer.prevPosX) * (double) f;
-		double d1 = (entityplayer.prevPosY + (entityplayer.posY - entityplayer.prevPosY) * (double) f + 1.6200000000000001D) - (double) entityplayer.yOffset;
-		double d2 = entityplayer.prevPosZ + (entityplayer.posZ - entityplayer.prevPosZ) * (double) f;
+		double d = entityplayer.prevPosX + (entityplayer.posX - entityplayer.prevPosX) * f;
+		double d1 = entityplayer.prevPosY + (entityplayer.posY - entityplayer.prevPosY) * f + 1.6200000000000001D - entityplayer.yOffset;
+		double d2 = entityplayer.prevPosZ + (entityplayer.posZ - entityplayer.prevPosZ) * f;
 		boolean flag = isFull == 0;
 		MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(world, entityplayer, flag);
 		if (movingobjectposition == null) {
@@ -43,17 +43,15 @@ public class LKItemJar extends LKItem {
 					world.setBlockToAir(i, j, k);
 					if (entityplayer.capabilities.isCreativeMode) {
 						return itemstack;
-					} else {
-						return new ItemStack(mod_LionKing.jarWater);
 					}
+					return new ItemStack(mod_LionKing.jarWater);
 				}
 				if (world.getBlockMaterial(i, j, k) == Material.lava && world.getBlockMetadata(i, j, k) == 0) {
 					world.setBlockToAir(i, j, k);
 					if (entityplayer.capabilities.isCreativeMode) {
 						return itemstack;
-					} else {
-						return new ItemStack(mod_LionKing.jarLava);
 					}
+					return new ItemStack(mod_LionKing.jarLava);
 				}
 			} else {
 				if (isFull < 0) {
@@ -84,7 +82,7 @@ public class LKItemJar extends LKItem {
 					if (world.provider.isHellWorld && isFull == Block.waterMoving.blockID) {
 						world.playSoundEffect(d + 0.5D, d1 + 0.5D, d2 + 0.5D, "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 						for (int l = 0; l < 8; l++) {
-							world.spawnParticle("largesmoke", (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
+							world.spawnParticle("largesmoke", i + Math.random(), j + Math.random(), k + Math.random(), 0.0D, 0.0D, 0.0D);
 						}
 
 					} else {
@@ -92,12 +90,11 @@ public class LKItemJar extends LKItem {
 					}
 					if (entityplayer.capabilities.isCreativeMode) {
 						return itemstack;
-					} else {
-						return new ItemStack(mod_LionKing.jar);
 					}
+					return new ItemStack(mod_LionKing.jar);
 				}
 			}
-		} else if (isFull == 0 && (movingobjectposition.entityHit instanceof LKEntityZebra)) {
+		} else if (isFull == 0 && movingobjectposition.entityHit instanceof LKEntityZebra) {
 			return new ItemStack(mod_LionKing.jarMilk);
 		}
 		return itemstack;

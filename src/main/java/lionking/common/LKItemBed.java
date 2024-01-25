@@ -14,12 +14,11 @@ public class LKItemBed extends LKItem {
 
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float f, float f1, float f2) {
-		if (l != 1) {
-			return false;
-		} else {
-			j++;
+		int j1 = j;
+		if (l == 1) {
+			j1++;
 			BlockBed block = (BlockBed) mod_LionKing.blockBed;
-			int i1 = MathHelper.floor_double((double) (entityplayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+			int i1 = MathHelper.floor_double(entityplayer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 			byte byte0 = 0;
 			byte byte1 = 0;
 
@@ -39,22 +38,21 @@ public class LKItemBed extends LKItem {
 				byte0 = 1;
 			}
 
-			if (entityplayer.canPlayerEdit(i, j, k, i1, itemstack) && entityplayer.canPlayerEdit(i + byte0, j, k + byte1, i1, itemstack)) {
-				if (world.isAirBlock(i, j, k) && world.isAirBlock(i + byte0, j, k + byte1) && world.doesBlockHaveSolidTopSurface(i, j - 1, k) && world.doesBlockHaveSolidTopSurface(i + byte0, j - 1, k + byte1)) {
-					world.setBlock(i, j, k, block.blockID, i1, 3);
+			if (entityplayer.canPlayerEdit(i, j1, k, i1, itemstack) && entityplayer.canPlayerEdit(i + byte0, j1, k + byte1, i1, itemstack)) {
+				if (world.isAirBlock(i, j1, k) && world.isAirBlock(i + byte0, j1, k + byte1) && world.doesBlockHaveSolidTopSurface(i, j1 - 1, k) && world.doesBlockHaveSolidTopSurface(i + byte0, j1 - 1, k + byte1)) {
+					world.setBlock(i, j1, k, block.blockID, i1, 3);
 
-					if (world.getBlockId(i, j, k) == block.blockID) {
-						world.setBlock(i + byte0, j, k + byte1, block.blockID, i1 + 8, 3);
+					if (world.getBlockId(i, j1, k) == block.blockID) {
+						world.setBlock(i + byte0, j1, k + byte1, block.blockID, i1 + 8, 3);
 					}
 
 					--itemstack.stackSize;
 					return true;
-				} else {
-					return false;
 				}
-			} else {
 				return false;
 			}
+			return false;
 		}
+		return false;
 	}
 }

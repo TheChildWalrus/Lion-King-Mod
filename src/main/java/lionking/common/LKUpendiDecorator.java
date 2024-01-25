@@ -1,34 +1,9 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -45,16 +20,16 @@ public class LKUpendiDecorator {
 	private Random randomGenerator;
 	private int chunk_X;
 	private int chunk_Z;
-	private LKBiomeGenUpendi biome;
-	private WorldGenerator dirtGen;
-	private WorldGenerator passionGen;
-	private WorldGenerator mangoGen;
-	private WorldGenerator whiteFlowerGen;
-	private WorldGenerator purpleFlowerGen;
-	private WorldGenerator redFlowerGen;
+	private final LKBiomeGenUpendi biome;
+	private final WorldGenerator dirtGen;
+	private final WorldGenerator passionGen;
+	private final WorldGenerator mangoGen;
+	private final WorldGenerator whiteFlowerGen;
+	private final WorldGenerator purpleFlowerGen;
+	private final WorldGenerator redFlowerGen;
 	private WorldGenerator logGen;
-	private WorldGenerator zazuGen;
-	private WorldGenerator maizeGen;
+	private final WorldGenerator zazuGen;
+	private final WorldGenerator maizeGen;
 
 	public LKUpendiDecorator(LKBiomeGenUpendi upendi) {
 		dirtGen = new LKWorldGenMinable(Block.dirt.blockID, 32);
@@ -82,7 +57,6 @@ public class LKUpendiDecorator {
 		chunk_X = i;
 		chunk_Z = j;
 		decorate();
-		return;
 	}
 
 	private void decorate() {

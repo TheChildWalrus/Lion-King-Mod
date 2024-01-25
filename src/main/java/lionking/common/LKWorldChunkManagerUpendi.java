@@ -1,43 +1,16 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class LKWorldChunkManagerUpendi extends WorldChunkManager {
-	private BiomeGenBase theBiome;
-	private float temperature;
-	private float rainfall;
+	private final BiomeGenBase theBiome;
+	private final float temperature;
+	private final float rainfall;
 
 	public LKWorldChunkManagerUpendi() {
 		BiomeGenBase biome = LKBiomeGenUpendi.upendi;
@@ -53,42 +26,46 @@ public class LKWorldChunkManagerUpendi extends WorldChunkManager {
 
 	@Override
 	public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int i, int j, int k, int l) {
-		if (biomes == null || biomes.length < k * l) {
-			biomes = new BiomeGenBase[k * l];
+		BiomeGenBase[] biomes1 = biomes;
+		if (biomes1 == null || biomes1.length < k * l) {
+			biomes1 = new BiomeGenBase[k * l];
 		}
 
-		Arrays.fill(biomes, 0, k * l, theBiome);
-		return biomes;
+		Arrays.fill(biomes1, 0, k * l, theBiome);
+		return biomes1;
 	}
 
 	@Override
 	public float[] getTemperatures(float[] floats, int i, int j, int k, int l) {
-		if (floats == null || floats.length < k * l) {
-			floats = new float[k * l];
+		float[] floats1 = floats;
+		if (floats1 == null || floats1.length < k * l) {
+			floats1 = new float[k * l];
 		}
 
-		Arrays.fill(floats, 0, k * l, temperature);
-		return floats;
+		Arrays.fill(floats1, 0, k * l, temperature);
+		return floats1;
 	}
 
 	@Override
 	public float[] getRainfall(float[] floats, int i, int j, int k, int l) {
-		if (floats == null || floats.length < k * l) {
-			floats = new float[k * l];
+		float[] floats1 = floats;
+		if (floats1 == null || floats1.length < k * l) {
+			floats1 = new float[k * l];
 		}
 
-		Arrays.fill(floats, 0, k * l, rainfall);
-		return floats;
+		Arrays.fill(floats1, 0, k * l, rainfall);
+		return floats1;
 	}
 
 	@Override
 	public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] biomes, int i, int j, int k, int l) {
-		if (biomes == null || biomes.length < k * l) {
-			biomes = new BiomeGenBase[k * l];
+		BiomeGenBase[] biomes1 = biomes;
+		if (biomes1 == null || biomes1.length < k * l) {
+			biomes1 = new BiomeGenBase[k * l];
 		}
 
-		Arrays.fill(biomes, 0, k * l, theBiome);
-		return biomes;
+		Arrays.fill(biomes1, 0, k * l, theBiome);
+		return biomes1;
 	}
 
 	@Override

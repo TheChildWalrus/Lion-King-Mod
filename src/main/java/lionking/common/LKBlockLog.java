@@ -35,7 +35,7 @@ public class LKBlockLog extends LKBlock {
 	public void onBlockDestroyedByPlayer(World world, int i, int j, int k, int l) {
 		if (!world.isRemote && world.rand.nextBoolean()) {
 			LKEntityBug bug = new LKEntityBug(world);
-			bug.setLocationAndAngles((double) i + 0.5D, j, (double) k + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
+			bug.setLocationAndAngles(i + 0.5D, j, k + 0.5D, world.rand.nextFloat() * 360.0F, 0.0F);
 			world.spawnEntityInWorld(bug);
 		}
 	}

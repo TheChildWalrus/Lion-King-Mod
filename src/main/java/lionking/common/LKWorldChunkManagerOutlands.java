@@ -1,43 +1,16 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class LKWorldChunkManagerOutlands extends WorldChunkManager {
-	private GenLayer genBiomes;
-	private GenLayer biomeIndexLayer;
-	private BiomeCache biomeCache;
+	private final GenLayer genBiomes;
+	private final GenLayer biomeIndexLayer;
+	private final BiomeCache biomeCache;
 
 	public LKWorldChunkManagerOutlands(long l, WorldType worldType) {
 		biomeCache = new BiomeCache(this);
@@ -53,25 +26,26 @@ public class LKWorldChunkManagerOutlands extends WorldChunkManager {
 
 	@Override
 	public float[] getRainfall(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5) {
+		float[] par1ArrayOfFloat1 = par1ArrayOfFloat;
 		IntCache.resetIntCache();
 
-		if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5) {
-			par1ArrayOfFloat = new float[par4 * par5];
+		if (par1ArrayOfFloat1 == null || par1ArrayOfFloat1.length < par4 * par5) {
+			par1ArrayOfFloat1 = new float[par4 * par5];
 		}
 
 		int[] var6 = biomeIndexLayer.getInts(par2, par3, par4, par5);
 
 		for (int var7 = 0; var7 < par4 * par5; ++var7) {
-			float var8 = (float) BiomeGenBase.biomeList[var6[var7]].getIntRainfall() / 65536.0F;
+			float var8 = BiomeGenBase.biomeList[var6[var7]].getIntRainfall() / 65536.0F;
 
 			if (var8 > 1.0F) {
 				var8 = 1.0F;
 			}
 
-			par1ArrayOfFloat[var7] = var8;
+			par1ArrayOfFloat1[var7] = var8;
 		}
 
-		return par1ArrayOfFloat;
+		return par1ArrayOfFloat1;
 	}
 
 	@Override
@@ -81,42 +55,44 @@ public class LKWorldChunkManagerOutlands extends WorldChunkManager {
 
 	@Override
 	public float[] getTemperatures(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5) {
+		float[] par1ArrayOfFloat1 = par1ArrayOfFloat;
 		IntCache.resetIntCache();
 
-		if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5) {
-			par1ArrayOfFloat = new float[par4 * par5];
+		if (par1ArrayOfFloat1 == null || par1ArrayOfFloat1.length < par4 * par5) {
+			par1ArrayOfFloat1 = new float[par4 * par5];
 		}
 
 		int[] var6 = biomeIndexLayer.getInts(par2, par3, par4, par5);
 
 		for (int var7 = 0; var7 < par4 * par5; ++var7) {
-			float var8 = (float) BiomeGenBase.biomeList[var6[var7]].getIntTemperature() / 65536.0F;
+			float var8 = BiomeGenBase.biomeList[var6[var7]].getIntTemperature() / 65536.0F;
 
 			if (var8 > 1.0F) {
 				var8 = 1.0F;
 			}
 
-			par1ArrayOfFloat[var7] = var8;
+			par1ArrayOfFloat1[var7] = var8;
 		}
 
-		return par1ArrayOfFloat;
+		return par1ArrayOfFloat1;
 	}
 
 	@Override
 	public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5) {
+		BiomeGenBase[] par1ArrayOfBiomeGenBase1 = par1ArrayOfBiomeGenBase;
 		IntCache.resetIntCache();
 
-		if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5) {
-			par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
+		if (par1ArrayOfBiomeGenBase1 == null || par1ArrayOfBiomeGenBase1.length < par4 * par5) {
+			par1ArrayOfBiomeGenBase1 = new BiomeGenBase[par4 * par5];
 		}
 
 		int[] var6 = genBiomes.getInts(par2, par3, par4, par5);
 
 		for (int var7 = 0; var7 < par4 * par5; ++var7) {
-			par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[var6[var7]];
+			par1ArrayOfBiomeGenBase1[var7] = BiomeGenBase.biomeList[var6[var7]];
 		}
 
-		return par1ArrayOfBiomeGenBase;
+		return par1ArrayOfBiomeGenBase1;
 	}
 
 	@Override
@@ -126,25 +102,25 @@ public class LKWorldChunkManagerOutlands extends WorldChunkManager {
 
 	@Override
 	public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5, boolean par6) {
+		BiomeGenBase[] par1ArrayOfBiomeGenBase1 = par1ArrayOfBiomeGenBase;
 		IntCache.resetIntCache();
 
-		if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5) {
-			par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
+		if (par1ArrayOfBiomeGenBase1 == null || par1ArrayOfBiomeGenBase1.length < par4 * par5) {
+			par1ArrayOfBiomeGenBase1 = new BiomeGenBase[par4 * par5];
 		}
 
 		if (par6 && par4 == 16 && par5 == 16 && (par2 & 15) == 0 && (par3 & 15) == 0) {
 			BiomeGenBase[] var9 = biomeCache.getCachedBiomes(par2, par3);
-			System.arraycopy(var9, 0, par1ArrayOfBiomeGenBase, 0, par4 * par5);
-			return par1ArrayOfBiomeGenBase;
+			System.arraycopy(var9, 0, par1ArrayOfBiomeGenBase1, 0, 16 * 16);
 		} else {
 			int[] var7 = biomeIndexLayer.getInts(par2, par3, par4, par5);
 
 			for (int var8 = 0; var8 < par4 * par5; ++var8) {
-				par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[var7[var8]];
+				par1ArrayOfBiomeGenBase1[var8] = BiomeGenBase.biomeList[var7[var8]];
 			}
 
-			return par1ArrayOfBiomeGenBase;
 		}
+		return par1ArrayOfBiomeGenBase1;
 	}
 
 	@Override

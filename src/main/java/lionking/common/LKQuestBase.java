@@ -1,40 +1,13 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
-
-import java.nio.ByteBuffer;
 
 import cpw.mods.fml.common.network.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class LKQuestBase {
 	public static LKQuestBase[] allQuests = new LKQuestBase[16];
@@ -56,14 +29,13 @@ public abstract class LKQuestBase {
 	public int questIndex;
 	private String questName;
 
-	public LKQuestBase(int i) {
+	protected LKQuestBase(int i) {
 		allQuests[i] = this;
 		questIndex = i;
 	}
 
 	public static boolean anyUncheckedQuests() {
-		for (int i = 0; i < allQuests.length; i++) {
-			LKQuestBase quest = allQuests[i];
+		for (LKQuestBase quest : allQuests) {
 			if (quest == null) {
 				continue;
 			}
@@ -75,8 +47,7 @@ public abstract class LKQuestBase {
 	}
 
 	public static void updateAllQuests() {
-		for (int i = 0; i < allQuests.length; i++) {
-			LKQuestBase quest = allQuests[i];
+		for (LKQuestBase quest : allQuests) {
 			if (quest == null) {
 				continue;
 			}
@@ -127,7 +98,7 @@ public abstract class LKQuestBase {
 		return questName;
 	}
 
-	public LKQuestBase setName(String name) {
+	protected LKQuestBase setName(String name) {
 		questName = name;
 		return this;
 	}
@@ -189,7 +160,7 @@ public abstract class LKQuestBase {
 		return stagesCompleted[i] == 1;
 	}
 
-	public boolean isChecked() {
+	private boolean isChecked() {
 		return checked == 1;
 	}
 
@@ -206,9 +177,7 @@ public abstract class LKQuestBase {
 	public void resetProgress() {
 		currentStage = 0;
 		stagesDelayed = 0;
-		for (int j = 0; j < stagesCompleted.length; j++) {
-			stagesCompleted[j] = 0;
-		}
+		Arrays.fill(stagesCompleted, 0);
 		checked = 0;
 	}
 }

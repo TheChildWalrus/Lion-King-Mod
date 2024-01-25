@@ -15,7 +15,7 @@ import java.util.List;
 public class LKItemVase extends LKItem {
 	@SideOnly(Side.CLIENT)
 	private Icon[] vaseIcons;
-	private String[] vaseTypes = {"flowerWhite", "flowerBlue", "flowerPurple", "flowerRed", "acacia", "rainforest", "mango", "outshroom", "outshroomGlowing", "passion", "banana"};
+	private final String[] vaseTypes = new String[]{"flowerWhite", "flowerBlue", "flowerPurple", "flowerRed", "acacia", "rainforest", "mango", "outshroom", "outshroomGlowing", "passion", "banana"};
 
 	public LKItemVase(int i) {
 		super(i);
@@ -27,10 +27,11 @@ public class LKItemVase extends LKItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int i) {
-		if (i >= vaseTypes.length) {
-			i = 0;
+		int i1 = i;
+		if (i1 >= vaseTypes.length) {
+			i1 = 0;
 		}
-		return vaseIcons[i];
+		return vaseIcons[i1];
 	}
 
 	@Override
@@ -52,40 +53,44 @@ public class LKItemVase extends LKItem {
 
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float f, float f1, float f2) {
-		int i1 = world.getBlockId(i, j, k);
+		int l1 = l;
+		int j1 = j;
+		int k1 = k;
+		int i2 = i;
+		int i1 = world.getBlockId(i2, j1, k1);
 		if (i1 == Block.snow.blockID) {
-			l = 1;
-		} else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && (Block.blocksList[i1] != null && !Block.blocksList[i1].isBlockReplaceable(world, i, j, k))) {
-			if (l == 0) {
-				--j;
+			l1 = 1;
+		} else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && Block.blocksList[i1] != null && !Block.blocksList[i1].isBlockReplaceable(world, i2, j1, k1)) {
+			if (l1 == 0) {
+				--j1;
 			}
-			if (l == 1) {
-				++j;
+			if (l1 == 1) {
+				++j1;
 			}
-			if (l == 2) {
-				--k;
+			if (l1 == 2) {
+				--k1;
 			}
-			if (l == 3) {
-				++k;
+			if (l1 == 3) {
+				++k1;
 			}
-			if (l == 4) {
-				--i;
+			if (l1 == 4) {
+				--i2;
 			}
-			if (l == 5) {
-				++i;
+			if (l1 == 5) {
+				++i2;
 			}
 		}
-		if (!entityplayer.canPlayerEdit(i, j, k, l, itemstack)) {
+		if (!entityplayer.canPlayerEdit(i2, j1, k1, l1, itemstack)) {
 			return false;
 		}
 		Block block = mod_LionKing.flowerVase;
-		if (block.canPlaceBlockAt(world, i, j, k)) {
+		if (block.canPlaceBlockAt(world, i2, j1, k1)) {
 			if (!world.isRemote) {
-				world.setBlock(i, j, k, mod_LionKing.flowerVase.blockID, itemstack.getItemDamage(), 3);
-				world.playSoundEffect((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.setBlock(i2, j1, k1, mod_LionKing.flowerVase.blockID, itemstack.getItemDamage(), 3);
+				world.playSoundEffect(i2 + 0.5F, j1 + 0.5F, k1 + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 				itemstack.stackSize--;
-				List list = world.getEntitiesWithinAABB(LKEntityRafiki.class, entityplayer.boundingBox.addCoord(16F, 5F, 16F).addCoord(-16F, -5F, -16F));
-				if (list.size() > 0 && itemstack.getItemDamage() < 4) {
+				List list = world.getEntitiesWithinAABB(LKEntityRafiki.class, entityplayer.boundingBox.addCoord(16.0F, 5.0F, 16.0F).addCoord(-16.0F, -5.0F, -16.0F));
+				if (!list.isEmpty() && itemstack.getItemDamage() < 4) {
 					LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.FLOWERS));
 					for (Object obj : list) {
 						((LKEntityRafiki) obj).addHeartFX();

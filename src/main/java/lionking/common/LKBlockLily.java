@@ -1,34 +1,11 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
 import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
@@ -39,7 +16,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 public class LKBlockLily extends BlockLilyPad {
 	@SideOnly(Side.CLIENT)
 	private Icon[] lilyIcons;
-	private String[] lilyTypes = {"white", "violet", "red"};
+	private final String[] lilyTypes = new String[]{"white", "violet", "red"};
 
 	public LKBlockLily(int i) {
 		super(i);
@@ -57,10 +34,11 @@ public class LKBlockLily extends BlockLilyPad {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
-		if (j >= lilyTypes.length) {
-			j = 0;
+		int j1 = j;
+		if (j1 >= lilyTypes.length) {
+			j1 = 0;
 		}
-		return lilyIcons[j];
+		return lilyIcons[j1];
 	}
 
 	@Override
@@ -68,7 +46,7 @@ public class LKBlockLily extends BlockLilyPad {
 	public void registerIcons(IconRegister iconregister) {
 		lilyIcons = new Icon[lilyTypes.length];
 		for (int i = 0; i < lilyTypes.length; i++) {
-			lilyIcons[i] = iconregister.registerIcon(getTextureName() + "_" + lilyTypes[i]);
+			lilyIcons[i] = iconregister.registerIcon(getTextureName() + '_' + lilyTypes[i]);
 		}
 	}
 

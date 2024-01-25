@@ -44,13 +44,11 @@ public class LKBiomeGenRainforest extends LKPrideLandsBiome {
 	public WorldGenerator getRandomWorldGenForTrees(Random random) {
 		if (random.nextInt(3) == 0) {
 			return new LKWorldGenTrees(false);
-		} else {
-			if (random.nextInt(25) == 0) {
-				return new LKWorldGenHugeRainforestTrees(false);
-			} else {
-				return new LKWorldGenRainforestTrees(false);
-			}
 		}
+		if (random.nextInt(25) == 0) {
+			return new LKWorldGenHugeRainforestTrees(false);
+		}
+		return new LKWorldGenRainforestTrees(false);
 	}
 
 	@Override

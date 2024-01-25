@@ -12,7 +12,7 @@ import java.util.List;
 public class LKItemNote extends LKItem {
 	@SideOnly(Side.CLIENT)
 	private Icon[] noteIcons;
-	private String[] noteNames = {"c", "d", "e", "f", "g", "a", "b"};
+	private final String[] noteNames = new String[]{"c", "d", "e", "f", "g", "a", "b"};
 
 	public LKItemNote(int i) {
 		super(i);
@@ -42,10 +42,11 @@ public class LKItemNote extends LKItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int i) {
-		if (i >= noteNames.length) {
-			i = 0;
+		int i1 = i;
+		if (i1 >= noteNames.length) {
+			i1 = 0;
 		}
-		return noteIcons[i];
+		return noteIcons[i1];
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class LKItemNote extends LKItem {
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack) {
-		return super.getUnlocalizedName() + "." + itemstack.getItemDamage();
+		return getUnlocalizedName() + '.' + itemstack.getItemDamage();
 	}
 
 	@Override

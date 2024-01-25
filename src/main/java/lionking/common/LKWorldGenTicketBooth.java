@@ -2,50 +2,27 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.*;
 
 public class LKWorldGenTicketBooth extends WorldGenerator {
 	public static boolean canGenerateAtPosition(int i, int j, int k) {
-		if (LKLevelData.ticketBoothLocations.isEmpty()) {
-			return true;
-		} else {
-			Iterator it = LKLevelData.ticketBoothLocations.iterator();
-			while (it.hasNext()) {
-				ChunkCoordinates coords = (ChunkCoordinates) it.next();
+		if (!LKLevelData.ticketBoothLocations.isEmpty()) {
+			for (Object o : LKLevelData.ticketBoothLocations) {
+				ChunkCoordinates coords = (ChunkCoordinates) o;
 				if (coords.getDistanceSquared(i, j, k) < mod_LionKing.boothLimit * mod_LionKing.boothLimit) {
 					return false;
 				}
 			}
-			return true;
 		}
+		return true;
 	}
 
 	@Override
@@ -167,16 +144,16 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 				for (int k1 = -1; k1 < 2; k1++) {
 					world.setBlock(i + i1, j + j1, k + k1, 0, 0, 2);
 					if (i1 == -1 && j1 == 2) {
-						world.setBlock(i + i1 - 1, j + j1, k + k1, 0, 0, 2);
+						world.setBlock(i - 1 - 1, j + 2, k + k1, 0, 0, 2);
 					}
 					if (i1 == 0 && j1 == 2 && k1 != 0) {
-						world.setBlock(i + i1, j + j1, k + k1, Block.torchWood.blockID, k1 == -1 ? 3 : 2, 2);
+						world.setBlock(i, j + 2, k + k1, Block.torchWood.blockID, k1 == -1 ? 3 : 2, 2);
 					}
 					if (i1 == -1 && j1 == 1 && k1 == 0) {
-						world.setBlock(i + i1 - 1, j + j1, k + k1, Block.fence.blockID, 0, 2);
+						world.setBlock(i - 1 - 1, j + 1, k, Block.fence.blockID, 0, 2);
 					}
 					if (i1 == -1 && j1 == 2 && k1 != 0) {
-						world.setBlock(i + i1 - 1, j + j1, k + k1, Block.thinGlass.blockID, 0, 2);
+						world.setBlock(i - 1 - 1, j + 2, k + k1, Block.thinGlass.blockID, 0, 2);
 					}
 				}
 			}
@@ -204,7 +181,7 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 
 		for (int k1 = -2; k1 < 5; k1++) {
 			if (k1 == 3) {
-				world.setBlock(i - 3, j + 3, k + k1, Block.planks.blockID, woodType, 2);
+				world.setBlock(i - 3, j + 3, k + 3, Block.planks.blockID, woodType, 2);
 			} else {
 				world.setBlock(i - 3, j + 3, k + k1, stairBlock.blockID, 0, 2);
 			}
@@ -273,10 +250,10 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 
 		world.setBlock(i - 4, j + 3, k + 3, Block.signWall.blockID, 4, 2);
 		TileEntitySign sign = (TileEntitySign) world.getBlockTileEntity(i - 4, j + 3, k + 3);
-		sign.signText[0] = ("---------------");
-		sign.signText[1] = ("Now showing:");
-		sign.signText[2] = ("The Lion King");
-		sign.signText[3] = ("---------------");
+		sign.signText[0] = "---------------";
+		sign.signText[1] = "Now showing:";
+		sign.signText[2] = "The Lion King";
+		sign.signText[3] = "---------------";
 
 		LKEntityTicketLion lion = new LKEntityTicketLion(world);
 		lion.setLocationAndAngles(i, j + 1, k, 0.0F, 0.0F);
@@ -285,7 +262,7 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 		world.setBlock(i + 2, j + 1, k, Block.chest.blockID, 5, 2);
 		world.setBlock(i + 2, j + 2, k, Block.trapdoor.blockID, 3, 2);
 
-		TileEntityChest chest = (TileEntityChest) world.getBlockTileEntity(i + 2, j + 1, k);
+		IInventory chest = (IInventory) world.getBlockTileEntity(i + 2, j + 1, k);
 		if (chest != null) {
 			int i1 = 2 + random.nextInt(4);
 			for (int j1 = 0; j1 < i1; j1++) {
@@ -315,32 +292,30 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 
 	private ItemStack getBasicLoot(Random random) {
 		int i = random.nextInt(11);
-		{
-			switch (i) {
-				default:
-				case 0:
-					return new ItemStack(Item.stick, 2 + random.nextInt(4));
-				case 1:
-					return new ItemStack(Item.paper, 1 + random.nextInt(3));
-				case 2:
-					return new ItemStack(Item.book, 1 + random.nextInt(2));
-				case 3:
-					return new ItemStack(Item.bread, 3 + random.nextInt(2));
-				case 4:
-					return new ItemStack(Item.compass);
-				case 5:
-					return new ItemStack(Item.goldNugget, 2 + random.nextInt(6));
-				case 6:
-					return new ItemStack(Item.appleRed, 1 + random.nextInt(3));
-				case 7:
-					return new ItemStack(Item.silk, 2 + random.nextInt(2));
-				case 8:
-					return new ItemStack(Item.bowlEmpty, 1 + random.nextInt(4));
-				case 9:
-					return new ItemStack(Item.cookie, 1 + random.nextInt(3));
-				case 10:
-					return new ItemStack(Item.coal, 1 + random.nextInt(2));
-			}
+		switch (i) {
+			default:
+			case 0:
+				return new ItemStack(Item.stick, 2 + random.nextInt(4));
+			case 1:
+				return new ItemStack(Item.paper, 1 + random.nextInt(3));
+			case 2:
+				return new ItemStack(Item.book, 1 + random.nextInt(2));
+			case 3:
+				return new ItemStack(Item.bread, 3 + random.nextInt(2));
+			case 4:
+				return new ItemStack(Item.compass);
+			case 5:
+				return new ItemStack(Item.goldNugget, 2 + random.nextInt(6));
+			case 6:
+				return new ItemStack(Item.appleRed, 1 + random.nextInt(3));
+			case 7:
+				return new ItemStack(Item.silk, 2 + random.nextInt(2));
+			case 8:
+				return new ItemStack(Item.bowlEmpty, 1 + random.nextInt(4));
+			case 9:
+				return new ItemStack(Item.cookie, 1 + random.nextInt(3));
+			case 10:
+				return new ItemStack(Item.coal, 1 + random.nextInt(2));
 		}
 	}
 
@@ -358,7 +333,7 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 		}
 	}
 
-	private boolean isBoundingBoxClear(World world, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+	private boolean isBoundingBoxClear(IBlockAccess world, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
 		for (int i = minX; i <= maxX; i++) {
 			for (int j = minY; j <= maxY; j++) {
 				for (int k = minZ; k <= maxZ; k++) {
@@ -367,9 +342,8 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 						Block block = Block.blocksList[id];
 						if (block == null || block instanceof BlockFlower || block == Block.waterStill || block == Block.snow) {
 							continue;
-						} else {
-							return false;
 						}
+						return false;
 					}
 				}
 			}
@@ -377,7 +351,7 @@ public class LKWorldGenTicketBooth extends WorldGenerator {
 		return true;
 	}
 
-	private boolean isSolidGround(World world, int i, int j, int k) {
+	private boolean isSolidGround(IBlockAccess world, int i, int j, int k) {
 		return world.isBlockOpaqueCube(i, j, k) && world.isBlockOpaqueCube(i, j - 1, k) && world.isBlockOpaqueCube(i, j - 2, k);
 	}
 }

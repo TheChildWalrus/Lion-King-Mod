@@ -6,12 +6,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerInstance;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -28,19 +28,22 @@ public class LKIngame {
 	public static int flatulenceSoundTick;
 	public static boolean loadRenderers;
 
+	private LKIngame() {
+	}
+
 	public static void runMainWorldTick(World world) {
 		Random random = world.rand;
 		List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
 
-		for (int i = 0; i < players.size(); i++) {
-			EntityPlayer entityplayer = (EntityPlayer) players.get(i);
+		for (Object player : players) {
+			EntityPlayer entityplayer = (EntityPlayer) player;
 
 			ItemStack body = entityplayer.inventory.armorItemInSlot(2);
 			if (body != null && body.getItem() == mod_LionKing.wings) {
-				entityplayer.fallDistance = 0F;
+				entityplayer.fallDistance = 0.0F;
 			}
 
-			if (entityplayer.getHealth() > 0F && entityplayer.getHealth() < 5F) {
+			if (entityplayer.getHealth() > 0.0F && entityplayer.getHealth() < 5.0F) {
 				activateCrystals(entityplayer, world, random);
 			}
 
@@ -49,24 +52,24 @@ public class LKIngame {
 
 		if (LKLevelData.defeatedScar == 1 && LKQuestBase.rafikiQuest.getQuestStage() == 2) {
 			LKQuestBase.rafikiQuest.progress(3);
-			sendMessageToAllPlayers("\u00a7e<Rafiki> \u00a7fYes! I knew you could save the Pride Lands from that villain! Now, quickly, return to my tree - we have no time to lose!");
+			sendMessageToAllPlayers("§e<Rafiki> §fYes! I knew you could save the Pride Lands from that villain! Now, quickly, return to my tree - we have no time to lose!");
 		}
 
 		if (flatulenceSoundTick > 0) {
 			flatulenceSoundTick--;
 
-			double d = -5.5D + (double) (random.nextFloat() * 21.0F);
-			double d1 = 104.0D + (double) (random.nextFloat() * 8.0F);
-			double d2 = -12.5D + (double) (random.nextFloat() * 21.0F);
+			double d = -5.5D + random.nextFloat() * 21.0F;
+			double d1 = 104.0D + random.nextFloat() * 8.0F;
+			double d2 = -12.5D + random.nextFloat() * 21.0F;
 			DimensionManager.getWorld(mod_LionKing.idPrideLands).spawnParticle("hugeexplosion", d, d1, d2, 0.0D, 0.0D, 0.0D);
 		}
 
 		if (LKLevelData.flatulenceSoundsRemaining > 0 && flatulenceSoundTick <= random.nextInt(16)) {
 			LKLevelData.setFlatulenceSoundsRemaining(LKLevelData.flatulenceSoundsRemaining - 1);
-			double d = -5.5D + (double) (random.nextFloat() * 21.0F);
-			double d1 = 104.0D + (double) (random.nextFloat() * 8.0F);
-			double d2 = -12.5D + (double) (random.nextFloat() * 21.0F);
-			DimensionManager.getWorld(mod_LionKing.idPrideLands).playSoundEffect(d, d1, d2, "lionking:flatulence", 4F, (1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F) * 0.7F);
+			double d = -5.5D + random.nextFloat() * 21.0F;
+			double d1 = 104.0D + random.nextFloat() * 8.0F;
+			double d2 = -12.5D + random.nextFloat() * 21.0F;
+			DimensionManager.getWorld(mod_LionKing.idPrideLands).playSoundEffect(d, d1, d2, "lionking:flatulence", 4.0F, (1.0F + (random.nextFloat() - random.nextFloat()) * 0.2F) * 0.7F);
 			flatulenceSoundTick = 25;
 
 			if (LKLevelData.flatulenceSoundsRemaining == 0) {
@@ -88,7 +91,7 @@ public class LKIngame {
 		for (int i2 = i; i2 < i1; i2++) {
 			for (int j2 = j; j2 < j1; j2++) {
 				for (int k2 = k; k2 < k1; k2++) {
-					if (entityplayer.worldObj.getBlockId(i2, j2, k2) == (isPrideLands ? mod_LionKing.lionPortal.blockID : mod_LionKing.outlandsPortal.blockID)) {
+					if (entityplayer.worldObj.getBlockId(i2, j2, k2) == (isPrideLands ? mod_LionKing.lionPortal : mod_LionKing.outlandsPortal).blockID) {
 						if (isPrideLands && entityplayer.dimension == mod_LionKing.idPrideLands) {
 							entityplayer.worldObj.provider.setSpawnPoint(i2, j2, k2);
 						}
@@ -113,7 +116,7 @@ public class LKIngame {
 		if (j1 > 1 && j1 < 256) {
 			LKWorldGenOutsand outsandGen = new LKWorldGenOutsand();
 			if (outsandGen.isRadiusClearOfOutsand(world, i1, j1, k1, 64) && world.isBlockOpaqueCube(i1, j1, k1) && world.canBlockSeeTheSky(i1, j1 + 1, k1)) {
-				EntityLightningBolt entitylightningbolt = new EntityLightningBolt(world, (double) i1, (double) j1, (double) k1);
+				EntityLightningBolt entitylightningbolt = new EntityLightningBolt(world, i1, j1, k1);
 				if (!world.isRemote) {
 					world.spawnEntityInWorld(entitylightningbolt);
 				}
@@ -135,9 +138,9 @@ public class LKIngame {
 				double d = random.nextGaussian() * 0.02D;
 				double d1 = random.nextGaussian() * 0.02D;
 				double d2 = random.nextGaussian() * 0.02D;
-				world.spawnParticle("heart", (entityplayer.posX + (double) (random.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width, entityplayer.posY - 0.5D + (double) (random.nextFloat() * (entityplayer.height / 2)), (entityplayer.posZ + (double) (random.nextFloat() * entityplayer.width * 2.0F)) - (double) entityplayer.width, d, d1, d2);
+				world.spawnParticle("heart", entityplayer.posX + random.nextFloat() * entityplayer.width * 2.0F - entityplayer.width, entityplayer.posY - 0.5D + random.nextFloat() * (entityplayer.height / 2), entityplayer.posZ + random.nextFloat() * entityplayer.width * 2.0F - entityplayer.width, d, d1, d2);
 			}
-			world.playSoundAtEntity(entityplayer, "random.glass", 1F, ((random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+			world.playSoundAtEntity(entityplayer, "random.glass", 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F) * 1.8F);
 		}
 	}
 
@@ -163,18 +166,20 @@ public class LKIngame {
 			}
 		}
 		boolean hasAllRugs = true;
-		for (int i = 0; i < rugFlags.length; i++) {
-			if (!rugFlags[i]) {
+		for (boolean rugFlag : rugFlags) {
+			if (!rugFlag) {
 				hasAllRugs = false;
+				break;
 			}
 		}
 		if (hasAllRugs) {
 			entityplayer.triggerAchievement(LKAchievementList.rugs);
 		}
 		boolean hasAllHeads = true;
-		for (int i = 0; i < headFlags.length; i++) {
-			if (!headFlags[i]) {
+		for (boolean headFlag : headFlags) {
+			if (!headFlag) {
 				hasAllHeads = false;
+				break;
 			}
 		}
 		if (hasAllHeads) {
@@ -184,9 +189,9 @@ public class LKIngame {
 
 	public static List getSimbas(EntityPlayer entityplayer) {
 		List simbaData = new ArrayList();
-		List simbas = entityplayer.worldObj.getEntitiesWithinAABB(LKEntitySimba.class, entityplayer.boundingBox.addCoord(16F, 16F, 16F).addCoord(-16F, -16F, -16F));
-		for (int i1 = 0; i1 < simbas.size(); i1++) {
-			LKEntitySimba simba = (LKEntitySimba) simbas.get(i1);
+		List simbas = entityplayer.worldObj.getEntitiesWithinAABB(LKEntitySimba.class, entityplayer.boundingBox.addCoord(16.0F, 16.0F, 16.0F).addCoord(-16.0F, -16.0F, -16.0F));
+		for (Object o : simbas) {
+			LKEntitySimba simba = (LKEntitySimba) o;
 			if (!simba.canUsePortal(entityplayer)) {
 				continue;
 			}
@@ -292,7 +297,7 @@ public class LKIngame {
 		world.setBlock(i, j + 1, k + 1, Block.torchWood.blockID, 0, 3);
 		world.setBlock(i, j + 2, k, Block.chest.blockID, 2 + world.rand.nextInt(4), 3);
 
-		TileEntityChest chest = (TileEntityChest) world.getBlockTileEntity(i, j + 2, k);
+		IInventory chest = (IInventory) world.getBlockTileEntity(i, j + 2, k);
 		if (chest != null) {
 			chest.setInventorySlotContents(13, new ItemStack(mod_LionKing.questBook));
 		}
@@ -309,7 +314,7 @@ public class LKIngame {
 		rafiki.setLocationAndAngles(0, 103, 0, 0.0F, 0.0F);
 		rafiki.isThisTheRealRafiki = true;
 		for (int i = 17; i <= 31; i++) {
-			rafiki.getDataWatcher().updateObject(i, Byte.valueOf((byte) 1));
+			rafiki.getDataWatcher().updateObject(i, (byte) 1);
 		}
 		world.spawnEntityInWorld(rafiki);
 
@@ -329,7 +334,7 @@ public class LKIngame {
 
 	public static boolean isChristmas() {
 		Calendar calendar = Calendar.getInstance();
-		return calendar.get(2) + 1 == 12 && calendar.get(5) == 25;
+		return calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) == 25;
 	}
 
 	public static void sendMessageToAllPlayers(String message) {
@@ -347,7 +352,7 @@ public class LKIngame {
 		data[0] = (byte) (texture & 255);
 		data[1] = (byte) (age & 255);
 
-		data[2] = glow ? (byte) 1 : (byte) 0;
+		data[2] = (byte) (glow ? 1 : 0);
 
 		byte[] x = ByteBuffer.allocate(8).putDouble(posX).array();
 		byte[] y = ByteBuffer.allocate(8).putDouble(posY).array();
@@ -381,9 +386,7 @@ public class LKIngame {
 
 		byte[] data = new byte[6];
 		byte[] id = ByteBuffer.allocate(4).putInt(entityplayer.entityId).array();
-		for (int i = 0; i < 4; i++) {
-			data[i] = id[i];
-		}
+		System.arraycopy(id, 0, data, 0, 4);
 		data[4] = (byte) entityplayer.dimension;
 		data[5] = (byte) type;
 		Packet250CustomPayload packet = new Packet250CustomPayload("lk.breakItem", data);

@@ -21,7 +21,7 @@ public abstract class LKPrideLandsBiome extends BiomeGenBase {
 	public static BiomeGenBase bananaForest;
 	protected LKBiomeDecorator lkDecorator;
 
-	public LKPrideLandsBiome(int i) {
+	protected LKPrideLandsBiome(int i) {
 		super(i);
 		spawnableMonsterList.clear();
 		spawnableWaterCreatureList.clear();
@@ -63,8 +63,8 @@ public abstract class LKPrideLandsBiome extends BiomeGenBase {
 		rainforestHills = new LKBiomeGenRainforest(idBiomeRainforestHills).setTemperatureRainfall(1.0F, 0.9F).setMinMaxHeight(0.6F, 1.6F).setColor(0x6BAD32).setBiomeName("Rainforest Hills");
 		river = new LKBiomeGenRiver(idBiomeRiver).setTemperatureRainfall(0.7F, 0.7F).setMinMaxHeight(-0.5F, 0.0F).setColor(0x0000FF).setBiomeName("River");
 		aridSavannah = new LKBiomeGenAridSavannah(idBiomeAridSavannah).setTemperatureRainfall(1.0F, 0.2F).setMinMaxHeight(0.08F, 0.13F).setColor(0xD3AE56).setBiomeName("Arid Savannah");
-		desert = new LKBiomeGenDesert(idBiomeDesert).setTemperatureRainfall(2F, 0F).setMinMaxHeight(0.2F, 0.4F).setDisableRain().setColor(0xF2D185).setBiomeName("Desert");
-		grasslandSavannah = new LKBiomeGenGrasslandSavannah(idBiomeGrasslandSavannah).setTemperatureRainfall(1F, 0.3F).setMinMaxHeight(0.1F, 0.1F).setColor(0xD8C158).setBiomeName("Grassland Savannah");
+		desert = new LKBiomeGenDesert(idBiomeDesert).setTemperatureRainfall(2.0F, 0.0F).setMinMaxHeight(0.2F, 0.4F).setDisableRain().setColor(0xF2D185).setBiomeName("Desert");
+		grasslandSavannah = new LKBiomeGenGrasslandSavannah(idBiomeGrasslandSavannah).setTemperatureRainfall(1.0F, 0.3F).setMinMaxHeight(0.1F, 0.1F).setColor(0xD8C158).setBiomeName("Grassland Savannah");
 		bananaForest = new LKBiomeGenBananaForest(idBiomeBananaForest).setTemperatureRainfall(0.9F, 0.8F).setMinMaxHeight(0.4F, 0.4F).setColor(0xFFDE4F).setBiomeName("Banana Forest");
 
 		LKOutlandsBiome.outlands = new LKBiomeGenOutlands(idBiomeOutlands).setTemperatureRainfall(1.6F, 0.0F).setMinMaxHeight(0.16F, 0.2F).setColor(0xB59B63).setBiomeName("Outlands");
@@ -83,6 +83,7 @@ public abstract class LKPrideLandsBiome extends BiomeGenBase {
 		return new LKWorldGenTrees(false);
 	}
 
+	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		return new WorldGenTallGrass(Block.tallGrass.blockID, 1);
 	}

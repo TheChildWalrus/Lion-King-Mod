@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.*;
 public class LKBiomeGenUpendi extends BiomeGenBase {
 	public static BiomeGenBase upendi;
 
-	protected LKUpendiDecorator upendiDecorator;
+	private final LKUpendiDecorator upendiDecorator;
 
 	public LKBiomeGenUpendi(int i) {
 		super(i);
@@ -65,13 +65,11 @@ public class LKBiomeGenUpendi extends BiomeGenBase {
 	public WorldGenerator getRandomWorldGenForTrees(Random random) {
 		if (random.nextInt(3) == 0) {
 			return new LKWorldGenTrees(false);
-		} else {
-			if (random.nextInt(8) == 0) {
-				return new LKWorldGenHugeRainforestTrees(false);
-			} else {
-				return new LKWorldGenRainforestTrees(false);
-			}
 		}
+		if (random.nextInt(8) == 0) {
+			return new LKWorldGenHugeRainforestTrees(false);
+		}
+		return new LKWorldGenRainforestTrees(false);
 	}
 
 	@Override

@@ -1,54 +1,28 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.*;
 
 public class LKTeleporter extends Teleporter {
-	private final List portalList = new ArrayList();
-	public boolean prideLands;
-	private int idFrame;
-	private int idPortal;
-	private List simbaData;
-	private WorldServer worldObj;
-	private Random random;
-	private LongHashMap portals = new LongHashMap();
+	private final Collection portalList = new ArrayList();
+	private final int idFrame;
+	private final int idPortal;
+	private final List simbaData;
+	private final WorldServer worldObj;
+	private final Random random;
+	private final LongHashMap portals = new LongHashMap();
 
 	public LKTeleporter(WorldServer world, boolean isPrideLands, List list) {
 		super(world);
 		worldObj = world;
-		idFrame = isPrideLands ? mod_LionKing.lionPortalFrame.blockID : mod_LionKing.outlandsPortalFrame.blockID;
-		idPortal = isPrideLands ? mod_LionKing.lionPortal.blockID : mod_LionKing.outlandsPortal.blockID;
+		idFrame = (isPrideLands ? mod_LionKing.lionPortalFrame : mod_LionKing.outlandsPortalFrame).blockID;
+		idPortal = (isPrideLands ? mod_LionKing.lionPortal : mod_LionKing.outlandsPortal).blockID;
 		simbaData = list;
-		prideLands = isPrideLands;
 		random = new Random(world.getSeed());
 	}
 
@@ -60,7 +34,7 @@ public class LKTeleporter extends Teleporter {
 		}
 	}
 
-	public boolean placeInExistingLionPortal(Entity entity, double d, double d1, double d2, float f) {
+	private boolean placeInExistingLionPortal(Entity entity, double d, double d1, double d2, float f) {
 		short var9 = 128;
 		double var10 = -1.0D;
 		int var12 = 0;
@@ -83,10 +57,10 @@ public class LKTeleporter extends Teleporter {
 			var19 = false;
 		} else {
 			for (var48 = var15 - var9; var48 <= var15 + var9; ++var48) {
-				double var21 = (double) var48 + 0.5D - entity.posX;
+				double var21 = var48 + 0.5D - entity.posX;
 
 				for (int var23 = var16 - var9; var23 <= var16 + var9; ++var23) {
-					double var24 = (double) var23 + 0.5D - entity.posZ;
+					double var24 = var23 + 0.5D - entity.posZ;
 
 					for (int var26 = worldObj.getActualHeight() - 1; var26 >= 0; --var26) {
 						if (worldObj.getBlockId(var48, var26, var23) == idPortal) {
@@ -94,7 +68,7 @@ public class LKTeleporter extends Teleporter {
 								--var26;
 							}
 
-							var27 = (double) var26 + 0.5D - entity.posY;
+							var27 = var26 + 0.5D - entity.posY;
 							double var29 = var21 * var21 + var27 * var27 + var24 * var24;
 
 							if (var10 < 0.0D || var29 < var10) {
@@ -112,12 +86,12 @@ public class LKTeleporter extends Teleporter {
 		if (var10 >= 0.0D) {
 			if (var19) {
 				portals.add(var17, new PortalPosition(this, var12, var13, var14, worldObj.getTotalWorldTime()));
-				portalList.add(Long.valueOf(var17));
+				portalList.add(var17);
 			}
 
-			double var49 = (double) var12 + 0.5D;
-			double var25 = (double) var13 + 0.5D;
-			var27 = (double) var14 + 0.5D;
+			double var49 = var12 + 0.5D;
+			double var25 = var13 + 0.5D;
+			var27 = var14 + 0.5D;
 			int var50 = -1;
 
 			if (worldObj.getBlockId(var12 - 1, var13, var14) == idPortal) {
@@ -155,9 +129,9 @@ public class LKTeleporter extends Teleporter {
 					var34 = Direction.offsetX[var31];
 					var35 = Direction.offsetZ[var31];
 					var48 = var12 - var34;
-					var49 -= (double) var34;
+					var49 -= var34;
 					int var22 = var14 - var35;
-					var27 -= (double) var35;
+					var27 -= var35;
 					var36 = !worldObj.isAirBlock(var48 + var32 + var34, var13, var22 + var33 + var35) || !worldObj.isAirBlock(var48 + var32 + var34, var13 + 1, var22 + var33 + var35);
 					var37 = !worldObj.isAirBlock(var48 + var32, var13, var22 + var33) || !worldObj.isAirBlock(var48 + var32, var13 + 1, var22 + var33);
 				}
@@ -169,12 +143,12 @@ public class LKTeleporter extends Teleporter {
 					var38 = 1.0F;
 				} else if (var36 && !var37) {
 					var38 = 0.0F;
-				} else if (var36 && var37) {
+				} else if (var36) {
 					var39 = 0.0F;
 				}
 
-				var49 += (double) ((float) var34 * var38 + var39 * (float) var32);
-				var27 += (double) ((float) var35 * var38 + var39 * (float) var33);
+				var49 += var34 * var38 + var39 * var32;
+				var27 += var35 * var38 + var39 * var33;
 				float var40 = 0.0F;
 				float var41 = 0.0F;
 				float var42 = 0.0F;
@@ -196,18 +170,18 @@ public class LKTeleporter extends Teleporter {
 
 				double var44 = entity.motionX;
 				double var46 = entity.motionZ;
-				entity.motionX = var44 * (double) var40 + var46 * (double) var43;
-				entity.motionZ = var44 * (double) var42 + var46 * (double) var41;
-				entity.rotationYaw = f - (float) (var30 * 90) + (float) (var50 * 90);
+				entity.motionX = var44 * var40 + var46 * var43;
+				entity.motionZ = var44 * var42 + var46 * var41;
+				entity.rotationYaw = f - var30 * 90 + var50 * 90;
 			} else {
 				entity.motionX = entity.motionY = entity.motionZ = 0.0D;
 			}
 
 			entity.setLocationAndAngles(var49, var25, var27, entity.rotationYaw, entity.rotationPitch);
 
-			for (int i3 = 0; i3 < simbaData.size(); i3++) {
+			for (Object simbaDatum : simbaData) {
 				LKEntitySimba simba = new LKEntitySimba(worldObj);
-				simba.readFromNBT((NBTTagCompound) simbaData.get(i3));
+				simba.readFromNBT((NBTTagCompound) simbaDatum);
 
 				simba.setLocationAndAngles(var49, var25, var27, entity.rotationYaw, 0.0F);
 				simba.motionX = simba.motionY = simba.motionZ = 0.0D;
@@ -217,12 +191,11 @@ public class LKTeleporter extends Teleporter {
 			}
 
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
-	public boolean createLionPortal(Entity entity) {
+	private boolean createLionPortal(Entity entity) {
 		byte var2 = 16;
 		double var3 = -1.0D;
 		int var5 = MathHelper.floor_double(entity.posX);
@@ -250,10 +223,10 @@ public class LKTeleporter extends Teleporter {
 		double var32;
 
 		for (var13 = var5 - var2; var13 <= var5 + var2; ++var13) {
-			var14 = (double) var13 + 0.5D - entity.posX;
+			var14 = var13 + 0.5D - entity.posX;
 
 			for (var16 = var7 - var2; var16 <= var7 + var2; ++var16) {
-				var17 = (double) var16 + 0.5D - entity.posZ;
+				var17 = var16 + 0.5D - entity.posZ;
 				label274:
 
 				for (var19 = worldObj.getActualHeight() - 1; var19 >= 0; --var19) {
@@ -278,14 +251,14 @@ public class LKTeleporter extends Teleporter {
 										var27 = var19 + var25;
 										int var28 = var16 + (var24 - 1) * var22 - var23 * var21;
 
-										if (var25 < 0 && !worldObj.getBlockMaterial(var26, var27, var28).isSolid() || var25 >= 0 && !worldObj.isAirBlock(var26, var27, var28)) {
+										if (var25 < 0 ? !worldObj.getBlockMaterial(var26, var27, var28).isSolid() : !worldObj.isAirBlock(var26, var27, var28)) {
 											continue label274;
 										}
 									}
 								}
 							}
 
-							var32 = (double) var19 + 0.5D - entity.posY;
+							var32 = var19 + 0.5D - entity.posY;
 							var31 = var14 * var14 + var32 * var32 + var17 * var17;
 
 							if (var3 < 0.0D || var31 < var3) {
@@ -303,10 +276,10 @@ public class LKTeleporter extends Teleporter {
 
 		if (var3 < 0.0D) {
 			for (var13 = var5 - var2; var13 <= var5 + var2; ++var13) {
-				var14 = (double) var13 + 0.5D - entity.posX;
+				var14 = var13 + 0.5D - entity.posX;
 
 				for (var16 = var7 - var2; var16 <= var7 + var2; ++var16) {
-					var17 = (double) var16 + 0.5D - entity.posZ;
+					var17 = var16 + 0.5D - entity.posZ;
 					label222:
 
 					for (var19 = worldObj.getActualHeight() - 1; var19 >= 0; --var19) {
@@ -325,13 +298,13 @@ public class LKTeleporter extends Teleporter {
 										var26 = var19 + var24;
 										var27 = var16 + (var23 - 1) * var22;
 
-										if (var24 < 0 && !worldObj.getBlockMaterial(var25, var26, var27).isSolid() || var24 >= 0 && !worldObj.isAirBlock(var25, var26, var27)) {
+										if (var24 < 0 ? !worldObj.getBlockMaterial(var25, var26, var27).isSolid() : !worldObj.isAirBlock(var25, var26, var27)) {
 											continue label222;
 										}
 									}
 								}
 
-								var32 = (double) var19 + 0.5D - entity.posY;
+								var32 = var19 + 0.5D - entity.posY;
 								var31 = var14 * var14 + var32 * var32 + var17 * var17;
 
 								if (var3 < 0.0D || var31 < var3) {
@@ -417,11 +390,11 @@ public class LKTeleporter extends Teleporter {
 
 			while (i.hasNext()) {
 				Long l1 = (Long) i.next();
-				PortalPosition pos = (PortalPosition) portals.getValueByKey(l1.longValue());
+				PortalPosition pos = (PortalPosition) portals.getValueByKey(l1);
 
 				if (pos == null || pos.lastUpdateTime < l) {
 					i.remove();
-					portals.remove(l1.longValue());
+					portals.remove(l1);
 				}
 			}
 		}

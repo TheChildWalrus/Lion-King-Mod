@@ -2,7 +2,6 @@ package lionking.common;
 
 import cpw.mods.fml.relauncher.*;
 
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -27,7 +26,7 @@ public class LKItemSpawnEgg extends Item {
 		String entityName = LKEntities.getStringFromID(itemstack.getItemDamage());
 
 		if (entityName != null) {
-			itemName = itemName + " " + entityName;
+			return itemName + ' ' + entityName;
 		}
 
 		return itemName;
@@ -36,26 +35,27 @@ public class LKItemSpawnEgg extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack itemstack, int i) {
-		EntityEggInfo info = (EntityEggInfo) LKEntities.creatures.get(Integer.valueOf(itemstack.getItemDamage()));
-		return info != null ? (i == 0 ? info.primaryColor : info.secondaryColor) : 16777215;
+		EntityEggInfo info = (EntityEggInfo) LKEntities.creatures.get(itemstack.getItemDamage());
+		return info != null ? i == 0 ? info.primaryColor : info.secondaryColor : 16777215;
 	}
 
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float f, float f1, float f2) {
-		if (world.isRemote) {
-			return true;
-		} else {
-			int id = world.getBlockId(i, j, k);
-			i += Facing.offsetsXForSide[l];
-			j += Facing.offsetsYForSide[l];
-			k += Facing.offsetsZForSide[l];
+		int i1 = i;
+		int j1 = j;
+		int k1 = k;
+		if (!world.isRemote) {
+			int id = world.getBlockId(i1, j1, k1);
+			i1 += Facing.offsetsXForSide[l];
+			j1 += Facing.offsetsYForSide[l];
+			k1 += Facing.offsetsZForSide[l];
 			double d = 0.0D;
 
 			if (l == 1 && Block.blocksList[id] != null && Block.blocksList[id].getRenderType() == 11) {
 				d = 0.5D;
 			}
 
-			Entity entity = spawnCreature(world, itemstack.getItemDamage(), (double) i + 0.5D, (double) j + d, (double) k + 0.5D);
+			Entity entity = spawnCreature(world, itemstack.getItemDamage(), i1 + 0.5D, j1 + d, k1 + 0.5D);
 
 			if (entity != null) {
 				if (entity instanceof EntityLiving && itemstack.hasDisplayName()) {
@@ -71,16 +71,14 @@ public class LKItemSpawnEgg extends Item {
 				}
 			}
 
-			return true;
 		}
+		return true;
 	}
 
 	private Entity spawnCreature(World world, int id, double d, double d1, double d2) {
-		if (!LKEntities.creatures.containsKey(Integer.valueOf(id))) {
-			return null;
-		} else {
+		if (LKEntities.creatures.containsKey(id)) {
 			Entity entity = LKEntities.createEntityByID(id, world);
-			if (entity != null && entity instanceof EntityLiving) {
+			if (entity instanceof EntityLiving) {
 				EntityLiving entityliving = (EntityLiving) entity;
 				entity.setLocationAndAngles(d, d1, d2, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
 				entityliving.rotationYawHead = entityliving.rotationYaw;
@@ -91,6 +89,7 @@ public class LKItemSpawnEgg extends Item {
 			}
 			return entity;
 		}
+		return null;
 	}
 
 	@Override
@@ -113,10 +112,9 @@ public class LKItemSpawnEgg extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int i, CreativeTabs tab, List list) {
-		Iterator it = LKEntities.creatures.values().iterator();
 
-		while (it.hasNext()) {
-			EntityEggInfo info = (EntityEggInfo) it.next();
+		for (Object o : LKEntities.creatures.values()) {
+			EntityEggInfo info = (EntityEggInfo) o;
 			list.add(new ItemStack(i, 1, info.spawnedID));
 		}
 	}

@@ -1,34 +1,13 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
 import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -141,18 +120,16 @@ public class LKWorldGenTreasureMound extends WorldGenerator {
 			int j2 = chestLocations[i1].posY;
 			int k2 = chestLocations[i1].posZ;
 			world.setBlock(i2, j2, k2, Block.chest.blockID, 0, 2);
-			TileEntityChest tileentitychest = (TileEntityChest) world.getBlockTileEntity(i2, j2, k2);
+			IInventory tileentitychest = (IInventory) world.getBlockTileEntity(i2, j2, k2);
 			if (tileentitychest == null) {
 				continue;
 			}
 			for (int i3 = 0; i3 < 4; i3++) {
 				ItemStack itemstack = pickLoot(random);
-				if (itemstack != null) {
-					if (itemstack.getItem().getItemEnchantability() > 0 && random.nextInt(3) == 0) {
-						EnchantmentHelper.addRandomEnchantment(random, itemstack, 3);
-					}
-					tileentitychest.setInventorySlotContents(random.nextInt(tileentitychest.getSizeInventory()), itemstack);
+				if (itemstack.getItem().getItemEnchantability() > 0 && random.nextInt(3) == 0) {
+					EnchantmentHelper.addRandomEnchantment(random, itemstack, 3);
 				}
+				tileentitychest.setInventorySlotContents(random.nextInt(tileentitychest.getSizeInventory()), itemstack);
 			}
 		}
 
@@ -194,10 +171,7 @@ public class LKWorldGenTreasureMound extends WorldGenerator {
 					return new ItemStack(mod_LionKing.axeKivulite);
 			}
 		}
-		if (i == 6) {
-			return new ItemStack(mod_LionKing.kivulite, 1 + random.nextInt(3));
-		}
+		return new ItemStack(mod_LionKing.kivulite, 1 + random.nextInt(3));
 
-		return defaultStack;
 	}
 }

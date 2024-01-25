@@ -1,34 +1,11 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -36,10 +13,10 @@ import java.util.Random;
 
 public class LKEntityAIAngerableMate extends EntityAIBase {
 	public EntityAnimal targetMate;
-	World theWorld;
-	int breeding = 0;
-	double moveSpeed;
-	private EntityAnimal theAnimal;
+	private final World theWorld;
+	private int breeding;
+	private final double moveSpeed;
+	private final EntityAnimal theAnimal;
 
 	public LKEntityAIAngerableMate(EntityAnimal animal, double d) {
 		theAnimal = animal;
@@ -55,10 +32,9 @@ public class LKEntityAIAngerableMate extends EntityAIBase {
 		}
 		if (((LKAngerable) theAnimal).isHostile()) {
 			return false;
-		} else {
-			targetMate = findMate();
-			return targetMate != null;
 		}
+		targetMate = findMate();
+		return targetMate != null;
 	}
 
 	@Override
@@ -74,7 +50,7 @@ public class LKEntityAIAngerableMate extends EntityAIBase {
 
 	@Override
 	public void updateTask() {
-		theAnimal.getLookHelper().setLookPositionWithEntity(targetMate, 10.0F, (float) theAnimal.getVerticalFaceSpeed());
+		theAnimal.getLookHelper().setLookPositionWithEntity(targetMate, 10.0F, theAnimal.getVerticalFaceSpeed());
 		theAnimal.getNavigator().tryMoveToEntityLiving(targetMate, moveSpeed);
 		++breeding;
 
@@ -85,7 +61,7 @@ public class LKEntityAIAngerableMate extends EntityAIBase {
 
 	private EntityAnimal findMate() {
 		float f = 8.0F;
-		Class mateClass = theAnimal.getClass();
+		Class<? extends EntityAnimal> mateClass = theAnimal.getClass();
 		if (theAnimal instanceof LKEntityLion) {
 			mateClass = LKEntityLioness.class;
 
@@ -93,7 +69,7 @@ public class LKEntityAIAngerableMate extends EntityAIBase {
 			mateClass = LKEntityLion.class;
 		}
 
-		List list = theWorld.getEntitiesWithinAABB(mateClass, theAnimal.boundingBox.expand((double) f, (double) f, (double) f));
+		List list = theWorld.getEntitiesWithinAABB(mateClass, theAnimal.boundingBox.expand(f, f, f));
 		Iterator i = list.iterator();
 		EntityAnimal mate;
 		do {
@@ -124,7 +100,7 @@ public class LKEntityAIAngerableMate extends EntityAIBase {
 				double var4 = rand.nextGaussian() * 0.02D;
 				double var6 = rand.nextGaussian() * 0.02D;
 				double var8 = rand.nextGaussian() * 0.02D;
-				theWorld.spawnParticle("heart", theAnimal.posX + (double) (rand.nextFloat() * theAnimal.width * 2.0F) - (double) theAnimal.width, theAnimal.posY + 0.5D + (double) (rand.nextFloat() * theAnimal.height), theAnimal.posZ + (double) (rand.nextFloat() * theAnimal.width * 2.0F) - (double) theAnimal.width, var4, var6, var8);
+				theWorld.spawnParticle("heart", theAnimal.posX + rand.nextFloat() * theAnimal.width * 2.0F - theAnimal.width, theAnimal.posY + 0.5D + rand.nextFloat() * theAnimal.height, theAnimal.posZ + rand.nextFloat() * theAnimal.width * 2.0F - theAnimal.width, var4, var6, var8);
 			}
 
 			theWorld.spawnEntityInWorld(new EntityXPOrb(theWorld, theAnimal.posX, theAnimal.posY, theAnimal.posZ, rand.nextInt(4) + 1));

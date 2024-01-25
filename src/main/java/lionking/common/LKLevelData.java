@@ -1,34 +1,10 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.nio.ByteBuffer;
 
@@ -36,11 +12,10 @@ import cpw.mods.fml.common.network.*;
 import net.minecraftforge.common.DimensionManager;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.util.*;
 
 public class LKLevelData {
-	public static List ticketBoothLocations = new ArrayList();
+	public static Collection ticketBoothLocations = new ArrayList();
 	public static int receivedQuestBook;
 	public static int generatedMound;
 	public static int quiverDamage;
@@ -56,10 +31,13 @@ public class LKLevelData {
 	public static int pumbaaStage;
 	public static int outlandersHostile;
 	public static int flatulenceSoundsRemaining;
-	public static Map simbas = new HashMap();
+	private static final Map<Object, Object> simbas = new HashMap();
 
 	public static boolean needsLoad = true;
-	public static boolean needsSave = false;
+	public static boolean needsSave;
+
+	private LKLevelData() {
+	}
 
 	public static void setHomePortalLocation(int i, int j, int k) {
 		homePortalX = i;
@@ -101,7 +79,7 @@ public class LKLevelData {
 	public static void setDefeatedScar(boolean flag) {
 		defeatedScar = flag ? 1 : 0;
 		byte[] data = new byte[1];
-		data[0] = flag ? (byte) 1 : (byte) 0;
+		data[0] = (byte) (flag ? 1 : 0);
 		Packet250CustomPayload packet = new Packet250CustomPayload("lk.scar", data);
 		PacketDispatcher.sendPacketToAllPlayers(packet);
 		needsSave = true;
@@ -173,22 +151,19 @@ public class LKLevelData {
 			LKTileEntityOutlandsPool.writeInventoryToNBT(levelData);
 
 			NBTTagList simbaList = new NBTTagList();
-			Iterator i = simbas.keySet().iterator();
-			while (i.hasNext()) {
-				Object obj = i.next();
-				if (obj instanceof String && simbas.get(obj) != null && simbas.get(obj) instanceof Integer) {
+			for (Map.Entry entry : simbas.entrySet()) {
+				Object obj = entry.getKey();
+				if (obj instanceof String && entry.getValue() != null && entry.getValue() instanceof Integer) {
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setString("Username", (String) obj);
-					nbt.setInteger("HasSimba", (Integer) simbas.get(obj));
+					nbt.setInteger("HasSimba", (Integer) entry.getValue());
 					simbaList.appendTag(nbt);
 				}
 			}
 			levelData.setTag("Simbas", simbaList);
 
 			NBTTagList boothList = new NBTTagList();
-			Iterator i1 = ticketBoothLocations.iterator();
-			while (i1.hasNext()) {
-				Object obj = i1.next();
+			for (Object obj : ticketBoothLocations) {
 				if (obj instanceof ChunkCoordinates) {
 					ChunkCoordinates coords = (ChunkCoordinates) obj;
 					NBTTagCompound nbt = new NBTTagCompound();
@@ -267,7 +242,7 @@ public class LKLevelData {
 
 	public static boolean hasSimba(EntityPlayer entityplayer) {
 		Object obj = simbas.get(entityplayer.username);
-		return obj == null || !(obj instanceof Integer) ? false : (Integer) obj == 1;
+		return obj instanceof Integer && (Integer) obj == 1;
 	}
 
 	public static void setHasSimba(EntityPlayer entityplayer, boolean flag) {
@@ -307,7 +282,7 @@ public class LKLevelData {
 				continue;
 			}
 
-			data[29 + i * 19 + 0] = (byte) quest.stagesDelayed;
+			data[29 + i * 19] = (byte) quest.stagesDelayed;
 			data[29 + i * 19 + 1] = (byte) quest.currentStage;
 			data[29 + i * 19 + 2] = (byte) quest.stagesDelayed;
 

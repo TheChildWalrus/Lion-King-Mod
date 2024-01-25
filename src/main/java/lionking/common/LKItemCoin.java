@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class LKItemCoin extends LKItem {
-	private byte type;
+	private final byte type;
 
 	public LKItemCoin(int i, byte b) {
 		super(i);
@@ -19,7 +19,7 @@ public class LKItemCoin extends LKItem {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (!world.isRemote && ((type == 0 && entityplayer.dimension == mod_LionKing.idPrideLands) || (type == 1 && entityplayer.dimension == mod_LionKing.idOutlands))) {
+		if (!world.isRemote && (type == 0 && entityplayer.dimension == mod_LionKing.idPrideLands || type == 1 && entityplayer.dimension == mod_LionKing.idOutlands)) {
 			world.spawnEntityInWorld(new LKEntityCoin(world, entityplayer, type));
 			world.playSoundAtEntity(entityplayer, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!entityplayer.capabilities.isCreativeMode) {

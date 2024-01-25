@@ -1,44 +1,18 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 public class LKContainerBugTrap extends Container {
-	private LKTileEntityBugTrap bugTrap;
+	private final LKTileEntityBugTrap bugTrap;
 
 	public LKContainerBugTrap(EntityPlayer entityplayer, LKTileEntityBugTrap trap) {
 		bugTrap = trap;
 
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
-				addSlotToContainer(new LKSlotBugBait(trap, j + (i * 2), (i * 18) + 40, (j * 18) + 28));
+				addSlotToContainer(new LKSlotBugBait(trap, j + i * 2, i * 18 + 40, j * 18 + 28));
 			}
 		}
 
@@ -79,11 +53,11 @@ public class LKContainerBugTrap extends Container {
 					if (!mergeItemStack(itemstack1, 0, 4, false)) {
 						return null;
 					}
-				} else if (i >= 5 && i < 32) {
+				} else if (i < 32) {
 					if (!mergeItemStack(itemstack1, 32, 41, false)) {
 						return null;
 					}
-				} else if (i >= 32 && i < 41 && !mergeItemStack(itemstack1, 5, 32, false)) {
+				} else if (i < 41 && !mergeItemStack(itemstack1, 5, 32, false)) {
 					return null;
 				}
 			} else if (!mergeItemStack(itemstack1, 5, 41, false)) {
@@ -95,11 +69,10 @@ public class LKContainerBugTrap extends Container {
 			} else {
 				slot.onSlotChanged();
 			}
-			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onPickupFromSlot(entityplayer, itemstack1);
-			} else {
+			if (itemstack1.stackSize == itemstack.stackSize) {
 				return null;
 			}
+			slot.onPickupFromSlot(entityplayer, itemstack1);
 		}
 		return itemstack;
 	}

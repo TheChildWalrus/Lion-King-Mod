@@ -14,9 +14,9 @@ public class LKCreativeTabs extends CreativeTabs {
 	public static LKCreativeTabs tabCombat = new LKCreativeTabs("Lion King Combat");
 	public static LKCreativeTabs tabQuest = new LKCreativeTabs("Lion King Quest Items");
 
-	public ItemStack theIcon;
+	private ItemStack theIcon;
 
-	public LKCreativeTabs(String label) {
+	private LKCreativeTabs(String label) {
 		super(label);
 	}
 

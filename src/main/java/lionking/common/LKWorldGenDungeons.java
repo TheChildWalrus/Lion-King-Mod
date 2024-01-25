@@ -2,33 +2,12 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
 import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -122,7 +101,7 @@ public class LKWorldGenDungeons extends WorldGenerator {
 						if (l1 != i || j3 != k) {
 							world.setBlock(l1, k2, j3, Block.waterStill.blockID, 0, 2);
 						}
-						world.setBlock(l1, k2 - 1, j3, random.nextInt(4) != 0 ? mod_LionKing.prideBrickMossy.blockID : mod_LionKing.prideBrick.blockID, 0, 2);
+						world.setBlock(l1, k2 - 1, j3, (random.nextInt(4) != 0 ? mod_LionKing.prideBrickMossy : mod_LionKing.prideBrick).blockID, 0, 2);
 					}
 				}
 			}
@@ -132,33 +111,32 @@ public class LKWorldGenDungeons extends WorldGenerator {
 		for (int i2 = 0; i2 < j7; i2++) {
 			label0:
 			for (int l2 = 0; l2 <= j7; l2++) {
-				int k3 = (i + random.nextInt(l * 2 + 1)) - l;
-				int l3 = j;
-				int i4 = (k + random.nextInt(i1 * 2 + 1)) - i1;
-				if (!world.isAirBlock(k3, l3, i4) && world.getBlockId(k3, l3, i4) != Block.vine.blockID) {
+				int k3 = i + random.nextInt(l * 2 + 1) - l;
+				int i4 = k + random.nextInt(i1 * 2 + 1) - i1;
+				if (!world.isAirBlock(k3, j, i4) && world.getBlockId(k3, j, i4) != Block.vine.blockID) {
 					continue;
 				}
 				int j4 = 0;
-				if (world.getBlockMaterial(k3 - 1, l3, i4).isSolid()) {
+				if (world.getBlockMaterial(k3 - 1, j, i4).isSolid()) {
 					j4++;
 				}
-				if (world.getBlockMaterial(k3 + 1, l3, i4).isSolid()) {
+				if (world.getBlockMaterial(k3 + 1, j, i4).isSolid()) {
 					j4++;
 				}
-				if (world.getBlockMaterial(k3, l3, i4 - 1).isSolid()) {
+				if (world.getBlockMaterial(k3, j, i4 - 1).isSolid()) {
 					j4++;
 				}
-				if (world.getBlockMaterial(k3, l3, i4 + 1).isSolid()) {
+				if (world.getBlockMaterial(k3, j, i4 + 1).isSolid()) {
 					j4++;
 				}
 				if (j4 != 1) {
 					continue;
 				}
-				if (!world.isBlockOpaqueCube(k3, l3 - 1, i4)) {
+				if (!world.isBlockOpaqueCube(k3, j - 1, i4)) {
 					continue;
 				}
-				world.setBlock(k3, l3, i4, Block.chest.blockID, 0, 2);
-				TileEntityChest tileentitychest = (TileEntityChest) world.getBlockTileEntity(k3, l3, i4);
+				world.setBlock(k3, j, i4, Block.chest.blockID, 0, 2);
+				IInventory tileentitychest = (IInventory) world.getBlockTileEntity(k3, j, i4);
 				if (tileentitychest == null) {
 					break;
 				}
@@ -265,39 +243,38 @@ public class LKWorldGenDungeons extends WorldGenerator {
 					return new ItemStack(mod_LionKing.jar);
 			}
 		}
-		if (i == 10 || i == 11) {
-			int j = random.nextInt(7);
-			switch (j) {
-				case 0:
-					return new ItemStack(mod_LionKing.shovelSilver);
-				case 1:
-					return new ItemStack(mod_LionKing.pickaxeSilver);
-				case 2:
-					return new ItemStack(mod_LionKing.axeSilver);
-				case 3:
-					return new ItemStack(mod_LionKing.swordSilver);
-				case 4:
-					return new ItemStack(mod_LionKing.helmetSilver);
-				case 5:
-					return new ItemStack(mod_LionKing.bootsSilver);
-				case 6:
-					return new ItemStack(mod_LionKing.note, 1 + random.nextInt(3), 6);
-			}
+		int j = random.nextInt(7);
+		switch (j) {
+			case 0:
+				return new ItemStack(mod_LionKing.shovelSilver);
+			case 1:
+				return new ItemStack(mod_LionKing.pickaxeSilver);
+			case 2:
+				return new ItemStack(mod_LionKing.axeSilver);
+			case 3:
+				return new ItemStack(mod_LionKing.swordSilver);
+			case 4:
+				return new ItemStack(mod_LionKing.helmetSilver);
+			case 5:
+				return new ItemStack(mod_LionKing.bootsSilver);
+			case 6:
+				return new ItemStack(mod_LionKing.note, 1 + random.nextInt(3), 6);
 		}
 		return null;
 	}
 
 	private void generateVines(World world, Random random, int i, int j, int k, int l) {
-		world.setBlock(i, j, k, Block.vine.blockID, l, 2);
-		Block.vine.onNeighborBlockChange(world, i, j, k, 0);
+		int j1 = j;
+		world.setBlock(i, j1, k, Block.vine.blockID, l, 2);
+		Block.vine.onNeighborBlockChange(world, i, j1, k, 0);
 		int i1 = random.nextInt(2) + 4;
 		while (true) {
-			--j;
-			if (world.getBlockId(i, j, k) != 0 || i1 <= 0) {
+			--j1;
+			if (world.getBlockId(i, j1, k) != 0 || i1 <= 0) {
 				return;
 			}
-			world.setBlock(i, j, k, Block.vine.blockID, l, 2);
-			Block.vine.onNeighborBlockChange(world, i, j, k, 0);
+			world.setBlock(i, j1, k, Block.vine.blockID, l, 2);
+			Block.vine.onNeighborBlockChange(world, i, j1, k, 0);
 			--i1;
 		}
 	}

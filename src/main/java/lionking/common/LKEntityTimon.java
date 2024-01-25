@@ -1,34 +1,14 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 public class LKEntityTimon extends EntityCreature implements LKCharacter {
 	public LKInventoryTimon inventory;
@@ -41,7 +21,7 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 		talkTick = 120;
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(1, new EntityAISwimming(this));
-		tasks.addTask(2, new EntityAIWander(this, 1D));
+		tasks.addTask(2, new EntityAIWander(this, 1.0D));
 		tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(4, new EntityAILookIdle(this));
 		inventory = new LKInventoryTimon(this);
@@ -50,7 +30,7 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(100D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(100.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.2D);
 	}
 
@@ -92,58 +72,58 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 
 		if (hasSpoken() && canTalk() && !hasPumbaaSpoken()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Pumbaa> \u00a7fI don't know. Do you think we can eat him?");
+				LKIngame.sendMessageToAllPlayers("§e<Pumbaa> §fI don't know. Do you think we can eat him?");
 			}
-			dataWatcher.updateObject(14, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(14, (byte) 1);
 			talkTick = 0;
 		}
 		if (hasPumbaaSpoken() && canTalk() && !hasTimonSpokenAgain()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Timon> \u00a7fOf course we can't eat him, you idiot. Lie down before you hurt yourself.");
+				LKIngame.sendMessageToAllPlayers("§e<Timon> §fOf course we can't eat him, you idiot. Lie down before you hurt yourself.");
 			}
-			dataWatcher.updateObject(15, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(15, (byte) 1);
 			talkTick = 0;
 		}
 		if (hasTimonSpokenAgain() && canTalk() && !hasTimonSpokenYetAgain()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Timon> \u00a7fAlthough now that you mention it...");
+				LKIngame.sendMessageToAllPlayers("§e<Timon> §fAlthough now that you mention it...");
 			}
-			dataWatcher.updateObject(16, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(16, (byte) 1);
 			talkTick = 0;
 		}
 		if (hasTimonSpokenYetAgain() && canTalk() && !hasPumbaaSpokenAgain()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Pumbaa> \u00a7fKid, we're really hungry. Do you think you could find us something to eat?");
+				LKIngame.sendMessageToAllPlayers("§e<Pumbaa> §fKid, we're really hungry. Do you think you could find us something to eat?");
 			}
-			dataWatcher.updateObject(17, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(17, (byte) 1);
 			talkTick = 0;
 		}
 		if (hasPumbaaSpokenAgain() && canTalk() && !hasTimonDismissedIdea()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Timon> \u00a7fPumbaa, that's an awful idea. It'll never work.");
+				LKIngame.sendMessageToAllPlayers("§e<Timon> §fPumbaa, that's an awful idea. It'll never work.");
 			}
-			dataWatcher.updateObject(18, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(18, (byte) 1);
 			talkTick = 0;
 		}
 		if (hasTimonDismissedIdea() && canTalk() && !hasTimonClaimedIdea()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Timon> \u00a7fWait a minute. I've got a great idea! You! You there! Do you think you could find us something to eat?");
+				LKIngame.sendMessageToAllPlayers("§e<Timon> §fWait a minute. I've got a great idea! You! You there! Do you think you could find us something to eat?");
 			}
-			dataWatcher.updateObject(19, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(19, (byte) 1);
 			talkTick = 0;
 		}
 		if (hasTimonClaimedIdea() && canTalk() && !hasPumbaaSpokenFood()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Pumbaa> \u00a7fOur favourite food is bugs. Especially those stripy blue ones that hide under logs!");
+				LKIngame.sendMessageToAllPlayers("§e<Pumbaa> §fOur favourite food is bugs. Especially those stripy blue ones that hide under logs!");
 			}
-			dataWatcher.updateObject(20, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(20, (byte) 1);
 			talkTick = 0;
 		}
 		if (hasPumbaaSpokenFood() && canTalk() && !hasTimonSpokenFood()) {
 			if (worldObj.isRemote) {
-				LKIngame.sendMessageToAllPlayers("\u00a7e<Timon> \u00a7fStop it Pumbaa, you're making my mouth water! Anyway, you there, if you bring us some bugs to eat, I might have some things to offer you in return.");
+				LKIngame.sendMessageToAllPlayers("§e<Timon> §fStop it Pumbaa, you're making my mouth water! Anyway, you there, if you bring us some bugs to eat, I might have some things to offer you in return.");
 			}
-			dataWatcher.updateObject(21, Byte.valueOf((byte) 1));
+			dataWatcher.updateObject(21, (byte) 1);
 			talkTick = 0;
 		}
 	}
@@ -151,16 +131,16 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(13, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(14, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(15, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(16, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(17, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(18, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(19, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(20, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(21, Byte.valueOf((byte) 0));
-		dataWatcher.addObject(22, Byte.valueOf((byte) 0));
+		dataWatcher.addObject(13, (byte) 0);
+		dataWatcher.addObject(14, (byte) 0);
+		dataWatcher.addObject(15, (byte) 0);
+		dataWatcher.addObject(16, (byte) 0);
+		dataWatcher.addObject(17, (byte) 0);
+		dataWatcher.addObject(18, (byte) 0);
+		dataWatcher.addObject(19, (byte) 0);
+		dataWatcher.addObject(20, (byte) 0);
+		dataWatcher.addObject(21, (byte) 0);
+		dataWatcher.addObject(22, (byte) 0);
 	}
 
 	@Override
@@ -204,16 +184,16 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 		super.readEntityFromNBT(nbttagcompound);
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Inventory");
 		inventory.readFromNBT(nbttaglist);
-		dataWatcher.updateObject(13, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasSpoken") ? 1 : 0)));
-		dataWatcher.updateObject(14, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasPumbaaSpoken") ? 1 : 0)));
-		dataWatcher.updateObject(15, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasTimonSpokenAgain") ? 1 : 0)));
-		dataWatcher.updateObject(16, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasTimonSpokenYetAgain") ? 1 : 0)));
-		dataWatcher.updateObject(17, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasPumbaaSpokenAgain") ? 1 : 0)));
-		dataWatcher.updateObject(18, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasTimonDismissedIdea") ? 1 : 0)));
-		dataWatcher.updateObject(19, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasTimonClaimedIdea") ? 1 : 0)));
-		dataWatcher.updateObject(20, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasPumbaaSpokenFood") ? 1 : 0)));
-		dataWatcher.updateObject(21, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasTimonSpokenFood") ? 1 : 0)));
-		dataWatcher.updateObject(22, Byte.valueOf((byte) (nbttagcompound.getBoolean("HasEaten") ? 1 : 0)));
+		dataWatcher.updateObject(13, (byte) (nbttagcompound.getBoolean("HasSpoken") ? 1 : 0));
+		dataWatcher.updateObject(14, (byte) (nbttagcompound.getBoolean("HasPumbaaSpoken") ? 1 : 0));
+		dataWatcher.updateObject(15, (byte) (nbttagcompound.getBoolean("HasTimonSpokenAgain") ? 1 : 0));
+		dataWatcher.updateObject(16, (byte) (nbttagcompound.getBoolean("HasTimonSpokenYetAgain") ? 1 : 0));
+		dataWatcher.updateObject(17, (byte) (nbttagcompound.getBoolean("HasPumbaaSpokenAgain") ? 1 : 0));
+		dataWatcher.updateObject(18, (byte) (nbttagcompound.getBoolean("HasTimonDismissedIdea") ? 1 : 0));
+		dataWatcher.updateObject(19, (byte) (nbttagcompound.getBoolean("HasTimonClaimedIdea") ? 1 : 0));
+		dataWatcher.updateObject(20, (byte) (nbttagcompound.getBoolean("HasPumbaaSpokenFood") ? 1 : 0));
+		dataWatcher.updateObject(21, (byte) (nbttagcompound.getBoolean("HasTimonSpokenFood") ? 1 : 0));
+		dataWatcher.updateObject(22, (byte) (nbttagcompound.getBoolean("HasEaten") ? 1 : 0));
 	}
 
 	private boolean hasSpoken() {
@@ -257,11 +237,11 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 	}
 
 	public void setFollowable() {
-		dataWatcher.updateObject(12, Byte.valueOf((byte) 0));
+		dataWatcher.updateObject(12, (byte) 0);
 	}
 
 	public void setEaten() {
-		dataWatcher.updateObject(22, Byte.valueOf((byte) 1));
+		dataWatcher.updateObject(22, (byte) 1);
 	}
 
 	private boolean canTalk() {
@@ -271,38 +251,36 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 	@Override
 	public boolean interact(EntityPlayer entityplayer) {
 		if (entityplayer.capabilities.isCreativeMode) {
-			entityplayer.openGui(mod_LionKing.instance, mod_LionKing.proxy.GUI_ID_TIMON, worldObj, entityId, 0, 0);
+			entityplayer.openGui(mod_LionKing.instance, LKCommonProxy.GUI_ID_TIMON, worldObj, entityId, 0, 0);
 			return true;
 		}
 		if (talkTick >= 40) {
 			if (!hasSpoken()) {
 				if (worldObj.isRemote) {
-					LKIngame.sendMessageToAllPlayers("\u00a7e<Timon> \u00a7fHey, Pumbaa. Who's this?");
+					LKIngame.sendMessageToAllPlayers("§e<Timon> §fHey, Pumbaa. Who's this?");
 				}
-				dataWatcher.updateObject(13, Byte.valueOf((byte) 1));
+				dataWatcher.updateObject(13, (byte) 1);
 				talkTick = 0;
 				return true;
 			}
 
 			if (hasTimonSpokenFood()) {
 				if (entityplayer.inventory.hasItem(mod_LionKing.bug.itemID)) {
-					entityplayer.openGui(mod_LionKing.instance, mod_LionKing.proxy.GUI_ID_TIMON, worldObj, entityId, 0, 0);
+					entityplayer.openGui(mod_LionKing.instance, LKCommonProxy.GUI_ID_TIMON, worldObj, entityId, 0, 0);
 					return true;
-				} else {
-					if (!hasEaten()) {
-						if (worldObj.isRemote) {
-							LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.BUGS));
-						}
-						talkTick = 0;
-						return true;
-					} else {
-						if (worldObj.isRemote) {
-							LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.MORE_BUGS));
-						}
-						talkTick = 0;
-						return true;
-					}
 				}
+				if (hasEaten()) {
+					if (worldObj.isRemote) {
+						LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.MORE_BUGS));
+					}
+					talkTick = 0;
+					return true;
+				}
+				if (worldObj.isRemote) {
+					LKIngame.sendMessageToAllPlayers(LKCharacterSpeech.giveSpeech(LKCharacterSpeech.BUGS));
+				}
+				talkTick = 0;
+				return true;
 			}
 		}
 		return super.interact(entityplayer);
@@ -326,7 +304,7 @@ public class LKEntityTimon extends EntityCreature implements LKCharacter {
 	@Override
 	public float getBlockPathWeight(int i, int j, int k) {
 		if (posY < 60 && j < posY) {
-			return -999999F;
+			return -999999.0F;
 		}
 		return worldObj.getBlockId(i, j - 1, k) == Block.grass.blockID ? 10.0F : worldObj.getLightBrightness(i, j, k) - 0.5F;
 	}

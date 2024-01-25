@@ -1,34 +1,15 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter, IMob {
 	private boolean exploded;
@@ -39,7 +20,7 @@ public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter,
 		rescale();
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new LKEntityAITermiteQueenAttack(this, EntityPlayer.class, 1.4D, false));
-		tasks.addTask(2, new EntityAIWander(this, 1D));
+		tasks.addTask(2, new EntityAIWander(this, 1.0D));
 		tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		tasks.addTask(4, new EntityAILookIdle(this));
 		targetTasks.addTask(0, new EntityAIHurtByTarget(this, false));
@@ -49,15 +30,15 @@ public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter,
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(25D);
-		getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(32D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(25.0D);
+		getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(32.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(20, Float.valueOf(25F));
+		dataWatcher.addObject(20, 25.0F);
 	}
 
 	private void rescale() {
@@ -66,11 +47,11 @@ public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter,
 	}
 
 	public float getScale() {
-		return 3.0F - ((25F - dataWatcher.getWatchableObjectFloat(20)) * 0.07F);
+		return 3.0F - (25.0F - dataWatcher.getWatchableObjectFloat(20)) * 0.07F;
 	}
 
 	private void setScale(float f) {
-		dataWatcher.updateObject(20, Float.valueOf(f));
+		dataWatcher.updateObject(20, f);
 	}
 
 	@Override
@@ -85,7 +66,7 @@ public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter,
 
 	@Override
 	protected Entity findPlayerToAttack() {
-		EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
+		EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16.0D);
 		return entityplayer != null && canEntityBeSeen(entityplayer) ? entityplayer : null;
 	}
 
@@ -100,7 +81,7 @@ public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter,
 			return false;
 		}
 		float currentHealth = getHealth();
-		boolean flag = super.attackEntityFrom(damagesource, 1F);
+		boolean flag = super.attackEntityFrom(damagesource, 1.0F);
 		if (getHealth() > 0) {
 			if (!worldObj.isRemote) {
 				setScale(getHealth());
@@ -108,7 +89,7 @@ public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter,
 			rescale();
 			if (getHealth() < currentHealth) {
 				Entity termite = new LKEntityTermite(worldObj);
-				termite.setLocationAndAngles(posX, posY, posZ, rand.nextFloat() * 360F, 0F);
+				termite.setLocationAndAngles(posX, posY, posZ, rand.nextFloat() * 360.0F, 0.0F);
 				if (!worldObj.isRemote) {
 					worldObj.spawnEntityInWorld(termite);
 				}
@@ -130,14 +111,14 @@ public class LKEntityTermiteQueen extends EntityCreature implements LKCharacter,
 		if (getHealth() == 1) {
 			if (riddenByEntity != null && riddenByEntity instanceof LKEntityZira) {
 				LKLevelData.setZiraStage(27);
-				((LKEntityZira) riddenByEntity).attackEntityFrom(DamageSource.outOfWorld, 100);
+				riddenByEntity.attackEntityFrom(DamageSource.outOfWorld, 100);
 				if (!worldObj.isRemote) {
 					riddenByEntity.mountEntity(null);
 				}
 			}
 
 			if (!worldObj.isRemote && !exploded) {
-				worldObj.createExplosion(this, posX, posY + 3D, posZ, 3F, worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+				worldObj.createExplosion(this, posX, posY + 3.0D, posZ, 3.0F, worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
 				exploded = true;
 			}
 

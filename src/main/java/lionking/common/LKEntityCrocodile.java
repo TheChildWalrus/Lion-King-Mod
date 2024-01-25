@@ -2,44 +2,24 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.List;
 
 public class LKEntityCrocodile extends EntityMob {
-	private static Item[] preyDropsTable = (new Item[]
+	private static final Item[] preyDropsTable = new Item[]
 			{
 					mod_LionKing.zebraRaw, mod_LionKing.zebraRaw, mod_LionKing.zebraRaw, mod_LionKing.zebraHide,
 					mod_LionKing.rhinoRaw, mod_LionKing.rhinoRaw, mod_LionKing.horn, mod_LionKing.gemsbokHide,
 					mod_LionKing.gemsbokHide, mod_LionKing.gemsbokHide, mod_LionKing.featherBlue, mod_LionKing.featherBlue,
 					mod_LionKing.featherYellow, Item.fishRaw, Item.fishRaw, Item.fishRaw, Item.rottenFlesh, Item.rottenFlesh
-			});
+			};
 
 	public LKEntityCrocodile(World world) {
 		super(world);
@@ -49,23 +29,23 @@ public class LKEntityCrocodile extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(18D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(18.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.5D);
-		getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(2D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(2.0D);
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataWatcher.addObject(20, Integer.valueOf(0));
+		dataWatcher.addObject(20, 0);
 	}
 
 	public int getSnapTime() {
 		return dataWatcher.getWatchableObjectInt(20);
 	}
 
-	public void setSnapTime(int i) {
-		dataWatcher.updateObject(20, Integer.valueOf(i));
+	private void setSnapTime(int i) {
+		dataWatcher.updateObject(20, i);
 	}
 
 	@Override
@@ -79,9 +59,8 @@ public class LKEntityCrocodile extends EntityMob {
 		if (f < 0.5F) {
 			double d = 16.0D;
 			return worldObj.getClosestVulnerablePlayerToEntity(this, d);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -102,20 +81,17 @@ public class LKEntityCrocodile extends EntityMob {
 			setSnapTime(attackTime);
 
 			if (inWater) {
-				getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(4D);
+				getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(4.0D);
 			} else {
-				getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(2D);
+				getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(2.0D);
 			}
 		}
 
 		if (entityToAttack == null && !hasPath() && worldObj.rand.nextInt(800) == 0) {
-			List list = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getAABBPool().getAABB(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(10D, 4D, 10D));
+			List list = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getAABBPool().getAABB(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(10.0D, 4.0D, 10.0D));
 			if (!list.isEmpty()) {
 				EntityAnimal entityanimal = (EntityAnimal) list.get(getRNG().nextInt(list.size()));
-				boolean canAttack = true;
-				if (entityanimal instanceof LKEntityLionBase) {
-					canAttack = false;
-				}
+				boolean canAttack = !(entityanimal instanceof LKEntityLionBase);
 				if (entityanimal instanceof LKEntityGiraffe && ((LKEntityGiraffe) entityanimal).getSaddled()) {
 					canAttack = false;
 				}
@@ -152,7 +128,7 @@ public class LKEntityCrocodile extends EntityMob {
 
 	@Override
 	public boolean getCanSpawnHere() {
-		if (worldObj.checkNoEntityCollision(boundingBox) && isValidLightLevel() && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0) {
+		if (worldObj.checkNoEntityCollision(boundingBox) && isValidLightLevel() && worldObj.getCollidingBoundingBoxes(this, boundingBox).isEmpty()) {
 			for (int i = -6; i < 7; i++) {
 				for (int j = -6; j < 7; j++) {
 					for (int k = -6; k < 7; k++) {
@@ -161,11 +137,10 @@ public class LKEntityCrocodile extends EntityMob {
 						int k1 = MathHelper.floor_double(posZ) + k;
 						Block block = Block.blocksList[worldObj.getBlockId(i1, j1, k1)];
 						if (block != null && block.blockMaterial == Material.water) {
-							if (posY > 60) {
+							if (posY > 60 || isCrocodileSpawnerNearby()) {
 								return true;
-							} else if (isCrocodileSpawnerNearby()) {
-								return true;
-							} else if (getRNG().nextInt(3) == 0) {
+							}
+							if (getRNG().nextInt(3) == 0) {
 								return true;
 							}
 						}
@@ -199,15 +174,13 @@ public class LKEntityCrocodile extends EntityMob {
 	public float getBlockPathWeight(int i, int j, int k) {
 		Block block = Block.blocksList[worldObj.getBlockId(i, j - 1, k)];
 		Block block1 = Block.blocksList[worldObj.getBlockId(i, j, k)];
-		if ((block != null && block.blockMaterial == Material.water) || (block1 != null && block1.blockMaterial == Material.water)) {
+		if (block != null && block.blockMaterial == Material.water || block1 != null && block1.blockMaterial == Material.water) {
 			return 20.0F;
-		} else {
-			if (isInWater()) {
-				return getRNG().nextInt(6) == 0 ? -99999.0F : 20.0F;
-			} else {
-				return getRNG().nextInt(3) == 0 ? -99999.0F : 20.0F;
-			}
 		}
+		if (isInWater()) {
+			return getRNG().nextInt(6) == 0 ? -99999.0F : 20.0F;
+		}
+		return getRNG().nextInt(3) == 0 ? -99999.0F : 20.0F;
 	}
 
 	@Override

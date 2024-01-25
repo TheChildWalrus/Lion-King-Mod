@@ -1,37 +1,11 @@
 package lionking.common;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
-
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 public class LKContainerQuiver extends Container {
-	private LKInventoryQuiver quiverInventory;
+	private final LKInventoryQuiver quiverInventory;
 
 	public LKContainerQuiver(EntityPlayer entityplayer, LKInventoryQuiver quiver) {
 		quiverInventory = quiver;
@@ -76,11 +50,11 @@ public class LKContainerQuiver extends Container {
 				if (!mergeItemStack(itemstack1, 0, 6, false)) {
 					return null;
 				}
-			} else if (i >= 6 && i < 33) {
+			} else if (i < 33) {
 				if (!mergeItemStack(itemstack1, 33, 42, false)) {
 					return null;
 				}
-			} else if (i >= 33 && i < 42) {
+			} else if (i < 42) {
 				if (!mergeItemStack(itemstack1, 6, 33, false)) {
 					return null;
 				}
@@ -89,7 +63,7 @@ public class LKContainerQuiver extends Container {
 			}
 
 			if (itemstack1.stackSize == 0) {
-				slot.putStack((ItemStack) null);
+				slot.putStack(null);
 			} else {
 				slot.onSlotChanged();
 			}
@@ -104,6 +78,7 @@ public class LKContainerQuiver extends Container {
 		return itemstack;
 	}
 
+	@Override
 	public void onContainerClosed(EntityPlayer entityplayer) {
 		super.onContainerClosed(entityplayer);
 		quiverInventory.closeChest();

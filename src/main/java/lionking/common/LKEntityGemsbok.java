@@ -1,34 +1,12 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 public class LKEntityGemsbok extends LKEntityQuestAnimal {
 	public LKEntityGemsbok(World world) {
@@ -37,11 +15,11 @@ public class LKEntityGemsbok extends LKEntityQuestAnimal {
 		getNavigator().setAvoidsWater(true);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIPanic(this, 1.3D));
-		tasks.addTask(2, new EntityAIMate(this, 1D));
+		tasks.addTask(2, new EntityAIMate(this, 1.0D));
 		tasks.addTask(3, new EntityAITempt(this, 1.2D, Item.wheat.itemID, false));
 		tasks.addTask(3, new EntityAITempt(this, 1.2D, mod_LionKing.corn.itemID, false));
 		tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-		tasks.addTask(5, new EntityAIWander(this, 1D));
+		tasks.addTask(5, new EntityAIWander(this, 1.0D));
 		tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		tasks.addTask(7, new EntityAILookIdle(this));
 	}
@@ -49,7 +27,7 @@ public class LKEntityGemsbok extends LKEntityQuestAnimal {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(12D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(12.0D);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
 	}
 
@@ -99,18 +77,22 @@ public class LKEntityGemsbok extends LKEntityQuestAnimal {
 		return "lionking:zebradeath";
 	}
 
+	@Override
 	public LKCharacterSpeech getCharacterSpeech() {
 		return LKCharacterSpeech.GEMSBOK;
 	}
 
+	@Override
 	public LKCharacterSpeech getChildCharacterSpeech() {
 		return LKCharacterSpeech.GEMSBOK_CALF;
 	}
 
+	@Override
 	public String getAnimalName() {
 		return "Gemsbok";
 	}
 
+	@Override
 	public ItemStack getQuestItem() {
 		int i = getRNG().nextInt(5);
 		switch (i) {

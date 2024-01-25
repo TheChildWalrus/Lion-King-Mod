@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +23,7 @@ public class LKBlockDrum extends BlockContainer {
 	private Icon drumTopIcon;
 	@SideOnly(Side.CLIENT)
 	private Icon[] drumSideIcons;
-	private String[] drumTypes = {"acacia", "rainforest", "mango", "passion", "banana", "deadwood"};
+	private final String[] drumTypes = new String[]{"acacia", "rainforest", "mango", "passion", "banana", "deadwood"};
 
 	public LKBlockDrum(int i) {
 		super(i, Material.wood);
@@ -39,17 +40,19 @@ public class LKBlockDrum extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int i, int j) {
+		int j1 = j;
 		if (i == 0) {
-			Block woodBlock = j < 4 ? mod_LionKing.prideWood : mod_LionKing.prideWood2;
-			return woodBlock.getIcon(2, j < 4 ? j : j - 4);
-		} else if (i == 1) {
+			Block woodBlock = j1 < 4 ? mod_LionKing.prideWood : mod_LionKing.prideWood2;
+			return woodBlock.getIcon(2, j1 < 4 ? j1 : j1 - 4);
+		}
+		if (i == 1) {
 			return drumTopIcon;
 		}
 
-		if (j >= drumTypes.length) {
-			j = 0;
+		if (j1 >= drumTypes.length) {
+			j1 = 0;
 		}
-		return drumSideIcons[j];
+		return drumSideIcons[j1];
 	}
 
 	@Override
@@ -85,7 +88,7 @@ public class LKBlockDrum extends BlockContainer {
 		ItemStack itemstack = entityplayer.inventory.getCurrentItem();
 		if (itemstack != null && itemstack.itemID == mod_LionKing.staff.itemID) {
 			if (!world.isRemote) {
-				entityplayer.openGui(mod_LionKing.instance, mod_LionKing.proxy.GUI_ID_DRUM, world, i, j, k);
+				entityplayer.openGui(mod_LionKing.instance, LKCommonProxy.GUI_ID_DRUM, world, i, j, k);
 			}
 			return true;
 		}
@@ -107,9 +110,9 @@ public class LKBlockDrum extends BlockContainer {
 	}
 
 	private void playNote(World world, int i, int j, int k, int note) {
-		float pitch = (float) Math.pow(2.0D, (double) (note - 12) / 12.0D);
-		world.playSoundEffect((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "lionking:bongo", 3.0F, pitch);
-		world.spawnParticle("note", (double) i + 0.5D, (double) j + 1.2D, (double) k + 0.5D, (double) note / 24.0D, 0.0D, 0.0D);
+		float pitch = (float) Math.pow(2.0D, (note - 12) / 12.0D);
+		world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "lionking:bongo", 3.0F, pitch);
+		world.spawnParticle("note", i + 0.5D, j + 1.2D, k + 0.5D, note / 24.0D, 0.0D, 0.0D);
 	}
 
 	@Override
@@ -119,7 +122,7 @@ public class LKBlockDrum extends BlockContainer {
 
 	@Override
 	public void breakBlock(World world, int i, int j, int k, int i3, int j3) {
-		LKTileEntityDrum drum = (LKTileEntityDrum) world.getBlockTileEntity(i, j, k);
+		IInventory drum = (IInventory) world.getBlockTileEntity(i, j, k);
 		if (drum != null) {
 			label0:
 			for (int l = 0; l < drum.getSizeInventory(); l++) {
@@ -139,7 +142,7 @@ public class LKBlockDrum extends BlockContainer {
 						i1 = itemstack.stackSize;
 					}
 					itemstack.stackSize -= i1;
-					EntityItem entityitem = new EntityItem(world, (float) i + f, (float) j + f1, (float) k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
+					EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
 					float f3 = 0.05F;
 					entityitem.motionX = (float) world.rand.nextGaussian() * f3;
 					entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;

@@ -1,34 +1,10 @@
 package lionking.common;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
-import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 import java.util.Random;
 
@@ -65,7 +41,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 
 		for (int i1 = i - 1; i1 < i + 3; i1++) {
 			for (int k1 = k - 1; k1 < k + 3; k1++) {
-				if ((i1 == i - 1 && k1 == k - 1) || (i1 == i + 2 && k1 == k - 1) || (i1 == i - 1 && k1 == k + 2) || (i1 == i + 2 && k1 == k + 2)) {
+				if (i1 == i - 1 && k1 == k - 1 || i1 == i + 2 && k1 == k - 1 || i1 == i - 1 && k1 == k + 2 || i1 == i + 2 && k1 == k + 2) {
 				} else if (!isBlockReplaceable(world, i1, j + l, k1)) {
 					return false;
 				}
@@ -74,7 +50,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 
 		for (int i1 = i - 2; i1 < i + 4; i1++) {
 			for (int k1 = k - 2; k1 < k + 4; k1++) {
-				if ((i1 == i - 2 && k1 == k - 2) || (i1 == i + 3 && k1 == k - 2) || (i1 == i - 2 && k1 == k + 3) || (i1 == i + 3 && k1 == k + 3)) {
+				if (i1 == i - 2 && k1 == k - 2 || i1 == i + 3 && k1 == k - 2 || i1 == i - 2 && k1 == k + 3 || i1 == i + 3 && k1 == k + 3) {
 				} else if (!isBlockReplaceable(world, i1, j + l + 1, k1)) {
 					return false;
 				}
@@ -135,11 +111,11 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 			}
 		}
 
-		int l1 = MathHelper.floor_double(l / 2);
+		int l1 = MathHelper.floor_double((double) l / 2);
 
 		for (int i1 = i - 1; i1 < i + 3; i1++) {
 			for (int k1 = k - 1; k1 < k + 3; k1++) {
-				if ((i1 == i - 1 && k1 == k - 1) || (i1 == i + 2 && k1 == k - 1) || (i1 == i - 1 && k1 == k + 2) || (i1 == i + 2 && k1 == k + 2)) {
+				if (i1 == i - 1 && k1 == k - 1 || i1 == i + 2 && k1 == k - 1 || i1 == i - 1 && k1 == k + 2 || i1 == i + 2 && k1 == k + 2) {
 				} else if (!isBlockReplaceable(world, i1, j + l1, k1)) {
 					return false;
 				}
@@ -148,7 +124,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 
 		for (int i1 = i - 1; i1 < i + 4; i1++) {
 			for (int k1 = k - 1; k1 < k + 4; k1++) {
-				if ((i1 == i - 2 && k1 == k - 2) || (i1 == i + 3 && k1 == k - 2) || (i1 == i - 2 && k1 == k + 3) || (i1 == i + 3 && k1 == k + 3)) {
+				if (i1 == i - 2 && k1 == k - 2 || i1 == i + 3 && k1 == k - 2 || i1 == i - 2 && k1 == k + 3 || i1 == i + 3 && k1 == k + 3) {
 				} else if (!isBlockReplaceable(world, i1, j + l1 + 1, k1)) {
 					return false;
 				}
@@ -171,7 +147,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 
 		for (int i1 = i - 1; i1 < i + 3; i1++) {
 			for (int k1 = k - 1; k1 < k + 3; k1++) {
-				if ((i1 == i - 1 && k1 == k - 1) || (i1 == i + 2 && k1 == k - 1) || (i1 == i - 1 && k1 == k + 2) || (i1 == i + 2 && k1 == k + 2)) {
+				if (i1 == i - 1 && k1 == k - 1 || i1 == i + 2 && k1 == k - 1 || i1 == i - 1 && k1 == k + 2 || i1 == i + 2 && k1 == k + 2) {
 				} else {
 					setBlockAndMetadata(world, i1, j + l, k1, mod_LionKing.prideWood.blockID, 1);
 				}
@@ -180,7 +156,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 
 		for (int i1 = i - 2; i1 < i + 4; i1++) {
 			for (int k1 = k - 2; k1 < k + 4; k1++) {
-				if ((i1 == i - 2 && k1 == k - 2) || (i1 == i + 3 && k1 == k - 2) || (i1 == i - 2 && k1 == k + 3) || (i1 == i + 3 && k1 == k + 3)) {
+				if (i1 == i - 2 && k1 == k - 2 || i1 == i + 3 && k1 == k - 2 || i1 == i - 2 && k1 == k + 3 || i1 == i + 3 && k1 == k + 3) {
 				} else {
 					setBlockAndMetadata(world, i1, j + l + 1, k1, mod_LionKing.forestLeaves.blockID, 0);
 				}
@@ -308,7 +284,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 		for (int i1 = i - 1; i1 < i + 3; i1++) {
 			for (int k1 = k - 1; k1 < k + 3; k1++) {
 				for (int j1 = j; j1 < j + l; j1++) {
-					if ((i1 == i - 1 && k1 == k - 1) || (i1 == i - 1 && k1 == k + 2) || (i1 == i + 2 && k1 == k - 1) || (i1 == i + 2 && k1 == k + 2)) {
+					if (i1 == i - 1 && k1 == k - 1 || i1 == i - 1 && k1 == k + 2 || i1 == i + 2 && k1 == k - 1 || i1 == i + 2 && k1 == k + 2) {
 					} else if (random.nextInt(40) == 0 && isBlockReplaceable(world, i1, j1, k1)) {
 						setBlockAndMetadata(world, i1, j1, k1, mod_LionKing.prideWood.blockID, 1);
 					}
@@ -318,7 +294,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 
 		for (int i1 = i - 1; i1 < i + 3; i1++) {
 			for (int k1 = k - 1; k1 < k + 3; k1++) {
-				if ((i1 == i - 1 && k1 == k - 1) || (i1 == i + 2 && k1 == k - 1) || (i1 == i - 1 && k1 == k + 2) || (i1 == i + 2 && k1 == k + 2)) {
+				if (i1 == i - 1 && k1 == k - 1 || i1 == i + 2 && k1 == k - 1 || i1 == i - 1 && k1 == k + 2 || i1 == i + 2 && k1 == k + 2) {
 				} else {
 					setBlockAndMetadata(world, i1, j + l1, k1, mod_LionKing.prideWood.blockID, 1);
 				}
@@ -327,7 +303,7 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 
 		for (int i1 = i - 2; i1 < i + 4; i1++) {
 			for (int k1 = k - 2; k1 < k + 4; k1++) {
-				if ((i1 == i - 2 && k1 == k - 2) || (i1 == i + 3 && k1 == k - 2) || (i1 == i - 2 && k1 == k + 3) || (i1 == i + 3 && k1 == k + 3)) {
+				if (i1 == i - 2 && k1 == k - 2 || i1 == i + 3 && k1 == k - 2 || i1 == i - 2 && k1 == k + 3 || i1 == i + 3 && k1 == k + 3) {
 				} else if (isBlockReplaceable(world, i1, j + l1 + 1, k1)) {
 					setBlockAndMetadata(world, i1, j + l1 + 1, k1, mod_LionKing.forestLeaves.blockID, 0);
 					generateVines(world, random, i1, j + l1 + 1, k1);
@@ -354,19 +330,20 @@ public class LKWorldGenHugeRainforestTrees extends WorldGenerator {
 	}
 
 	private void placeVines(World world, int i, int j, int k, int meta) {
-		world.setBlock(i, j, k, Block.vine.blockID, meta, 3);
+		int j1 = j;
+		world.setBlock(i, j1, k, Block.vine.blockID, meta, 3);
 		int l = world.rand.nextInt(8) + 7;
 		while (true) {
-			--j;
-			if (world.getBlockId(i, j, k) != 0 || l <= 0) {
+			--j1;
+			if (world.getBlockId(i, j1, k) != 0 || l <= 0) {
 				return;
 			}
-			world.setBlock(i, j, k, Block.vine.blockID, meta, 3);
+			world.setBlock(i, j1, k, Block.vine.blockID, meta, 3);
 			--l;
 		}
 	}
 
-	private boolean isBlockReplaceable(World world, int i, int j, int k) {
+	private boolean isBlockReplaceable(IBlockAccess world, int i, int j, int k) {
 		int l = world.getBlockId(i, j, k);
 		return l == 0 || l == Block.vine.blockID || l == mod_LionKing.forestLeaves.blockID;
 	}

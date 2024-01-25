@@ -2,43 +2,22 @@ package lionking.common;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.enchantment.*;
-import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
-import net.minecraft.potion.*;
-import net.minecraft.server.*;
-import net.minecraft.server.management.*;
 
-import net.minecraft.stats.*;
-import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.*;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.storage.*;
 
 public class LKEntityAISimbaFollow extends EntityAIBase {
-	private LKEntitySimba theSimba;
+	private final LKEntitySimba theSimba;
 	private EntityPlayer thePlayer;
-	private World theWorld;
-	private double speed;
-	private PathNavigate pathfinder;
+	private final World theWorld;
+	private final double speed;
+	private final PathNavigate pathfinder;
 	private int moveTick;
-	private float maxDist;
-	private float minDist;
+	private final float maxDist;
+	private final float minDist;
 	private boolean avoidWater;
 
 	public LKEntityAISimbaFollow(LKEntitySimba simba, double d, float f1, float f2) {
@@ -55,21 +34,16 @@ public class LKEntityAISimbaFollow extends EntityAIBase {
 	public boolean shouldExecute() {
 		EntityPlayer entityplayer = theSimba.getOwner();
 
-		if (entityplayer == null) {
+		if (entityplayer == null || theSimba.isSitting() || theSimba.getDistanceSqToEntity(entityplayer) < minDist * minDist) {
 			return false;
-		} else if (theSimba.isSitting()) {
-			return false;
-		} else if (theSimba.getDistanceSqToEntity(entityplayer) < (double) (minDist * minDist)) {
-			return false;
-		} else {
-			thePlayer = entityplayer;
-			return true;
 		}
+		thePlayer = entityplayer;
+		return true;
 	}
 
 	@Override
 	public boolean continueExecuting() {
-		return !pathfinder.noPath() && theSimba.getDistanceSqToEntity(thePlayer) > (double) (maxDist * maxDist) && !theSimba.isSitting();
+		return !pathfinder.noPath() && theSimba.getDistanceSqToEntity(thePlayer) > maxDist * maxDist && !theSimba.isSitting();
 	}
 
 	@Override
@@ -88,7 +62,7 @@ public class LKEntityAISimbaFollow extends EntityAIBase {
 
 	@Override
 	public void updateTask() {
-		theSimba.getLookHelper().setLookPositionWithEntity(thePlayer, 10.0F, (float) theSimba.getVerticalFaceSpeed());
+		theSimba.getLookHelper().setLookPositionWithEntity(thePlayer, 10.0F, theSimba.getVerticalFaceSpeed());
 
 		if (!theSimba.isSitting()) {
 			if (--moveTick <= 0) {
@@ -116,7 +90,7 @@ public class LKEntityAISimbaFollow extends EntityAIBase {
 
 							if (canMoveHere) {
 								theSimba.fallDistance = 0.0F;
-								theSimba.setLocationAndAngles((float) i + 0.5F, j, (float) k + 0.5F, theSimba.rotationYaw, theSimba.rotationPitch);
+								theSimba.setLocationAndAngles(i + 0.5F, j, k + 0.5F, theSimba.rotationYaw, theSimba.rotationPitch);
 							}
 						}
 					}

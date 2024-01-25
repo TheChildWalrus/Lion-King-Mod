@@ -4,13 +4,11 @@ import net.minecraft.block.*;
 import net.minecraft.world.*;
 
 public class LKBlockStairs extends BlockStairs {
-	private Block theBlock;
-	private int theBlockMetadata;
+	private final Block theBlock;
 
 	public LKBlockStairs(int i, Block block, int j) {
 		super(i, block, j);
 		theBlock = block;
-		theBlockMetadata = j;
 		setCreativeTab(LKCreativeTabs.tabBlock);
 	}
 
