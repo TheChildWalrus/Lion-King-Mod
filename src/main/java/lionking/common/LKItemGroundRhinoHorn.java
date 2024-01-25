@@ -38,14 +38,12 @@ public class LKItemGroundRhinoHorn extends LKItem {
 					EntityAnimal targetMate = matingAI.targetMate;
 					if (targetMate != null) {
 						if (itemRand.nextInt(3) == 0) {
-							for (int i; true; i++) {
-								double d = itemRand.nextGaussian() * 0.02D;
-								double d1 = itemRand.nextGaussian() * 0.02D;
-								double d2 = itemRand.nextGaussian() * 0.02D;
-								entityliving.worldObj.spawnParticle("smoke", entityliving.posX + itemRand.nextFloat() * entityliving.width * 2.0F - entityliving.width, entityliving.posY + 0.5D + itemRand.nextFloat() * entityliving.height, entityliving.posZ + itemRand.nextFloat() * entityliving.width * 2.0F - entityliving.width, d, d1, d2);
-								itemstack.stackSize--;
-								return false;
-							}
+							double d = itemRand.nextGaussian() * 0.02D;
+							double d1 = itemRand.nextGaussian() * 0.02D;
+							double d2 = itemRand.nextGaussian() * 0.02D;
+							entityliving.worldObj.spawnParticle("smoke", entityliving.posX + itemRand.nextFloat() * entityliving.width * 2.0F - entityliving.width, entityliving.posY + 0.5D + itemRand.nextFloat() * entityliving.height, entityliving.posZ + itemRand.nextFloat() * entityliving.width * 2.0F - entityliving.width, d, d1, d2);
+							itemstack.stackSize--;
+							return false;
 						}
 						procreate(animal);
 						itemstack.stackSize--;
