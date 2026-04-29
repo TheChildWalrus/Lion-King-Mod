@@ -1,0 +1,1 @@
+For Minecraft, version 1.7.10. Made by Mevans originally then updated past 1.6.4 by RedRosewarrior aka DevMaster1015 then ported to 1.7.10 by Mrjam22. license is ARR You may not redistribute this mod.

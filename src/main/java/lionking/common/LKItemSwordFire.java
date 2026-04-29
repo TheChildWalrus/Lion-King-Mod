@@ -31,9 +31,9 @@ import net.minecraft.world.storage.*;
 
 public class LKItemSwordFire extends LKItemSword
 {
-    public LKItemSwordFire(int i, EnumToolMaterial enumtoolmaterial)
+    public LKItemSwordFire(int i, ToolMaterial enumtoolmaterial)
     {
-        super(i, enumtoolmaterial);
+        super(enumtoolmaterial);
     }
 
 	@Override

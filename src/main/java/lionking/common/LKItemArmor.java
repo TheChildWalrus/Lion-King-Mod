@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -31,14 +30,14 @@ import net.minecraft.world.storage.*;
 
 public class LKItemArmor extends ItemArmor
 {
-    public LKItemArmor(int i, EnumArmorMaterial enumarmormaterial, int j, int k)
+    public LKItemArmor(ArmorMaterial enumarmormaterial, int j, int k)
     {
-        super(i, enumarmormaterial, j, k);
+        super(enumarmormaterial, j, k);
 		setCreativeTab(LKCreativeTabs.tabCombat);
     }
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
+	public String getArmorTexture(ItemStack stack,Entity entity,int slot, String type)
 	{
 		String s = getArmorMaterial().name().substring(3).toLowerCase();
 		String s1 = armorType == 2 ? "_2" : "_1";

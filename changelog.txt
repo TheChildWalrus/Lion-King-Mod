@@ -1,3 +1,8 @@
+*** Version 1.15 ***
+
++ ported to 1.7.10
+
+
 *** Version 1.14 ***
 
 + Added new Pride Lands biomes - Wooded Savannah, Grassland Savannah, Desert and Banana Forest

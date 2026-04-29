@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -30,21 +29,23 @@ import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
+
+import javax.swing.Icon;
+
 import net.minecraftforge.common.IShearable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 public class LKItemRafikiStick extends LKItem
 {
 	private int lastThunderUseTick;
 	@SideOnly(Side.CLIENT)
-	private Icon[] thunderIcons;
+	private IIcon[] thunderIcons;
 	
-    public LKItemRafikiStick(int i)
+    public LKItemRafikiStick()
     {
-       	super(i);
+       	super();
 		setMaxStackSize(1);
 		setMaxDamage(850);
 		setNoRepair();

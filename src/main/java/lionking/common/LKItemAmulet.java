@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -31,9 +30,9 @@ import net.minecraft.world.storage.*;
 
 public class LKItemAmulet extends LKItemArmor
 {
-    public LKItemAmulet(int i)
+    public LKItemAmulet()
     {
-        super(i, mod_LionKing.armorSuit, 0, 1);
+        super(mod_LionKing.armorSuit, 0, 1);
 		setMaxDamage(0);
 		setMaxStackSize(1);
 		setCreativeTab(LKCreativeTabs.tabQuest);
@@ -46,7 +45,7 @@ public class LKItemAmulet extends LKItemArmor
     }
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
+	public String getArmorTexture(ItemStack stack,Entity entity,int slot, String type)
 	{
 		return "lionking:item/amulet.png";
 	}

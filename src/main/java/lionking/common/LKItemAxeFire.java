@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -33,9 +32,9 @@ import net.minecraftforge.common.*;
 
 public class LKItemAxeFire extends LKItemAxe
 {
-    public LKItemAxeFire(int i, EnumToolMaterial enumtoolmaterial)
+    public LKItemAxeFire(ToolMaterial enumtoolmaterial)
     {
-        super(i, enumtoolmaterial);
+        super(enumtoolmaterial);
     }
 	
 	@Override
@@ -47,20 +46,20 @@ public class LKItemAxeFire extends LKItemAxe
         }
 		
 		World world = entityplayer.worldObj;
-		if (ForgeHooks.isToolEffective(itemstack, Block.blocksList[world.getBlockId(i, j, k)], world.getBlockMetadata(i, j, k)))
+		if (ForgeHooks.isToolEffective(itemstack, (Block) Block.blockRegistry.getObject(world.getBlock(i, j, k)), world.getBlockMetadata(i, j, k)))
 		{
-			ItemStack smeltingResult = FurnaceRecipes.smelting().getSmeltingResult(new ItemStack(world.getBlockId(i, j, k), 1, world.getBlockMetadata(i, j, k)));
+			ItemStack smeltingResult = FurnaceRecipes.smelting().getSmeltingResult(new ItemStack(world.getBlock(i, j, k), 1, world.getBlockMetadata(i, j, k)));
 			if (smeltingResult != null)
 			{
 				if (!world.isRemote)
 				{
-					entityplayer.addStat(StatList.mineBlockStatArray[world.getBlockId(i, j, k)], 1);
+					entityplayer.addStat(StatList.mineBlockStatArray[world.getBlockMetadata(i, j, k)], 1);
 					entityplayer.addExhaustion(0.025F);
-					for (int l = 0; l < Block.blocksList[world.getBlockId(i, j, k)].quantityDropped(itemRand); l++)
+					for (int l = 0; l < ((Block) Block.blockRegistry.getObject(world.getBlock(i, j, k))).quantityDropped(itemRand); l++)
 					{
-						mod_LionKing.dropItemsFromBlock(world, i, j, k, new ItemStack(smeltingResult.itemID, 1, smeltingResult.getItemDamage()));
+						mod_LionKing.dropItemsFromBlock(world, i, j, k, new ItemStack(smeltingResult.getItem(), 1, smeltingResult.getItemDamage()));
 					}
-					world.playAuxSFX(2001, i, j, k, world.getBlockId(i, j, k) + (world.getBlockMetadata(i, j, k) << 12));
+					world.playAuxSFX(2001, i, j, k, world.getBlockMetadata(i, j, k) + (world.getBlockMetadata(i, j, k) << 12));
 					itemstack.damageItem(1, entityplayer);
 					world.setBlockToAir(i, j, k);
 				}

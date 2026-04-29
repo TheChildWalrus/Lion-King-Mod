@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -31,9 +30,9 @@ import net.minecraft.world.storage.*;
 
 public class LKItemTicketLionSuit extends LKItemArmor
 {
-    public LKItemTicketLionSuit(int i, int j)
+    public LKItemTicketLionSuit(int j)
     {
-        super(i, mod_LionKing.armorSuit, 0, j);
+        super(mod_LionKing.armorSuit, 0, j);
 		setMaxDamage(0);
 		setMaxStackSize(1);
 		setCreativeTab(LKCreativeTabs.tabMisc);
@@ -46,7 +45,7 @@ public class LKItemTicketLionSuit extends LKItemArmor
     }
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer)
+	public String getArmorTexture(ItemStack stack,Entity entity,int slot, String type)
 	{
 		String s = armorType == 2 ? "_2" : "_1";
 		return "lionking:item/suit" + s + ".png";

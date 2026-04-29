@@ -10,11 +10,11 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.entity.projectile.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -31,9 +31,9 @@ import net.minecraft.world.storage.*;
 
 public class LKItemYam extends ItemSeedFood
 {
-	public LKItemYam(int i)
+	public LKItemYam()
 	{
-		super(i, 1, 0.4F, mod_LionKing.yamCrops.blockID, Block.tilledField.blockID);
+		super(1, 0.4F, mod_LionKing.yamCrops, Blocks.farmland);
 		setPotionEffect(Potion.hunger.id, 15, 0, 0.4F);
 		setCreativeTab(LKCreativeTabs.tabFood);
 	}

@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -28,23 +27,22 @@ import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.*;
-
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class LKItemBanana extends LKItemFood
 {
-	public LKItemBanana(int i, int j, float f, boolean flag)
+	public LKItemBanana(int j, float f, boolean flag)
 	{
-		super(i, j, f, flag);
+		super(j, f, flag);
 	}
 	
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int side, float hitX, float hitY, float hitZ)
 	{
-		int id = world.getBlockId(i, j, k);
+		Block id = world.getBlock(i, j, k);
 		int meta = world.getBlockMetadata(i, j, k);
 
-		if (id == mod_LionKing.prideWood2.blockID && BlockLog.limitToValidMetadata(meta) == 0)
+		if (id == mod_LionKing.prideWood2 && BlockLog.func_150165_c(meta) == 0)
 		{
 			if (side == 0 || side == 1)
 			{
@@ -70,7 +68,7 @@ public class LKItemBanana extends LKItemFood
 			if (world.isAirBlock(i, j, k))
 			{
 				int bananaMetadata = ForgeDirection.getOrientation(side - 2).getOpposite().ordinal();
-				world.setBlock(i, j, k, mod_LionKing.hangingBanana.blockID, bananaMetadata, 3);
+				world.setBlock(i, j, k, mod_LionKing.hangingBanana, bananaMetadata, 3);
 
 				if (!entityplayer.capabilities.isCreativeMode)
 				{

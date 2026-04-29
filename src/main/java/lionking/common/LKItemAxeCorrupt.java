@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -31,13 +30,13 @@ import net.minecraft.world.storage.*;
 
 public class LKItemAxeCorrupt extends LKItemAxe
 {
-    public LKItemAxeCorrupt(int i, EnumToolMaterial enumtoolmaterial)
+    public LKItemAxeCorrupt(int i, ToolMaterial enumtoolmaterial)
     {
-        super(i, enumtoolmaterial);
+        super(enumtoolmaterial);
     }
 	
 	@Override
-    public float getStrVsBlock(ItemStack itemstack, Block block, int meta)
+    public float getDigSpeed(ItemStack itemstack, Block block, int meta)
     {
 		int currentDamage = itemstack.getItemDamage();
 		if (currentDamage < 0)
@@ -46,7 +45,7 @@ public class LKItemAxeCorrupt extends LKItemAxe
 		}
 		
 		float f = 0.15F + ((float)(getMaxDamage() - currentDamage) / (float)getMaxDamage() * 0.85F);
-		f *= super.getStrVsBlock(itemstack, block, meta);
+		f *= super.getDigSpeed(itemstack, block, meta);
 		
 		if (f < 1.0F)
 		{

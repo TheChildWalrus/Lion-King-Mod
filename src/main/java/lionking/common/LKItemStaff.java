@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -33,9 +32,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 public class LKItemStaff extends LKItem
 {
-	public LKItemStaff(int i)
+	public LKItemStaff()
 	{
-		super(i);
+		super();
 		setCreativeTab(LKCreativeTabs.tabTools);
 		setFull3D();
 		setMaxStackSize(1);

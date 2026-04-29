@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -31,9 +30,9 @@ import net.minecraft.world.storage.*;
 
 public class LKItemFood extends ItemFood
 {
-    public LKItemFood(int i, int j, float f, boolean flag)
+    public LKItemFood(int j, float f, boolean flag)
     {
-        super(i, j, f, flag);
+        super(j, f, flag);
 		setCreativeTab(LKCreativeTabs.tabFood);
     }
 }

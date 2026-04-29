@@ -14,7 +14,6 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.packet.*;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.*;
 import net.minecraft.server.*;
@@ -31,9 +30,9 @@ import net.minecraft.world.storage.*;
 
 public class LKItemZazuEgg extends LKItem
 {
-    public LKItemZazuEgg(int i)
+    public LKItemZazuEgg()
     {
-        super(i);
+        super();
 		setMaxStackSize(16);
     }
  
